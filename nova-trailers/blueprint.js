@@ -1,4 +1,8 @@
-// Genera un blueprint 2D (vista de planta) en SVG para un tamano de trailer.
+// Genera blueprints 2D en SVG para un tamano de trailer, con tres vistas
+// independientes (para mostrarse en pestanas):
+//  1) "kitchen"  - vista interior de la pared de cocina (elevacion, equipo)
+//  2) "top"      - vista superior / planta
+//  3) "service"  - vista interior de la pared de servicio (elevacion)
 // No es un plano de ingenieria - es un sketch a escala para ventas y
 // referencia rapida de distribucion de equipo, con regla de medicion,
 // cuadricula y pie de pagina de cotizacion.
@@ -8,34 +12,68 @@ const NOVA_DARK = "#0D2244";
 const NOVA_SILVER = "#C8D8F0";
 const NOVA_GRID = "#E4ECFB";
 
-function renderBlueprintSVG(size) {
-  const scale = 36; // px por pie
-  const marginLeft = 1.5;
-  const marginRight = 1;
-  const titleSpace = 0.6;
-  const rulerSpace = 0.5;
-  const hoodSpace = 1.3;
-  const wheelSpace = 1.6;
-  const labelSpace = 0.9;
-  const footerSpace = 1.9;
+const SCALE = 36; // px por pie
+const MARGIN_LEFT = 1.5;
+const MARGIN_RIGHT = 1;
+const TITLE_SPACE = 0.6;
+const RULER_SPACE = 0.5;
+const FOOTER_SPACE = 1.9;
+const ELEV_HEIGHT = 7; // altura interior del trailer (pies) en vistas laterales
+const COUNTER_HEIGHT = 2.8; // altura de mostradores/equipo en vistas laterales
 
+// Devuelve las 3 vistas como SVG independientes: { kitchen, top, service }
+function renderBlueprintViews(size) {
   const totalLength = size.length + size.porch;
-  const wFt = marginLeft + totalLength + marginRight;
-  const hFt = titleSpace + rulerSpace + hoodSpace + size.width + wheelSpace + labelSpace + footerSpace;
 
-  const W = wFt * scale;
-  const H = hFt * scale;
-  const toX = (ft) => (marginLeft + ft) * scale;
-  const toY = (ft) => (titleSpace + rulerSpace + hoodSpace + ft) * scale;
-  const px = (ft) => ft * scale;
+  // Linea de equipo (pared trasera / "back")
+  const items = size.equipment.back;
+  const kitchenLen = size.length - 1; // 0.5 ft margen en cada extremo
+  const sumFt = items.reduce((a, i) => a + i.ft, 0);
+  const widthScale = sumFt > kitchenLen ? kitchenLen / sumFt : 1;
 
-  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">`;
+  let cursor = 0.5;
+  const placed = [];
+  items.forEach((item, idx) => {
+    const w = item.ft * widthScale;
+    placed.push({ ...item, x: cursor, w, num: idx + 1 });
+    cursor += w;
+  });
 
-  // Titulo
-  svg += textLabel(toX(size.length / 2), px(titleSpace * 0.65), `NOVA FOOD TRAILER ${size.label}`, 14, NOVA_DARK, true);
+  // Campana sobre los items marcados con hood:true que sean contiguos
+  let hoodStart = null;
+  let hoodEnd = null;
+  placed.forEach((item) => {
+    if (item.hood) {
+      if (hoodStart === null) hoodStart = item.x;
+      hoodEnd = item.x + item.w;
+    }
+  });
 
-  // Regla de medicion (en pies)
-  const rulerY = px(titleSpace + rulerSpace * 0.75);
+  return {
+    kitchen: renderKitchenView(size, totalLength, placed, hoodStart, hoodEnd),
+    top: renderTopView(size, totalLength, kitchenLen, placed),
+    service: renderServiceView(size, totalLength, kitchenLen),
+  };
+}
+
+// Compatibilidad: por defecto devuelve la vista superior (planta)
+function renderBlueprintSVG(size) {
+  return renderBlueprintViews(size).top;
+}
+
+function px(ft) {
+  return ft * SCALE;
+}
+
+function makeToX() {
+  return (ft) => (MARGIN_LEFT + ft) * SCALE;
+}
+
+// Cabecera comun: titulo + regla de medicion en pies
+function renderHeader(toX, totalLength, title) {
+  let svg = textLabel(toX(totalLength / 2), px(TITLE_SPACE * 0.65), title, 14, NOVA_DARK, true);
+
+  const rulerY = px(TITLE_SPACE + RULER_SPACE * 0.75);
   svg += `<line x1="${toX(0)}" y1="${rulerY}" x2="${toX(totalLength)}" y2="${rulerY}" stroke="${NOVA_DARK}" stroke-width="1"/>`;
   for (let ft = 0; ft <= totalLength; ft++) {
     const x = toX(ft);
@@ -44,6 +82,46 @@ function renderBlueprintSVG(size) {
       svg += textLabel(x + px(0.5), rulerY - 6, String(ft + 1), 8, NOVA_DARK, false);
     }
   }
+  return svg;
+}
+
+// Pie de pagina comun: branding + lineas de firma para cotizacion
+function renderFooter(toX, totalLength, footerY0, size) {
+  let svg = `<line x1="${toX(-MARGIN_LEFT + 0.2)}" y1="${footerY0}" x2="${toX(totalLength + MARGIN_RIGHT - 0.2)}" y2="${footerY0}"
+    stroke="${NOVA_SILVER}" stroke-width="2"/>`;
+
+  svg += textLabel(toX(0), footerY0 + px(0.45), "NOVA FOOD TRAILERS", 13, NOVA_BLUE, true).replace('text-anchor="middle"', 'text-anchor="start"');
+  svg += textLabel(toX(0), footerY0 + px(0.8), `Modelo ${size.label}  -  $${size.price.toLocaleString("en-US")}`, 10, NOVA_DARK, false)
+    .replace('text-anchor="middle"', 'text-anchor="start"');
+
+  const sigW = px(totalLength * 0.32);
+  const sigY = footerY0 + px(1.55);
+  const sig1X = toX(totalLength) - sigW * 2 - px(0.4);
+  const sig2X = toX(totalLength) - sigW;
+  svg += `<line x1="${sig1X}" y1="${sigY}" x2="${sig1X + sigW}" y2="${sigY}" stroke="${NOVA_DARK}" stroke-width="1"/>`;
+  svg += textLabel(sig1X + sigW / 2, sigY + 14, "FIRMA CLIENTE", 9, NOVA_DARK, false);
+  svg += `<line x1="${sig2X}" y1="${sigY}" x2="${sig2X + sigW}" y2="${sigY}" stroke="${NOVA_DARK}" stroke-width="1"/>`;
+  svg += textLabel(sig2X + sigW / 2, sigY + 14, "REPRESENTANTE DE VENTAS", 9, NOVA_DARK, false);
+
+  return svg;
+}
+
+// ===== Vista superior (planta) =====
+function renderTopView(size, totalLength, kitchenLen, placed) {
+  const hoodSpace = 0.6;
+  const wheelSpace = 1.6;
+  const labelSpace = 0.9;
+  const equipHeight = 2.3;
+
+  const hFt = TITLE_SPACE + RULER_SPACE + hoodSpace + size.width + wheelSpace + labelSpace + FOOTER_SPACE;
+  const wFt = MARGIN_LEFT + totalLength + MARGIN_RIGHT;
+  const W = wFt * SCALE;
+  const H = hFt * SCALE;
+  const toX = makeToX();
+  const toY = (ft) => (TITLE_SPACE + RULER_SPACE + hoodSpace + ft) * SCALE;
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">`;
+  svg += renderHeader(toX, totalLength, `NOVA FOOD TRAILER ${size.label} - VISTA SUPERIOR (PLANTA)`);
 
   // Cuerpo del trailer
   svg += `<rect x="${toX(0)}" y="${toY(0)}" width="${px(size.length)}" height="${px(size.width)}"
@@ -63,40 +141,9 @@ function renderBlueprintSVG(size) {
     svg += `<rect x="${px0}" y="${toY(0)}" width="${px(size.porch)}" height="${px(size.width)}"
       fill="#ffffff" stroke="${NOVA_DARK}" stroke-width="2" stroke-dasharray="6,4"/>`;
     svg += textLabel(px0 + px(size.porch) / 2, toY(size.width / 2), "PORCH", 13, NOVA_DARK, true);
-    // doble puerta del porch
     const doorY = toY(size.width * 0.15);
     svg += `<line x1="${px0 + px(size.porch) / 2}" y1="${doorY}" x2="${px0 + px(size.porch) / 2}" y2="${doorY + px(size.width * 0.7)}"
       stroke="${NOVA_DARK}" stroke-width="1.5" stroke-dasharray="3,3"/>`;
-  }
-
-  // Linea de equipo (pared trasera / "back")
-  const items = size.equipment.back;
-  const kitchenLen = size.length - 1; // 0.5 ft margen en cada extremo
-  const sumFt = items.reduce((a, i) => a + i.ft, 0);
-  const widthScale = sumFt > kitchenLen ? kitchenLen / sumFt : 1;
-  const equipHeight = 2.3;
-
-  let cursor = 0.5;
-  const placed = [];
-  items.forEach((item, idx) => {
-    const w = item.ft * widthScale;
-    placed.push({ ...item, x: cursor, w, num: idx + 1 });
-    cursor += w;
-  });
-
-  // Campana sobre los items marcados con hood:true que sean contiguos
-  let hoodStart = null;
-  let hoodEnd = null;
-  placed.forEach((item) => {
-    if (item.hood) {
-      if (hoodStart === null) hoodStart = item.x;
-      hoodEnd = item.x + item.w;
-    }
-  });
-  if (hoodStart !== null) {
-    svg += `<rect x="${toX(hoodStart)}" y="${toY(0) - px(0.9)}" width="${px(hoodEnd - hoodStart)}" height="${px(0.8)}"
-      fill="none" stroke="${NOVA_BLUE}" stroke-width="1.5" stroke-dasharray="5,3"/>`;
-    svg += textLabel(toX((hoodStart + hoodEnd) / 2), toY(0) - px(0.95), "CAMPANA EXTRACTORA", 11, NOVA_BLUE, false);
   }
 
   // Cajas de equipo, con nombre del equipo dentro de cada caja
@@ -113,9 +160,9 @@ function renderBlueprintSVG(size) {
   // Ventanas de servicio en la pared frontal ("front")
   if (size.serviceWindows > 0) {
     const winW = Math.min(2, kitchenLen / size.serviceWindows / 1.5);
-    const gap = kitchenLen / size.serviceWindows;
+    const gapWin = kitchenLen / size.serviceWindows;
     for (let i = 0; i < size.serviceWindows; i++) {
-      const cx = 0.5 + gap * (i + 0.5);
+      const cx = 0.5 + gapWin * (i + 0.5);
       svg += `<rect x="${toX(cx - winW / 2)}" y="${toY(size.width) - px(0.15)}" width="${px(winW)}" height="${px(0.3)}"
         fill="#ffffff" stroke="${NOVA_BLUE}" stroke-width="2"/>`;
       svg += textLabel(toX(cx), toY(size.width) + px(0.55), "VENTANA SERVICIO", 9, NOVA_BLUE, false);
@@ -133,34 +180,113 @@ function renderBlueprintSVG(size) {
   const step = size.axles > 1 ? (axleZoneEnd - axleZoneStart) / (size.axles - 1) : 0;
   for (let i = 0; i < size.axles; i++) {
     const ax = size.axles === 1 ? (axleZoneStart + axleZoneEnd) / 2 : axleZoneStart + step * i;
-    // llanta superior
     svg += `<rect x="${toX(ax) - px(0.3)}" y="${toY(0) - px(0.45)}" width="${px(0.6)}" height="${px(0.4)}"
       fill="${NOVA_DARK}" rx="2"/>`;
-    // llanta inferior
     svg += `<rect x="${toX(ax) - px(0.3)}" y="${toY(size.width) + px(0.05)}" width="${px(0.6)}" height="${px(0.4)}"
       fill="${NOVA_DARK}" rx="2"/>`;
   }
   svg += textLabel(toX(axleZoneStart + (axleZoneEnd - axleZoneStart) / 2), toY(size.width) + px(1.3),
     `${size.axles} EJES - ${size.axleCapacity} LB c/u`, 10, NOVA_DARK, true);
 
-  // Pie de pagina: branding + lineas de firma para cotizacion
-  const footerY0 = H - px(footerSpace);
-  svg += `<line x1="${toX(-marginLeft + 0.2)}" y1="${footerY0}" x2="${toX(totalLength + marginRight - 0.2)}" y2="${footerY0}"
-    stroke="${NOVA_SILVER}" stroke-width="2"/>`;
+  svg += renderFooter(toX, totalLength, H - px(FOOTER_SPACE), size);
+  svg += `</svg>`;
+  return svg;
+}
 
-  svg += textLabel(toX(0), footerY0 + px(0.45), "NOVA FOOD TRAILERS", 13, NOVA_BLUE, true).replace('text-anchor="middle"', 'text-anchor="start"');
-  svg += textLabel(toX(0), footerY0 + px(0.8), `Modelo ${size.label}  -  $${size.price.toLocaleString("en-US")}`, 10, NOVA_DARK, false)
-    .replace('text-anchor="middle"', 'text-anchor="start"');
+// ===== Vista interior pared de cocina (elevacion con equipo) =====
+function renderKitchenView(size, totalLength, placed, hoodStart, hoodEnd) {
+  const gapBelow = 0.3;
+  const hFt = TITLE_SPACE + RULER_SPACE + ELEV_HEIGHT + gapBelow + FOOTER_SPACE;
+  const wFt = MARGIN_LEFT + totalLength + MARGIN_RIGHT;
+  const W = wFt * SCALE;
+  const H = hFt * SCALE;
+  const toX = makeToX();
+  const topY = px(TITLE_SPACE + RULER_SPACE);
+  const floorY = topY + px(ELEV_HEIGHT);
+  const counterTopY = floorY - px(COUNTER_HEIGHT);
 
-  const sigW = px(totalLength * 0.32);
-  const sigY = footerY0 + px(1.55);
-  const sig1X = toX(totalLength) - sigW * 2 - px(0.4);
-  const sig2X = toX(totalLength) - sigW;
-  svg += `<line x1="${sig1X}" y1="${sigY}" x2="${sig1X + sigW}" y2="${sigY}" stroke="${NOVA_DARK}" stroke-width="1"/>`;
-  svg += textLabel(sig1X + sigW / 2, sigY + 14, "FIRMA CLIENTE", 9, NOVA_DARK, false);
-  svg += `<line x1="${sig2X}" y1="${sigY}" x2="${sig2X + sigW}" y2="${sigY}" stroke="${NOVA_DARK}" stroke-width="1"/>`;
-  svg += textLabel(sig2X + sigW / 2, sigY + 14, "REPRESENTANTE DE VENTAS", 9, NOVA_DARK, false);
+  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">`;
+  svg += renderHeader(toX, totalLength, `NOVA FOOD TRAILER ${size.label} - PARED DE COCINA (EQUIPO)`);
 
+  // Contorno de la pared
+  svg += `<rect x="${toX(0)}" y="${topY}" width="${px(size.length)}" height="${px(ELEV_HEIGHT)}"
+    fill="#ffffff" stroke="${NOVA_DARK}" stroke-width="2"/>`;
+
+  // Linea de mostrador
+  svg += `<line x1="${toX(0)}" y1="${counterTopY}" x2="${toX(size.length)}" y2="${counterTopY}"
+    stroke="${NOVA_DARK}" stroke-width="1" stroke-dasharray="4,3"/>`;
+
+  // Campana extractora
+  if (hoodStart !== null) {
+    const hoodY = topY + px(0.3);
+    const hoodH = counterTopY - hoodY - px(0.1);
+    svg += `<rect x="${toX(hoodStart)}" y="${hoodY}" width="${px(hoodEnd - hoodStart)}" height="${hoodH}"
+      fill="none" stroke="${NOVA_BLUE}" stroke-width="1.5" stroke-dasharray="5,3"/>`;
+    svg += textLabel(toX((hoodStart + hoodEnd) / 2), hoodY + 14, "CAMPANA EXTRACTORA", 10, NOVA_BLUE, false);
+  }
+
+  // Muebles/equipo a la altura de mostrador
+  placed.forEach((item) => {
+    const boxW = px(item.w);
+    const boxH = px(COUNTER_HEIGHT);
+    const cx = toX(item.x + item.w / 2);
+    const cy = counterTopY + boxH / 2;
+    svg += `<rect x="${toX(item.x)}" y="${counterTopY}" width="${boxW}" height="${boxH}"
+      fill="${NOVA_BLUE}" fill-opacity="0.18" stroke="${NOVA_DARK}" stroke-width="1.5"/>`;
+    svg += equipmentLabel(cx, cy, item.name, boxW, boxH);
+  });
+
+  svg += renderFooter(toX, totalLength, H - px(FOOTER_SPACE), size);
+  svg += `</svg>`;
+  return svg;
+}
+
+// ===== Vista interior pared de servicio (elevacion: puerta + ventanas) =====
+function renderServiceView(size, totalLength, kitchenLen) {
+  const gapBelow = 0.3;
+  const hFt = TITLE_SPACE + RULER_SPACE + ELEV_HEIGHT + gapBelow + FOOTER_SPACE;
+  const wFt = MARGIN_LEFT + totalLength + MARGIN_RIGHT;
+  const W = wFt * SCALE;
+  const H = hFt * SCALE;
+  const toX = makeToX();
+  const topY = px(TITLE_SPACE + RULER_SPACE);
+  const floorY = topY + px(ELEV_HEIGHT);
+  const counterTopY = floorY - px(COUNTER_HEIGHT);
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">`;
+  svg += renderHeader(toX, totalLength, `NOVA FOOD TRAILER ${size.label} - PARED DE SERVICIO`);
+
+  // Contorno de la pared
+  svg += `<rect x="${toX(0)}" y="${topY}" width="${px(size.length)}" height="${px(ELEV_HEIGHT)}"
+    fill="#ffffff" stroke="${NOVA_DARK}" stroke-width="2"/>`;
+
+  // Mostrador continuo
+  svg += `<rect x="${toX(0)}" y="${counterTopY}" width="${px(size.length)}" height="${px(COUNTER_HEIGHT)}"
+    fill="${NOVA_SILVER}" fill-opacity="0.5" stroke="${NOVA_DARK}" stroke-width="1.5"/>`;
+  svg += textLabel(toX(size.length / 2), counterTopY + px(COUNTER_HEIGHT) / 2 + 4, "MOSTRADOR", 10, NOVA_DARK, false);
+
+  // Puerta de entrada
+  const doorW = px(0.8);
+  const doorH = px(ELEV_HEIGHT - 0.4);
+  svg += `<rect x="${toX(0.1)}" y="${topY + px(0.2)}" width="${doorW}" height="${doorH}"
+    fill="#ffffff" stroke="${NOVA_DARK}" stroke-width="1.5" stroke-dasharray="4,2"/>`;
+  svg += textLabel(toX(0.5), topY + px(ELEV_HEIGHT) - 6, "PUERTA", 9, NOVA_DARK, false);
+
+  // Ventanas de servicio
+  if (size.serviceWindows > 0) {
+    const winW = Math.min(2, kitchenLen / size.serviceWindows / 1.5);
+    const gapWin = kitchenLen / size.serviceWindows;
+    const winTopY = topY + px(1.5);
+    const winH = counterTopY - winTopY;
+    for (let i = 0; i < size.serviceWindows; i++) {
+      const cx = 0.5 + gapWin * (i + 0.5);
+      svg += `<rect x="${toX(cx - winW / 2)}" y="${winTopY}" width="${px(winW)}" height="${winH}"
+        fill="${NOVA_BLUE}" fill-opacity="0.1" stroke="${NOVA_BLUE}" stroke-width="2"/>`;
+      svg += textLabel(toX(cx), winTopY - 6, "VENTANA SERVICIO", 9, NOVA_BLUE, false);
+    }
+  }
+
+  svg += renderFooter(toX, totalLength, H - px(FOOTER_SPACE), size);
   svg += `</svg>`;
   return svg;
 }
@@ -224,5 +350,5 @@ function escapeXml(str) {
 }
 
 if (typeof module !== "undefined") {
-  module.exports = { renderBlueprintSVG };
+  module.exports = { renderBlueprintSVG, renderBlueprintViews };
 }

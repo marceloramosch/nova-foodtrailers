@@ -61,6 +61,26 @@
     color: #fff;
   }
 
+  .view-tabs{
+    display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px;
+  }
+  .view-tabs button{
+    border: 1px solid var(--blue);
+    background: #eef3fc;
+    color: var(--blue);
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 12.5px;
+    transition: all .15s;
+  }
+  .view-tabs button.active,
+  .view-tabs button:hover{
+    background: var(--blue);
+    color: #fff;
+  }
+
   .layout{
     display:grid;
     grid-template-columns: 1.4fr 1fr;
@@ -133,7 +153,10 @@
   <div class="size-picker" id="sizePicker"></div>
 
   <div class="layout">
-    <div class="panel blueprint-panel" id="blueprintPanel"></div>
+    <div>
+      <div class="view-tabs" id="viewTabs"></div>
+      <div class="panel blueprint-panel" id="blueprintPanel"></div>
+    </div>
 
     <div class="panel">
       <div class="price-row">

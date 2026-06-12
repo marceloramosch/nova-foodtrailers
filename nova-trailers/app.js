@@ -1,10 +1,20 @@
 (function () {
   const picker = document.getElementById("sizePicker");
+  const viewTabs = document.getElementById("viewTabs");
   const blueprintPanel = document.getElementById("blueprintPanel");
   const sizeLabel = document.getElementById("sizeLabel");
   const sizePrice = document.getElementById("sizePrice");
   const equipList = document.getElementById("equipList");
   const specsList = document.getElementById("specsList");
+
+  const VIEWS = [
+    { id: "kitchen", label: "Pared de cocina" },
+    { id: "top", label: "Vista superior" },
+    { id: "service", label: "Pared de servicio" },
+  ];
+
+  let currentViews = null;
+  let currentViewId = VIEWS[0].id;
 
   TRAILER_SIZES.forEach((size) => {
     const btn = document.createElement("button");
@@ -12,6 +22,14 @@
     btn.dataset.id = size.id;
     btn.addEventListener("click", () => selectSize(size.id));
     picker.appendChild(btn);
+  });
+
+  VIEWS.forEach((view) => {
+    const btn = document.createElement("button");
+    btn.textContent = view.label;
+    btn.dataset.view = view.id;
+    btn.addEventListener("click", () => selectView(view.id));
+    viewTabs.appendChild(btn);
   });
 
   function selectSize(id) {
@@ -22,7 +40,8 @@
       btn.classList.toggle("active", btn.dataset.id === id);
     });
 
-    blueprintPanel.innerHTML = renderBlueprintSVG(size);
+    currentViews = renderBlueprintViews(size);
+    renderCurrentView();
 
     sizeLabel.textContent = `Nova Food Trailer ${size.label}`;
     sizePrice.textContent = `$${size.price.toLocaleString("en-US")}`;
@@ -48,5 +67,19 @@
     });
   }
 
+  function selectView(viewId) {
+    currentViewId = viewId;
+    [...viewTabs.children].forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.view === viewId);
+    });
+    renderCurrentView();
+  }
+
+  function renderCurrentView() {
+    if (!currentViews) return;
+    blueprintPanel.innerHTML = currentViews[currentViewId];
+  }
+
+  selectView(currentViewId);
   selectSize(TRAILER_SIZES[0].id);
 })();
