@@ -252,9 +252,20 @@ function renderServiceView(size, totalLength, kitchenLen) {
   svg += `<rect x="${toX(0)}" y="${topY}" width="${px(size.length)}" height="${px(ELEV_HEIGHT)}"
     fill="#ffffff" stroke="${NOVA_DARK}" stroke-width="2"/>`;
 
-  // Mostrador continuo
-  svg += `<rect x="${toX(0)}" y="${counterTopY}" width="${px(size.length)}" height="${px(COUNTER_HEIGHT)}"
-    fill="${NOVA_SILVER}" fill-opacity="0.5" stroke="${NOVA_DARK}" stroke-width="1.5"/>`;
+  // Mostrador continuo: cubierta + cuerpo + patas/soportes + zocalo
+  const counterTopH = px(0.15);
+  const counterToeH = px(0.15);
+  const counterBodyY = counterTopY + counterTopH;
+  const counterToeY = floorY - counterToeH;
+  svg += `<rect x="${toX(0)}" y="${counterTopY}" width="${px(size.length)}" height="${counterTopH}"
+    fill="${NOVA_SILVER}" fill-opacity="0.7" stroke="${NOVA_DARK}" stroke-width="1.5"/>`;
+  svg += `<rect x="${toX(0)}" y="${counterBodyY}" width="${px(size.length)}" height="${counterToeY - counterBodyY}"
+    fill="${NOVA_SILVER}" fill-opacity="0.15" stroke="${NOVA_DARK}" stroke-width="1"/>`;
+  for (let lx = 1; lx < size.length; lx += 3) {
+    svg += `<line x1="${toX(lx)}" y1="${counterBodyY}" x2="${toX(lx)}" y2="${counterToeY}"
+      stroke="${NOVA_DARK}" stroke-width="0.8" stroke-opacity="0.35"/>`;
+  }
+  svg += `<line x1="${toX(0)}" y1="${counterToeY}" x2="${toX(size.length)}" y2="${counterToeY}" stroke="${NOVA_DARK}" stroke-width="1"/>`;
   svg += textLabel(toX(size.length / 2), counterTopY + px(COUNTER_HEIGHT) / 2 + 4, "MOSTRADOR", 10, NOVA_DARK, false);
 
   // Puerta de entrada
@@ -435,24 +446,44 @@ function iconFridge(x, y, s) {
   return svg;
 }
 
-// Mesa de vapor: pozos para charolas
+// Mesa de vapor: cubierta + pozos para charolas + patas
 function iconSteamTable(x, y, s) {
   let svg = iconBox(x, y, s);
+  // Cubierta superior
+  svg += `<rect x="${x}" y="${y}" width="${s}" height="${s * 0.12}"
+    fill="${NOVA_SILVER}" fill-opacity="0.6" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+  // Pozos para charolas
   const n = 3;
   for (let i = 0; i < n; i++) {
     const wellX = x + s * (0.06 + (i * 0.88) / n);
-    svg += `<rect x="${wellX}" y="${y + s * 0.2}" width="${s * 0.88 / n - 2}" height="${s * 0.6}" rx="2"
+    svg += `<rect x="${wellX}" y="${y + s * 0.18}" width="${s * 0.88 / n - 2}" height="${s * 0.42}" rx="2"
       fill="none" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
   }
+  // Patas
+  [0.08, 0.88].forEach((off) => {
+    svg += `<line x1="${x + s * off}" y1="${y + s * 0.62}" x2="${x + s * off}" y2="${y + s * 0.96}" stroke="${NOVA_DARK}" stroke-width="1"/>`;
+  });
   return svg;
 }
 
-// Mesa fria / prep table: superficie de trabajo + unidad refrigerada
+// Mesa fria / prep table: cubierta con tabla de picar + gabinete con puertas + patas
 function iconPrepTable(x, y, s) {
   let svg = iconBox(x, y, s);
-  svg += `<rect x="${x + s * 0.1}" y="${y + s * 0.1}" width="${s * 0.8}" height="${s * 0.35}" fill="none" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
-  svg += `<rect x="${x + s * 0.15}" y="${y + s * 0.55}" width="${s * 0.3}" height="${s * 0.3}" fill="none" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
-  svg += `<rect x="${x + s * 0.55}" y="${y + s * 0.55}" width="${s * 0.3}" height="${s * 0.3}" fill="none" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+  // Cubierta con tabla de picar
+  svg += `<rect x="${x}" y="${y}" width="${s}" height="${s * 0.3}"
+    fill="${NOVA_SILVER}" fill-opacity="0.5" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+  svg += `<rect x="${x + s * 0.1}" y="${y + s * 0.05}" width="${s * 0.8}" height="${s * 0.2}"
+    fill="none" stroke="${NOVA_DARK}" stroke-width="0.6"/>`;
+  // Gabinete con puertas
+  svg += `<rect x="${x + s * 0.05}" y="${y + s * 0.34}" width="${s * 0.9}" height="${s * 0.5}"
+    fill="none" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+  svg += `<line x1="${x + s * 0.5}" y1="${y + s * 0.34}" x2="${x + s * 0.5}" y2="${y + s * 0.84}" stroke="${NOVA_DARK}" stroke-width="0.6"/>`;
+  svg += `<circle cx="${x + s * 0.42}" cy="${y + s * 0.6}" r="${s * 0.025}" fill="${NOVA_DARK}"/>`;
+  svg += `<circle cx="${x + s * 0.58}" cy="${y + s * 0.6}" r="${s * 0.025}" fill="${NOVA_DARK}"/>`;
+  // Patas
+  [0.08, 0.88].forEach((off) => {
+    svg += `<line x1="${x + s * off}" y1="${y + s * 0.84}" x2="${x + s * off}" y2="${y + s * 0.97}" stroke="${NOVA_DARK}" stroke-width="1"/>`;
+  });
   return svg;
 }
 
