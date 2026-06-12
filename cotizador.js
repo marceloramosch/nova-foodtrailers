@@ -12,6 +12,7 @@
   const fFecha = document.getElementById("fFecha");
   const fGarantia = document.getElementById("fGarantia");
   const fDeposito = document.getElementById("fDeposito");
+  const fIdioma = document.getElementById("fIdioma");
 
   const tSubtotal = document.getElementById("tSubtotal");
   const tDeposito = document.getElementById("tDeposito");
@@ -151,10 +152,44 @@
     renderLineItems();
   }
 
+  let dragSrcIndex = null;
+
   function renderLineItems() {
     lineItemsEl.innerHTML = "";
     lineItems.forEach((line, idx) => {
       const tr = document.createElement("tr");
+      tr.draggable = true;
+
+      tr.addEventListener("dragstart", (e) => {
+        dragSrcIndex = idx;
+        tr.classList.add("dragging");
+        e.dataTransfer.effectAllowed = "move";
+      });
+      tr.addEventListener("dragend", () => {
+        tr.classList.remove("dragging");
+      });
+      tr.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        tr.classList.add("drag-over");
+      });
+      tr.addEventListener("dragleave", () => {
+        tr.classList.remove("drag-over");
+      });
+      tr.addEventListener("drop", (e) => {
+        e.preventDefault();
+        tr.classList.remove("drag-over");
+        if (dragSrcIndex === null || dragSrcIndex === idx) return;
+        const moved = lineItems.splice(dragSrcIndex, 1)[0];
+        lineItems.splice(idx, 0, moved);
+        dragSrcIndex = null;
+        renderLineItems();
+      });
+
+      const tdHandle = document.createElement("td");
+      tdHandle.className = "drag-handle";
+      tdHandle.textContent = "⠇";
+      tdHandle.title = "Arrastrar para reordenar";
+      tr.appendChild(tdHandle);
 
       const tdDesc = document.createElement("td");
       const descInput = document.createElement("input");
@@ -429,6 +464,7 @@
     fFecha.value = q.fecha || "";
     fGarantia.value = q.garantia || "1 Año — Nova Food Trailer";
     fDeposito.value = q.deposito || 0;
+    fIdioma.value = q.idioma || "es";
     fClientSelect.value = q.clientId || "";
     specsEl.value = (q.notas || []).join("\n");
     lineItems = (q.lineItems || []).map((l) => ({ ...l }));
@@ -459,6 +495,7 @@
       entrega: fEntrega.value.trim(),
       fecha: fFecha.value,
       garantia: fGarantia.value,
+      idioma: fIdioma.value,
       deposito,
       lineItems: lineItems.map((l) => ({ ...l })),
       notas: specsEl.value.split("\n").map((s) => s.trim()).filter((s) => s !== ""),
@@ -481,12 +518,97 @@
     alert("Cotizacion guardada.");
   });
 
+  // ===== Traducciones del documento =====
+  const I18N = {
+    es: {
+      locale: "es-MX",
+      title: "COTIZACION DE VENTA",
+      preparedBy: "PREPARADO POR",
+      company: "EMPRESA",
+      companyName: "Nova Food Trailer",
+      date: "FECHA",
+      quoteNo: "NO. DE COTIZACION",
+      clientInfo: "Informacion del cliente",
+      client: "CLIENTE",
+      contact: "CONTACTO",
+      deliverTo: "ENTREGA EN",
+      warranty: "GARANTIA",
+      paymentMethod: "FORMA DE PAGO",
+      paymentMethodText: (dep) => `Deposito inicial de ${formatMoney(dep)} USD; saldo restante segun calendario de pagos acordado durante la construccion`,
+      components: "Componentes de la cotizacion",
+      qty: "CANT",
+      description: "DESCRIPCION",
+      unitPrice: "PRECIO UNIT.",
+      total: "TOTAL",
+      noComponents: "Sin componentes agregados",
+      notesTitle: "Notas y especificaciones adicionales",
+      priceSummary: "Resumen de precio",
+      subtotal: "Subtotal",
+      deposit: "Deposito inicial",
+      remainingBalance: "SALDO RESTANTE",
+      termsTitle: "Terminos y notas",
+      warrantyNoteTitle: "Garantia",
+      warrantyNoteText: "Este trailer incluye la garantia indicada arriba, gestionada a traves de Nova Food Trailer, cubriendo defectos de fabricacion. La garantia no cubre mal uso, danos accidentales ni desgaste normal.",
+      paymentScheduleTitle: "Calendario de pagos",
+      paymentScheduleText: "El deposito inicial es requerido para iniciar la construccion. El saldo restante se pagara en abonos acordados durante el periodo de construccion en Monclova. El pago completo debe realizarse antes de la entrega.",
+      constructionTitle: "Construccion y entrega",
+      constructionText: (dest) => `La construccion se realiza en Monclova, Mexico. La entrega estimada es en ${dest} una vez completada la construccion y liquidado el pago.`,
+      destinationFallback: "el destino acordado",
+      signaturesTitle: "Aceptacion y firmas",
+      signaturesText: "Al firmar a continuacion, ambas partes aceptan los terminos descritos en esta cotizacion.",
+      sellerSig: "Marcelo Ramos Schiaffino — Nova Food Trailer",
+      clientSig: "Cliente",
+      clientSigFallback: "Cliente",
+    },
+    en: {
+      locale: "en-US",
+      title: "SALES QUOTE",
+      preparedBy: "PREPARED BY",
+      company: "COMPANY",
+      companyName: "Nova Food Trailer",
+      date: "DATE",
+      quoteNo: "QUOTE NO.",
+      clientInfo: "Customer information",
+      client: "CUSTOMER",
+      contact: "CONTACT",
+      deliverTo: "DELIVERY TO",
+      warranty: "WARRANTY",
+      paymentMethod: "PAYMENT TERMS",
+      paymentMethodText: (dep) => `Initial deposit of ${formatMoney(dep)} USD; remaining balance according to the payment schedule agreed during construction`,
+      components: "Quote components",
+      qty: "QTY",
+      description: "DESCRIPTION",
+      unitPrice: "UNIT PRICE",
+      total: "TOTAL",
+      noComponents: "No components added",
+      notesTitle: "Additional notes and specifications",
+      priceSummary: "Price summary",
+      subtotal: "Subtotal",
+      deposit: "Initial deposit",
+      remainingBalance: "REMAINING BALANCE",
+      termsTitle: "Terms and notes",
+      warrantyNoteTitle: "Warranty",
+      warrantyNoteText: "This trailer includes the warranty indicated above, handled through Nova Food Trailer, covering manufacturing defects. The warranty does not cover misuse, accidental damage or normal wear and tear.",
+      paymentScheduleTitle: "Payment schedule",
+      paymentScheduleText: "The initial deposit is required to start construction. The remaining balance will be paid in installments agreed during the construction period in Monclova. Full payment must be made before delivery.",
+      constructionTitle: "Construction and delivery",
+      constructionText: (dest) => `Construction takes place in Monclova, Mexico. Estimated delivery is in ${dest} once construction is complete and payment is settled.`,
+      destinationFallback: "the agreed destination",
+      signaturesTitle: "Acceptance and signatures",
+      signaturesText: "By signing below, both parties accept the terms described in this quote.",
+      sellerSig: "Marcelo Ramos Schiaffino — Nova Food Trailer",
+      clientSig: "Customer",
+      clientSigFallback: "Customer",
+    },
+  };
+
   // ===== Generar documento de cotizacion =====
   function buildPreview() {
     const { subtotal, deposito, saldo } = updateTotals();
+    const t = I18N[fIdioma.value] || I18N.es;
 
     const fechaVal = fFecha.value
-      ? new Date(fFecha.value + "T00:00:00").toLocaleDateString("es-MX", { year: "numeric", month: "long", day: "numeric" })
+      ? new Date(fFecha.value + "T00:00:00").toLocaleDateString(t.locale, { year: "numeric", month: "long", day: "numeric" })
       : "";
 
     const rows = lineItems
@@ -515,69 +637,69 @@
         <h1>NOVA</h1>
       </div>
       <div class="doc-tagline">F O O D &nbsp;&nbsp;&nbsp; T R A I L E R</div>
-      <div class="doc-title">COTIZACION DE VENTA</div>
+      <div class="doc-title">${t.title}</div>
 
       <div class="doc-meta">
         <div>
-          <div class="label">PREPARADO POR</div>
+          <div class="label">${t.preparedBy}</div>
           <div class="value">Marcelo Ramos Schiaffino</div>
-          <div class="label" style="margin-top:6px;">EMPRESA</div>
-          <div class="value">Nova Food Trailer</div>
+          <div class="label" style="margin-top:6px;">${t.company}</div>
+          <div class="value">${t.companyName}</div>
         </div>
         <div style="text-align:right;">
-          <div class="label">FECHA</div>
+          <div class="label">${t.date}</div>
           <div class="value">${escapeHtml(fechaVal)}</div>
-          <div class="label" style="margin-top:6px;">NO. DE COTIZACION</div>
+          <div class="label" style="margin-top:6px;">${t.quoteNo}</div>
           <div class="value">${escapeHtml(fNumero.value)}</div>
         </div>
       </div>
 
-      <div class="doc-section">Informacion del cliente</div>
+      <div class="doc-section">${t.clientInfo}</div>
       <table class="doc-client">
-        <tr><td class="label">CLIENTE</td><td>${escapeHtml(fCliente.value)}</td></tr>
-        <tr><td class="label">CONTACTO</td><td>${escapeHtml(fContacto.value)}</td></tr>
-        <tr><td class="label">ENTREGA EN</td><td>${escapeHtml(fEntrega.value)}</td></tr>
-        <tr><td class="label">GARANTIA</td><td>${escapeHtml(fGarantia.value)}</td></tr>
-        <tr><td class="label">FORMA DE PAGO</td><td>Deposito inicial de ${formatMoney(deposito)} USD; saldo restante segun calendario de pagos acordado durante la construccion</td></tr>
+        <tr><td class="label">${t.client}</td><td>${escapeHtml(fCliente.value)}</td></tr>
+        <tr><td class="label">${t.contact}</td><td>${escapeHtml(fContacto.value)}</td></tr>
+        <tr><td class="label">${t.deliverTo}</td><td>${escapeHtml(fEntrega.value)}</td></tr>
+        <tr><td class="label">${t.warranty}</td><td>${escapeHtml(fGarantia.value)}</td></tr>
+        <tr><td class="label">${t.paymentMethod}</td><td>${t.paymentMethodText(deposito)}</td></tr>
       </table>
 
-      <div class="doc-section">Componentes de la cotizacion</div>
+      <div class="doc-section">${t.components}</div>
       <table class="doc-product">
-        <tr><th>CANT</th><th>DESCRIPCION</th><th class="num">PRECIO UNIT.</th><th class="num">TOTAL</th></tr>
-        ${rows || `<tr><td colspan="4" style="text-align:center; color:#7c8aa6;">Sin componentes agregados</td></tr>`}
+        <tr><th>${t.qty}</th><th>${t.description}</th><th class="num">${t.unitPrice}</th><th class="num">${t.total}</th></tr>
+        ${rows || `<tr><td colspan="4" style="text-align:center; color:#7c8aa6;">${t.noComponents}</td></tr>`}
       </table>
 
       ${specLines ? `
-      <div class="doc-section">Notas y especificaciones adicionales</div>
+      <div class="doc-section">${t.notesTitle}</div>
       <ul class="doc-list">${specLines}</ul>
       ` : ""}
 
-      <div class="doc-section">Resumen de precio</div>
+      <div class="doc-section">${t.priceSummary}</div>
       <table class="doc-pricing">
-        <tr><td class="label">Subtotal</td><td style="width:140px;">${formatMoney(subtotal)}</td></tr>
-        <tr><td class="label">Deposito inicial</td><td>- ${formatMoney(deposito)}</td></tr>
-        <tr class="total"><td class="label">SALDO RESTANTE</td><td>${formatMoney(saldo)}</td></tr>
+        <tr><td class="label">${t.subtotal}</td><td style="width:140px;">${formatMoney(subtotal)}</td></tr>
+        <tr><td class="label">${t.deposit}</td><td>- ${formatMoney(deposito)}</td></tr>
+        <tr class="total"><td class="label">${t.remainingBalance}</td><td>${formatMoney(saldo)}</td></tr>
       </table>
 
-      <div class="doc-section">Terminos y notas</div>
+      <div class="doc-section">${t.termsTitle}</div>
       <div class="doc-note">
-        <b>Garantia</b>
-        Este trailer incluye la garantia indicada arriba, gestionada a traves de Nova Food Trailer, cubriendo defectos de fabricacion. La garantia no cubre mal uso, danos accidentales ni desgaste normal.
+        <b>${t.warrantyNoteTitle}</b>
+        ${t.warrantyNoteText}
       </div>
       <div class="doc-note">
-        <b>Calendario de pagos</b>
-        El deposito inicial es requerido para iniciar la construccion. El saldo restante se pagara en abonos acordados durante el periodo de construccion en Monclova. El pago completo debe realizarse antes de la entrega.
+        <b>${t.paymentScheduleTitle}</b>
+        ${t.paymentScheduleText}
       </div>
       <div class="doc-note">
-        <b>Construccion y entrega</b>
-        La construccion se realiza en Monclova, Mexico. La entrega estimada es en ${escapeHtml(fEntrega.value || "el destino acordado")} una vez completada la construccion y liquidado el pago.
+        <b>${t.constructionTitle}</b>
+        ${t.constructionText(escapeHtml(fEntrega.value || t.destinationFallback))}
       </div>
 
-      <div class="doc-section">Aceptacion y firmas</div>
-      <p style="font-size:12.5px; color:#5b6b8c;">Al firmar a continuacion, ambas partes aceptan los terminos descritos en esta cotizacion.</p>
+      <div class="doc-section">${t.signaturesTitle}</div>
+      <p style="font-size:12.5px; color:#5b6b8c;">${t.signaturesText}</p>
       <div class="doc-signatures">
-        <div class="doc-sig">Marcelo Ramos Schiaffino — Nova Food Trailer</div>
-        <div class="doc-sig">${escapeHtml(fCliente.value || "Cliente")} — Cliente</div>
+        <div class="doc-sig">${t.sellerSig}</div>
+        <div class="doc-sig">${escapeHtml(fCliente.value || t.clientSigFallback)} — ${t.clientSig}</div>
       </div>
 
       <div class="doc-footer">
@@ -616,6 +738,7 @@
     fEntrega.value = "";
     fFecha.value = new Date().toISOString().slice(0, 10);
     fDeposito.value = "0";
+    fIdioma.value = "es";
     fClientSelect.value = "";
     specsEl.value = "";
     sizePresetEl.value = "";

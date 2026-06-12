@@ -106,6 +106,10 @@
   }
   table.builder td{ padding:6px 8px; border-bottom: 1px solid var(--silver); font-size:12.5px; }
   table.builder td.num, table.builder th.num{ text-align:right; }
+  table.builder th.drag, table.builder td.drag-handle{ width:26px; text-align:center; }
+  table.builder td.drag-handle{ cursor: grab; color:#7c8aa6; font-size:14px; user-select:none; }
+  table.builder tr.dragging{ opacity:0.4; }
+  table.builder tr.drag-over{ border-top: 2px solid var(--blue); }
   table.builder input.line-price{
     width: 90px; padding:4px 6px; border:1px solid var(--silver); border-radius:4px; text-align:right;
   }
@@ -303,11 +307,21 @@
             <div class="field"><label>Garantia</label><input id="fGarantia" type="text" value="1 Año — Nova Food Trailer"></div>
             <div class="field"><label>Deposito inicial (USD)</label><input id="fDeposito" type="number" min="0" step="50" value="0"></div>
           </div>
+          <div class="field-row">
+            <div class="field" style="max-width:220px;">
+              <label>Idioma de la cotizacion</label>
+              <select id="fIdioma">
+                <option value="es">Español</option>
+                <option value="en">English</option>
+              </select>
+            </div>
+          </div>
 
           <h2 style="margin-top:14px;">Componentes de la cotizacion</h2>
+          <div class="hint">Arrastra el icono &#x2807; para reordenar los componentes.</div>
           <table class="builder">
             <thead>
-              <tr><th>Descripcion</th><th class="num">Precio</th><th></th></tr>
+              <tr><th class="drag"></th><th>Descripcion</th><th class="num">Precio</th><th></th></tr>
             </thead>
             <tbody id="lineItems"></tbody>
           </table>
