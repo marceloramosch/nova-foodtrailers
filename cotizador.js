@@ -4,7 +4,9 @@
   const sizePresetEl = document.getElementById("fSizePreset");
   const specsEl = document.getElementById("fSpecs");
 
+  const fClientSelect = document.getElementById("fClientSelect");
   const fCliente = document.getElementById("fCliente");
+  const fContacto = document.getElementById("fContacto");
   const fNumero = document.getElementById("fNumero");
   const fEntrega = document.getElementById("fEntrega");
   const fFecha = document.getElementById("fFecha");
@@ -18,12 +20,30 @@
   const previewWrap = document.getElementById("previewWrap");
   const previewDoc = document.getElementById("previewDoc");
 
+  const quickAddInput = document.getElementById("quickAddInput");
+  const quickAddPrice = document.getElementById("quickAddPrice");
+  const catalogList = document.getElementById("catalogList");
+
   const PRICES_KEY = "novaCatalogPrices";
+  const CLIENTS_KEY = "novaClients";
+  const QUOTES_KEY = "novaQuotes";
+
   const savedPrices = JSON.parse(localStorage.getItem(PRICES_KEY) || "{}");
+  let clients = JSON.parse(localStorage.getItem(CLIENTS_KEY) || "[]");
+  let quotes = JSON.parse(localStorage.getItem(QUOTES_KEY) || "[]");
 
   let lineItems = [];
+  let currentQuoteId = null;
 
-  // ===== Catalogo de componentes =====
+  // ===== Catalogo plano (para autocompletar / cotizacion rapida) =====
+  const flatCatalog = [];
+  COMPONENT_CATALOG.forEach((cat) => {
+    cat.items.forEach((item) => {
+      flatCatalog.push({ category: cat.category, name: item.name, price: item.price });
+    });
+  });
+
+  // ===== Catalogo de componentes (panel) =====
   COMPONENT_CATALOG.forEach((cat) => {
     const catDiv = document.createElement("div");
     catDiv.className = "catalog-cat";
@@ -35,6 +55,7 @@
     cat.items.forEach((item) => {
       const key = `${cat.category}::${item.name}`;
       const price = savedPrices[key] !== undefined ? savedPrices[key] : item.price;
+      item.price = price; // mantener catalogo en memoria sincronizado con precios guardados
 
       const row = document.createElement("div");
       row.className = "catalog-item";
@@ -50,7 +71,9 @@
       priceInput.step = "10";
       priceInput.value = price;
       priceInput.addEventListener("change", () => {
-        savedPrices[key] = parseFloat(priceInput.value) || 0;
+        const val = parseFloat(priceInput.value) || 0;
+        savedPrices[key] = val;
+        item.price = val;
         localStorage.setItem(PRICES_KEY, JSON.stringify(savedPrices));
       });
 
@@ -71,7 +94,41 @@
     catalogEl.appendChild(catDiv);
   });
 
-  // ===== Presets de tamano (specs / equipo) =====
+  // Datalist para cotizacion rapida
+  flatCatalog.forEach((item) => {
+    const opt = document.createElement("option");
+    opt.value = item.name;
+    opt.label = `${item.name} - $${item.price}`;
+    catalogList.appendChild(opt);
+  });
+
+  quickAddInput.addEventListener("input", () => {
+    const match = flatCatalog.find(
+      (i) => i.name.toLowerCase() === quickAddInput.value.toLowerCase()
+    );
+    if (match) {
+      quickAddPrice.value = match.price;
+    }
+  });
+
+  document.getElementById("quickAddBtn").addEventListener("click", () => {
+    const desc = quickAddInput.value.trim();
+    if (!desc) return;
+    const price = parseFloat(quickAddPrice.value) || 0;
+    addLineItem(desc, price);
+    quickAddInput.value = "";
+    quickAddPrice.value = 0;
+    quickAddInput.focus();
+  });
+
+  quickAddInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      document.getElementById("quickAddBtn").click();
+    }
+  });
+
+  // ===== Presets de tamano (specs / equipo como lineas con precio) =====
   TRAILER_SIZES.forEach((size) => {
     const opt = document.createElement("option");
     opt.value = size.id;
@@ -82,11 +139,10 @@
   sizePresetEl.addEventListener("change", () => {
     const size = TRAILER_SIZES.find((s) => s.id === sizePresetEl.value);
     if (!size) return;
-    const lines = [
-      ...size.specs,
-      ...size.equipment.back.map((i) => i.name),
-    ];
-    specsEl.value = lines.join("\n");
+    addLineItem(`8' x ${size.length}' Food Trailer - Unidad base`, size.price);
+    size.specs.forEach((s) => addLineItem(s, 0));
+    size.equipment.back.forEach((i) => addLineItem(i.name, 0));
+    sizePresetEl.value = "";
   });
 
   // ===== Lineas de la cotizacion =====
@@ -150,6 +206,7 @@
     tSubtotal.textContent = formatMoney(subtotal);
     tDeposito.textContent = `- ${formatMoney(deposito)}`;
     tSaldo.textContent = formatMoney(saldo);
+    return { subtotal, deposito, saldo };
   }
 
   fDeposito.addEventListener("input", updateTotals);
@@ -162,11 +219,271 @@
     return `$${(n || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
 
+  // ===== CRM: clientes =====
+  function persistClients() {
+    localStorage.setItem(CLIENTS_KEY, JSON.stringify(clients));
+  }
+
+  function renderClientSelect() {
+    fClientSelect.innerHTML = '<option value="">-- nuevo cliente --</option>';
+    clients.forEach((c) => {
+      const opt = document.createElement("option");
+      opt.value = c.id;
+      opt.textContent = c.name;
+      fClientSelect.appendChild(opt);
+    });
+  }
+
+  fClientSelect.addEventListener("change", () => {
+    const client = clients.find((c) => c.id === fClientSelect.value);
+    if (!client) return;
+    fCliente.value = client.name;
+    fContacto.value = client.contacto || "";
+    fEntrega.value = client.ciudad || "";
+  });
+
+  function renderClientsTable() {
+    const tbody = document.getElementById("clientsTable");
+    tbody.innerHTML = "";
+    if (clients.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#7c8aa6;">Sin clientes todavia</td></tr>';
+      return;
+    }
+    clients.forEach((c) => {
+      const tr = document.createElement("tr");
+      const quoteCount = quotes.filter((q) => q.clientId === c.id).length;
+      tr.innerHTML = `
+        <td>${escapeHtml(c.name)}</td>
+        <td>${escapeHtml(c.contacto || "")}</td>
+        <td>${escapeHtml(c.ciudad || "")}</td>
+        <td></td>
+        <td>${escapeHtml(c.notas || "")}</td>
+        <td>${quoteCount}</td>
+        <td class="actions-cell"></td>
+      `;
+      const statusTd = tr.children[3];
+      const statusSelect = document.createElement("select");
+      ["Lead", "Cotizado", "Aceptado", "Perdido"].forEach((s) => {
+        const o = document.createElement("option");
+        o.value = s;
+        o.textContent = s;
+        if (s === c.status) o.selected = true;
+        statusSelect.appendChild(o);
+      });
+      statusSelect.addEventListener("change", () => {
+        c.status = statusSelect.value;
+        persistClients();
+      });
+      statusTd.appendChild(statusSelect);
+
+      const actionsTd = tr.children[6];
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "btn-small";
+      delBtn.textContent = "Eliminar";
+      delBtn.addEventListener("click", () => {
+        if (!confirm(`Eliminar al cliente "${c.name}"?`)) return;
+        clients = clients.filter((x) => x.id !== c.id);
+        persistClients();
+        renderClientsTable();
+        renderClientSelect();
+      });
+      actionsTd.appendChild(delBtn);
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  document.getElementById("btnAddClient").addEventListener("click", () => {
+    const name = document.getElementById("cNombre").value.trim();
+    if (!name) {
+      alert("Escribe el nombre del cliente");
+      return;
+    }
+    clients.push({
+      id: "c" + Date.now(),
+      name,
+      contacto: document.getElementById("cContacto").value.trim(),
+      ciudad: document.getElementById("cCiudad").value.trim(),
+      status: document.getElementById("cEstatus").value,
+      notas: document.getElementById("cNotas").value.trim(),
+    });
+    persistClients();
+    document.getElementById("cNombre").value = "";
+    document.getElementById("cContacto").value = "";
+    document.getElementById("cCiudad").value = "";
+    document.getElementById("cNotas").value = "";
+    renderClientsTable();
+    renderClientSelect();
+  });
+
+  function findOrCreateClient(name, contacto, ciudad) {
+    if (!name) return null;
+    let client = clients.find((c) => c.name.toLowerCase() === name.toLowerCase());
+    if (!client) {
+      client = {
+        id: "c" + Date.now(),
+        name,
+        contacto: contacto || "",
+        ciudad: ciudad || "",
+        status: "Cotizado",
+        notas: "",
+      };
+      clients.push(client);
+    } else {
+      if (contacto) client.contacto = contacto;
+      if (ciudad) client.ciudad = ciudad;
+      if (client.status === "Lead") client.status = "Cotizado";
+    }
+    persistClients();
+    return client;
+  }
+
+  // ===== Cotizaciones guardadas =====
+  function persistQuotes() {
+    localStorage.setItem(QUOTES_KEY, JSON.stringify(quotes));
+  }
+
+  function renderQuotesTable() {
+    const tbody = document.getElementById("quotesTable");
+    tbody.innerHTML = "";
+    if (quotes.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#7c8aa6;">Sin cotizaciones guardadas todavia</td></tr>';
+      return;
+    }
+    quotes
+      .slice()
+      .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
+      .forEach((q) => {
+        const subtotal = q.lineItems.reduce((sum, l) => sum + (parseFloat(l.price) || 0), 0);
+        const saldo = subtotal - (parseFloat(q.deposito) || 0);
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(q.number || "")}</td>
+          <td>${escapeHtml(q.cliente || "")}</td>
+          <td>${escapeHtml(q.fecha || "")}</td>
+          <td>${formatMoney(subtotal)}</td>
+          <td>${formatMoney(saldo)}</td>
+          <td></td>
+          <td class="actions-cell"></td>
+        `;
+
+        const statusTd = tr.children[5];
+        const statusSelect = document.createElement("select");
+        ["Borrador", "Enviada", "Aceptado", "Rechazada"].forEach((s) => {
+          const o = document.createElement("option");
+          o.value = s;
+          o.textContent = s;
+          if (s === q.status) o.selected = true;
+          statusSelect.appendChild(o);
+        });
+        statusSelect.addEventListener("change", () => {
+          q.status = statusSelect.value;
+          q.updatedAt = Date.now();
+          persistQuotes();
+        });
+        statusTd.appendChild(statusSelect);
+
+        const actionsTd = tr.children[6];
+        const loadBtn = document.createElement("button");
+        loadBtn.type = "button";
+        loadBtn.className = "btn-small";
+        loadBtn.textContent = "Cargar";
+        loadBtn.addEventListener("click", () => loadQuote(q.id));
+
+        const dupBtn = document.createElement("button");
+        dupBtn.type = "button";
+        dupBtn.className = "btn-small";
+        dupBtn.textContent = "Duplicar";
+        dupBtn.addEventListener("click", () => duplicateQuote(q.id));
+
+        const delBtn = document.createElement("button");
+        delBtn.type = "button";
+        delBtn.className = "btn-small";
+        delBtn.textContent = "Eliminar";
+        delBtn.addEventListener("click", () => {
+          if (!confirm(`Eliminar la cotizacion ${q.number || ""}?`)) return;
+          quotes = quotes.filter((x) => x.id !== q.id);
+          persistQuotes();
+          renderQuotesTable();
+          renderClientsTable();
+        });
+
+        actionsTd.appendChild(loadBtn);
+        actionsTd.appendChild(dupBtn);
+        actionsTd.appendChild(delBtn);
+
+        tbody.appendChild(tr);
+      });
+  }
+
+  function loadQuote(id) {
+    const q = quotes.find((x) => x.id === id);
+    if (!q) return;
+    currentQuoteId = q.id;
+    fCliente.value = q.cliente || "";
+    fContacto.value = q.contacto || "";
+    fNumero.value = q.number || "";
+    fEntrega.value = q.entrega || "";
+    fFecha.value = q.fecha || "";
+    fGarantia.value = q.garantia || "1 Año — Nova Food Trailer";
+    fDeposito.value = q.deposito || 0;
+    fClientSelect.value = q.clientId || "";
+    specsEl.value = (q.notas || []).join("\n");
+    lineItems = (q.lineItems || []).map((l) => ({ ...l }));
+    renderLineItems();
+    switchTab("quote");
+    previewWrap.classList.remove("show");
+  }
+
+  function duplicateQuote(id) {
+    const q = quotes.find((x) => x.id === id);
+    if (!q) return;
+    loadQuote(id);
+    currentQuoteId = null;
+    fNumero.value = "";
+    fFecha.value = new Date().toISOString().slice(0, 10);
+  }
+
+  document.getElementById("btnSave").addEventListener("click", () => {
+    const { subtotal, deposito, saldo } = updateTotals();
+    const client = findOrCreateClient(fCliente.value.trim(), fContacto.value.trim(), fEntrega.value.trim());
+
+    const quoteData = {
+      id: currentQuoteId || "q" + Date.now(),
+      number: fNumero.value.trim(),
+      clientId: client ? client.id : (fClientSelect.value || null),
+      cliente: fCliente.value.trim(),
+      contacto: fContacto.value.trim(),
+      entrega: fEntrega.value.trim(),
+      fecha: fFecha.value,
+      garantia: fGarantia.value,
+      deposito,
+      lineItems: lineItems.map((l) => ({ ...l })),
+      notas: specsEl.value.split("\n").map((s) => s.trim()).filter((s) => s !== ""),
+      status: "Borrador",
+      updatedAt: Date.now(),
+    };
+
+    const existingIdx = quotes.findIndex((x) => x.id === quoteData.id);
+    if (existingIdx >= 0) {
+      quoteData.status = quotes[existingIdx].status;
+      quotes[existingIdx] = quoteData;
+    } else {
+      quotes.push(quoteData);
+    }
+    currentQuoteId = quoteData.id;
+    persistQuotes();
+    renderQuotesTable();
+    renderClientSelect();
+    renderClientsTable();
+    alert("Cotizacion guardada.");
+  });
+
   // ===== Generar documento de cotizacion =====
   function buildPreview() {
-    const subtotal = lineItems.reduce((sum, l) => sum + (parseFloat(l.price) || 0), 0);
-    const deposito = parseFloat(fDeposito.value) || 0;
-    const saldo = subtotal - deposito;
+    const { subtotal, deposito, saldo } = updateTotals();
 
     const fechaVal = fFecha.value
       ? new Date(fFecha.value + "T00:00:00").toLocaleDateString("es-MX", { year: "numeric", month: "long", day: "numeric" })
@@ -218,6 +535,7 @@
       <div class="doc-section">Informacion del cliente</div>
       <table class="doc-client">
         <tr><td class="label">CLIENTE</td><td>${escapeHtml(fCliente.value)}</td></tr>
+        <tr><td class="label">CONTACTO</td><td>${escapeHtml(fContacto.value)}</td></tr>
         <tr><td class="label">ENTREGA EN</td><td>${escapeHtml(fEntrega.value)}</td></tr>
         <tr><td class="label">GARANTIA</td><td>${escapeHtml(fGarantia.value)}</td></tr>
         <tr><td class="label">FORMA DE PAGO</td><td>Deposito inicial de ${formatMoney(deposito)} USD; saldo restante segun calendario de pagos acordado durante la construccion</td></tr>
@@ -230,7 +548,7 @@
       </table>
 
       ${specLines ? `
-      <div class="doc-section">Especificaciones y equipo incluido</div>
+      <div class="doc-section">Notas y especificaciones adicionales</div>
       <ul class="doc-list">${specLines}</ul>
       ` : ""}
 
@@ -288,22 +606,42 @@
   });
 
   document.getElementById("btnReset").addEventListener("click", () => {
-    if (!confirm("Esto borrara los datos de la cotizacion actual (no afecta los precios del catalogo). Continuar?")) return;
+    if (!confirm("Esto borrara los datos de la cotizacion actual (no afecta el catalogo, clientes ni cotizaciones guardadas). Continuar?")) return;
     lineItems = [];
+    currentQuoteId = null;
     renderLineItems();
     fCliente.value = "";
+    fContacto.value = "";
     fNumero.value = "";
     fEntrega.value = "";
-    fFecha.value = "";
+    fFecha.value = new Date().toISOString().slice(0, 10);
     fDeposito.value = "0";
+    fClientSelect.value = "";
     specsEl.value = "";
     sizePresetEl.value = "";
     previewWrap.classList.remove("show");
     updateTotals();
   });
 
+  // ===== Tabs =====
+  function switchTab(name) {
+    document.querySelectorAll(".tab-btn").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.tab === name);
+    });
+    document.querySelectorAll(".tab-panel").forEach((panel) => {
+      panel.classList.toggle("active", panel.id === `tab-${name}`);
+    });
+  }
+
+  document.querySelectorAll(".tab-btn").forEach((btn) => {
+    btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+  });
+
   // Fecha por defecto: hoy
   fFecha.value = new Date().toISOString().slice(0, 10);
 
   renderLineItems();
+  renderClientSelect();
+  renderClientsTable();
+  renderQuotesTable();
 })();

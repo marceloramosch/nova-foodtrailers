@@ -48,16 +48,28 @@
 
   main{ max-width: 1300px; margin: 0 auto; padding: 24px; }
 
+  /* ===== Tabs ===== */
+  .tabs{ display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap; }
+  .tab-btn{
+    border: 2px solid var(--blue); background:#fff; color:var(--blue); font-weight:700;
+    padding: 10px 18px; border-radius:999px; cursor:pointer; font-size:13px;
+  }
+  .tab-btn.active, .tab-btn:hover{ background:var(--blue); color:#fff; }
+  .tab-panel{ display:none; }
+  .tab-panel.active{ display:block; }
+
   .layout{ display:grid; grid-template-columns: 1fr 1.3fr; gap:20px; }
   @media (max-width: 1000px){ .layout{ grid-template-columns: 1fr; } }
 
   .panel{
     background:#fff; border: 1px solid var(--silver); border-radius: 10px; padding: 16px;
+    margin-bottom: 20px;
   }
   .panel h2{
     font-size: 14px; letter-spacing:1px; color:var(--blue); margin-bottom: 10px;
     text-transform: uppercase;
   }
+  .panel .hint{ font-size:11.5px; color:#7c8aa6; margin-top:-4px; margin-bottom:10px; }
 
   .catalog-cat{ margin-bottom: 14px; }
   .catalog-cat h3{
@@ -115,6 +127,33 @@
   }
   .actions button.primary{ background:var(--blue); color:#fff; }
   .actions button:hover{ background:var(--dark); color:#fff; border-color:var(--dark); }
+  .actions button.danger{ border-color:#c0392b; color:#c0392b; }
+  .actions button.danger:hover{ background:#c0392b; color:#fff; border-color:#c0392b; }
+
+  .btn-small{
+    border: 1px solid var(--blue); background:#fff; color:var(--blue); font-weight:700;
+    padding: 6px 12px; border-radius:6px; cursor:pointer; font-size:12.5px;
+  }
+  .btn-small:hover{ background:var(--blue); color:#fff; }
+
+  /* ===== CRM / quotes tables ===== */
+  table.crm{ width:100%; border-collapse:collapse; }
+  table.crm th{
+    background: var(--dark); color:#fff; text-align:left; padding:8px 10px; font-size:11px; letter-spacing:0.5px;
+  }
+  table.crm td{ padding:7px 10px; border-bottom:1px solid var(--silver); font-size:12.5px; vertical-align: middle; }
+  table.crm select{ padding:4px 6px; border:1px solid var(--silver); border-radius:4px; font-size:12px; }
+  table.crm .actions-cell{ display:flex; gap:6px; flex-wrap:wrap; }
+  .status-pill{
+    display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:700;
+  }
+  .status-Lead{ background:#FEF3D6; color:#9a6b00; }
+  .status-Cotizado{ background:#DCEBFF; color:var(--blue); }
+  .status-Aceptado{ background:#DDF4E4; color:#1e7a3c; }
+  .status-Perdido{ background:#FBE1E1; color:#c0392b; }
+  .status-Borrador{ background:#EEF3FC; color:#7c8aa6; }
+  .status-Enviada{ background:#DCEBFF; color:var(--blue); }
+  .status-Rechazada{ background:#FBE1E1; color:#c0392b; }
 
   #addCustomLine{ margin-top:6px; }
 
@@ -167,7 +206,7 @@
   .doc-footer b{ color:var(--dark); }
 
   @media print{
-    header, .layout, .actions, footer{ display:none !important; }
+    header, .tabs, .layout, .actions, .panel, footer{ display:none !important; }
     #previewWrap{ display:block !important; margin:0; }
     #previewDoc{ border:none; padding:0; max-width:none; }
     body{ background:#fff; }
@@ -205,66 +244,156 @@
 </header>
 
 <main>
-  <div class="layout">
-    <div class="panel">
-      <h2>Catalogo de componentes</h2>
-      <div id="catalog"></div>
-    </div>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="quote">Cotizador</button>
+    <button class="tab-btn" data-tab="clients">Clientes (CRM)</button>
+    <button class="tab-btn" data-tab="quotes">Cotizaciones guardadas</button>
+  </div>
+
+  <!-- ===================== TAB: COTIZADOR ===================== -->
+  <div class="tab-panel active" id="tab-quote">
 
     <div class="panel">
-      <h2>Datos de la cotizacion</h2>
+      <h2>Cotizacion rapida</h2>
+      <div class="hint">Escribe el nombre de un componente (te sugiere del catalogo mientras escribes) y agregalo con su precio en un clic. Si no existe, se agrega como linea nueva.</div>
       <div class="field-row">
-        <div class="field"><label>Cliente</label><input id="fCliente" type="text" placeholder="Nombre del cliente"></div>
-        <div class="field"><label>No. de cotizacion</label><input id="fNumero" type="text" placeholder="NFT-2024-003"></div>
-      </div>
-      <div class="field-row">
-        <div class="field"><label>Entrega (ciudad, estado)</label><input id="fEntrega" type="text" placeholder="Houston, Texas"></div>
-        <div class="field"><label>Fecha</label><input id="fFecha" type="date"></div>
-      </div>
-      <div class="field-row">
-        <div class="field"><label>Garantia</label><input id="fGarantia" type="text" value="1 Año — Nova Food Trailer"></div>
-        <div class="field"><label>Deposito inicial (USD)</label><input id="fDeposito" type="number" min="0" step="50" value="0"></div>
-      </div>
-
-      <h2 style="margin-top:14px;">Componentes de la cotizacion</h2>
-      <table class="builder">
-        <thead>
-          <tr><th>Descripcion</th><th class="num">Precio</th><th></th></tr>
-        </thead>
-        <tbody id="lineItems"></tbody>
-      </table>
-      <button id="addCustomLine" type="button" style="border:2px solid var(--blue); background:#fff; color:var(--blue); font-weight:700; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12.5px;">+ Agregar linea personalizada</button>
-
-      <div class="totals">
-        <div class="row"><span>Subtotal</span><span id="tSubtotal">$0.00</span></div>
-        <div class="row"><span>Deposito inicial</span><span id="tDeposito">- $0.00</span></div>
-        <div class="row total"><span>Saldo restante</span><span id="tSaldo">$0.00</span></div>
-      </div>
-
-      <h2 style="margin-top:14px;">Especificaciones / equipo incluido (texto libre)</h2>
-      <div class="field-row">
-        <div class="field" style="flex:1;">
-          <label>Cargar specs desde catalogo de tamanos</label>
-          <select id="fSizePreset">
-            <option value="">-- seleccionar tamano --</option>
-          </select>
+        <div class="field" style="flex:2;">
+          <label>Componente</label>
+          <input id="quickAddInput" list="catalogList" placeholder="Ej. Freidora doble canasta 60 lb">
+          <datalist id="catalogList"></datalist>
+        </div>
+        <div class="field" style="max-width:130px;">
+          <label>Precio</label>
+          <input id="quickAddPrice" type="number" min="0" step="10" value="0">
+        </div>
+        <div class="field" style="max-width:140px;">
+          <label>&nbsp;</label>
+          <button id="quickAddBtn" type="button" class="primary" style="width:100%; border:2px solid var(--blue); background:var(--blue); color:#fff; font-weight:700; padding:7px 12px; border-radius:6px; cursor:pointer; font-size:13px;">+ Agregar</button>
         </div>
       </div>
-      <div class="field">
-        <label>Una linea por cada especificacion/equipo</label>
-        <textarea id="fSpecs" rows="8" placeholder="Aislamiento en paredes&#10;3 stainless steel sinks + 1 handwashing sink&#10;..."></textarea>
+    </div>
+
+    <div class="layout">
+      <div class="panel">
+        <h2>Catalogo de componentes</h2>
+        <div id="catalog"></div>
       </div>
 
-      <div class="actions">
-        <button class="primary" id="btnPreview" type="button">Generar cotizacion</button>
-        <button id="btnPrint" type="button">Imprimir / Guardar PDF</button>
-        <button id="btnReset" type="button">Limpiar todo</button>
+      <div>
+        <div class="panel">
+          <h2>Datos de la cotizacion</h2>
+          <div class="field-row">
+            <div class="field">
+              <label>Cliente (CRM)</label>
+              <select id="fClientSelect">
+                <option value="">-- nuevo cliente --</option>
+              </select>
+            </div>
+            <div class="field"><label>No. de cotizacion</label><input id="fNumero" type="text" placeholder="NFT-2024-003"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Cliente</label><input id="fCliente" type="text" placeholder="Nombre del cliente"></div>
+            <div class="field"><label>Telefono / Email</label><input id="fContacto" type="text" placeholder="Tel. o correo"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Entrega (ciudad, estado)</label><input id="fEntrega" type="text" placeholder="Houston, Texas"></div>
+            <div class="field"><label>Fecha</label><input id="fFecha" type="date"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Garantia</label><input id="fGarantia" type="text" value="1 Año — Nova Food Trailer"></div>
+            <div class="field"><label>Deposito inicial (USD)</label><input id="fDeposito" type="number" min="0" step="50" value="0"></div>
+          </div>
+
+          <h2 style="margin-top:14px;">Componentes de la cotizacion</h2>
+          <table class="builder">
+            <thead>
+              <tr><th>Descripcion</th><th class="num">Precio</th><th></th></tr>
+            </thead>
+            <tbody id="lineItems"></tbody>
+          </table>
+          <button id="addCustomLine" type="button" class="btn-small">+ Agregar linea personalizada</button>
+
+          <div class="totals">
+            <div class="row"><span>Subtotal</span><span id="tSubtotal">$0.00</span></div>
+            <div class="row"><span>Deposito inicial</span><span id="tDeposito">- $0.00</span></div>
+            <div class="row total"><span>Saldo restante</span><span id="tSaldo">$0.00</span></div>
+          </div>
+
+          <h2 style="margin-top:14px;">Notas / especificaciones adicionales (sin precio)</h2>
+          <div class="field-row">
+            <div class="field" style="flex:1;">
+              <label>Cargar specs de un tamano como lineas con precio</label>
+              <select id="fSizePreset">
+                <option value="">-- seleccionar tamano --</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>Una linea por nota/especificacion (se muestran sin precio en la cotizacion)</label>
+            <textarea id="fSpecs" rows="5" placeholder="Garantia de 1 año&#10;Entrega estimada en 8-10 semanas&#10;..."></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="primary" id="btnPreview" type="button">Generar cotizacion</button>
+            <button id="btnPrint" type="button">Imprimir / Guardar PDF</button>
+            <button id="btnSave" type="button">Guardar cotizacion</button>
+            <button id="btnReset" type="button">Limpiar todo</button>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <div id="previewWrap">
+      <div id="previewDoc"></div>
     </div>
   </div>
 
-  <div id="previewWrap">
-    <div id="previewDoc"></div>
+  <!-- ===================== TAB: CLIENTES (CRM) ===================== -->
+  <div class="tab-panel" id="tab-clients">
+    <div class="panel">
+      <h2>Nuevo cliente</h2>
+      <div class="field-row">
+        <div class="field"><label>Nombre</label><input id="cNombre" type="text" placeholder="Nombre del cliente"></div>
+        <div class="field"><label>Telefono / Email</label><input id="cContacto" type="text" placeholder="Tel. o correo"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Ciudad / Estado</label><input id="cCiudad" type="text" placeholder="Houston, Texas"></div>
+        <div class="field">
+          <label>Estatus</label>
+          <select id="cEstatus">
+            <option>Lead</option>
+            <option>Cotizado</option>
+            <option>Aceptado</option>
+            <option>Perdido</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Notas</label><textarea id="cNotas" rows="2" placeholder="Notas sobre el cliente, tamano de interes, etc."></textarea></div>
+      <div class="actions"><button class="primary" id="btnAddClient" type="button">+ Agregar cliente</button></div>
+    </div>
+
+    <div class="panel">
+      <h2>Clientes</h2>
+      <table class="crm">
+        <thead>
+          <tr><th>Nombre</th><th>Contacto</th><th>Ciudad</th><th>Estatus</th><th>Notas</th><th>Cotizaciones</th><th></th></tr>
+        </thead>
+        <tbody id="clientsTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===================== TAB: COTIZACIONES GUARDADAS ===================== -->
+  <div class="tab-panel" id="tab-quotes">
+    <div class="panel">
+      <h2>Cotizaciones guardadas</h2>
+      <table class="crm">
+        <thead>
+          <tr><th>No.</th><th>Cliente</th><th>Fecha</th><th>Subtotal</th><th>Saldo</th><th>Estatus</th><th></th></tr>
+        </thead>
+        <tbody id="quotesTable"></tbody>
+      </table>
+    </div>
   </div>
 </main>
 
