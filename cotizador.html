@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nova Food Trailers - Cotizador</title>
+<style>
+  :root{
+    --blue: #2D6BC4;
+    --dark: #0D2244;
+    --silver: #C8D8F0;
+    --light: #EEF3FC;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family: Arial, sans-serif;
+    background: #f4f7fc;
+    color: var(--dark);
+  }
+  header{
+    background: #ffffff;
+    border-bottom: 3px solid var(--blue);
+    padding: 18px 24px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  header .trailer-icon{ width:48px; height:48px; flex-shrink:0; }
+  header .brand-text h1{
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 30px;
+    letter-spacing: 4px;
+    color: var(--dark);
+  }
+  header .brand-text p{
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 6px;
+    color: var(--blue);
+    font-weight: 700;
+  }
+  header nav{ margin-left:auto; display:flex; gap:10px; }
+  header nav a{
+    color: var(--blue); font-weight:700; font-size:13px; text-decoration:none;
+    border: 2px solid var(--blue); border-radius:6px; padding:6px 12px;
+  }
+  header nav a:hover{ background: var(--blue); color:#fff; }
+
+  main{ max-width: 1300px; margin: 0 auto; padding: 24px; }
+
+  .layout{ display:grid; grid-template-columns: 1fr 1.3fr; gap:20px; }
+  @media (max-width: 1000px){ .layout{ grid-template-columns: 1fr; } }
+
+  .panel{
+    background:#fff; border: 1px solid var(--silver); border-radius: 10px; padding: 16px;
+  }
+  .panel h2{
+    font-size: 14px; letter-spacing:1px; color:var(--blue); margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .catalog-cat{ margin-bottom: 14px; }
+  .catalog-cat h3{
+    font-size:12px; color:var(--dark); background:var(--light);
+    padding:6px 10px; border-radius:6px; margin-bottom:6px;
+  }
+  .catalog-item{
+    display:flex; align-items:center; gap:8px; padding: 4px 6px; font-size:12.5px;
+    border-bottom: 1px solid var(--light);
+  }
+  .catalog-item .name{ flex:1; }
+  .catalog-item input.price{
+    width: 90px; padding:4px 6px; border:1px solid var(--silver); border-radius:4px;
+    text-align:right; font-size:12.5px;
+  }
+  .catalog-item button{
+    background: var(--blue); color:#fff; border:none; border-radius:4px;
+    width:26px; height:26px; font-size:16px; cursor:pointer; line-height:1;
+  }
+  .catalog-item button:hover{ background: var(--dark); }
+
+  .field{ margin-bottom:10px; }
+  .field label{ display:block; font-size:11px; color:#7c8aa6; letter-spacing:1px; margin-bottom:3px; text-transform:uppercase; }
+  .field input, .field textarea, .field select{
+    width:100%; padding:7px 9px; border:1px solid var(--silver); border-radius:6px; font-size:13px;
+    font-family: Arial, sans-serif;
+  }
+  .field-row{ display:flex; gap:10px; }
+  .field-row .field{ flex:1; }
+
+  table.builder{ width:100%; border-collapse:collapse; margin: 10px 0; }
+  table.builder th{
+    background: var(--dark); color:#fff; text-align:left; padding:6px 8px; font-size:11px; letter-spacing:0.5px;
+  }
+  table.builder td{ padding:6px 8px; border-bottom: 1px solid var(--silver); font-size:12.5px; }
+  table.builder td.num, table.builder th.num{ text-align:right; }
+  table.builder input.line-price{
+    width: 90px; padding:4px 6px; border:1px solid var(--silver); border-radius:4px; text-align:right;
+  }
+  table.builder input.line-desc{ width:100%; border:1px solid transparent; padding:4px 6px; border-radius:4px; }
+  table.builder input.line-desc:focus{ border-color: var(--silver); }
+  table.builder button.remove{
+    background:#fff; color:#c0392b; border:1px solid #c0392b; border-radius:4px;
+    width:24px; height:24px; cursor:pointer; line-height:1;
+  }
+
+  .totals{ margin-top: 6px; }
+  .totals .row{ display:flex; justify-content:space-between; padding:4px 0; font-size:13px; }
+  .totals .row.total{ font-weight:800; font-size:16px; border-top:2px solid var(--dark); margin-top:4px; padding-top:8px; }
+
+  .actions{ margin-top: 14px; display:flex; gap:10px; flex-wrap:wrap; }
+  .actions button{
+    border: 2px solid var(--blue); background:#fff; color:var(--blue); font-weight:700;
+    padding: 10px 16px; border-radius:6px; cursor:pointer; font-size:13.5px;
+  }
+  .actions button.primary{ background:var(--blue); color:#fff; }
+  .actions button:hover{ background:var(--dark); color:#fff; border-color:var(--dark); }
+
+  #addCustomLine{ margin-top:6px; }
+
+  /* ===== Documento de cotizacion (preview / impresion) ===== */
+  #previewWrap{ display:none; margin-top:20px; }
+  #previewWrap.show{ display:block; }
+  #previewDoc{
+    background:#fff; border:1px solid var(--silver); border-radius:10px;
+    padding: 40px 50px; font-size:13px; color:var(--dark); max-width: 850px; margin: 0 auto;
+  }
+  .doc-header{ display:flex; align-items:center; justify-content:center; gap:18px; margin-bottom:6px; }
+  .doc-header img{ width:64px; height:64px; }
+  .doc-header h1{
+    font-family: Georgia, 'Times New Roman', serif; font-size:46px; letter-spacing:6px; color:var(--dark);
+  }
+  .doc-tagline{
+    text-align:center; font-size:12px; letter-spacing:8px; color:var(--blue); font-weight:700;
+    border-bottom:1px solid var(--silver); padding-bottom:14px; margin-bottom:10px;
+  }
+  .doc-title{ text-align:center; font-size:18px; color:var(--blue); font-weight:700; margin-bottom:18px; letter-spacing:1px; }
+  .doc-meta{
+    display:flex; justify-content:space-between; border-top:2px solid var(--dark); border-bottom:1px solid var(--silver);
+    padding:12px 0; margin-bottom:18px;
+  }
+  .doc-meta .label{ font-size:11px; color:#7c8aa6; letter-spacing:1px; }
+  .doc-meta .value{ font-size:13px; font-weight:700; color:var(--dark); }
+  .doc-section{
+    font-size:13px; letter-spacing:1px; color:var(--dark); border-bottom:1px solid var(--silver);
+    padding-bottom:6px; margin:22px 0 10px; text-transform:uppercase; font-weight:700;
+  }
+  table.doc-client{ width:100%; border-collapse:collapse; }
+  table.doc-client td{ background:var(--light); padding:8px 12px; font-size:13px; }
+  table.doc-client td.label{ color:#7c8aa6; font-size:11px; letter-spacing:1px; width:160px; font-weight:700; vertical-align:top; }
+  table.doc-product{ width:100%; border-collapse:collapse; margin-top:6px; }
+  table.doc-product th{ background:var(--dark); color:#fff; text-align:left; padding:8px 12px; font-size:11px; letter-spacing:1px; }
+  table.doc-product th.num, table.doc-product td.num{ text-align:right; }
+  table.doc-product td{ padding:8px 12px; border-bottom:1px solid var(--silver); font-size:13px; }
+  ul.doc-list{ list-style:none; padding-left:4px; }
+  ul.doc-list li{ font-size:12.5px; padding:2px 0 2px 14px; text-indent:-14px; }
+  ul.doc-list li::before{ content:"\2022"; color:var(--blue); font-weight:700; display:inline-block; width:14px; text-indent:0; }
+  table.doc-pricing{ width:100%; margin-top:8px; border-collapse:collapse; }
+  table.doc-pricing td{ padding:6px 12px; font-size:13px; text-align:right; }
+  table.doc-pricing td.label{ text-align:right; color:#5b6b8c; width:70%; }
+  table.doc-pricing tr.total td{ font-weight:800; font-size:15px; color:var(--dark); border-top:2px solid var(--dark); background:var(--light); }
+  .doc-note{ background:var(--light); border-left:4px solid var(--dark); padding:10px 14px; margin:12px 0; font-size:12.5px; }
+  .doc-note b{ display:block; margin-bottom:4px; color:var(--dark); }
+  .doc-signatures{ display:flex; justify-content:space-between; margin-top:60px; }
+  .doc-sig{ width:45%; border-top:1px solid var(--dark); padding-top:6px; font-size:11px; color:#7c8aa6; text-align:center; }
+  .doc-footer{ text-align:center; padding-top:24px; margin-top:30px; border-top:1px solid var(--silver); font-size:11px; color:#5b6b8c; }
+  .doc-footer b{ color:var(--dark); }
+
+  @media print{
+    header, .layout, .actions, footer{ display:none !important; }
+    #previewWrap{ display:block !important; margin:0; }
+    #previewDoc{ border:none; padding:0; max-width:none; }
+    body{ background:#fff; }
+    main{ padding:0; max-width:none; }
+  }
+
+  footer{
+    text-align:center; padding: 24px; font-size:12px; color:#5b6b8c;
+    border-top:1px solid var(--silver); margin-top: 24px;
+  }
+  footer b{ color:var(--dark); }
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="trailer-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    <rect x="6" y="18" width="48" height="24" rx="2" fill="#2D6BC4"/>
+    <rect x="10" y="22" width="16" height="10" fill="#C8D8F0"/>
+    <rect x="30" y="22" width="18" height="16" fill="#0D2244"/>
+    <circle cx="20" cy="46" r="6" fill="#0D2244"/>
+    <circle cx="44" cy="46" r="6" fill="#0D2244"/>
+    <circle cx="20" cy="46" r="2.4" fill="#C8D8F0"/>
+    <circle cx="44" cy="46" r="2.4" fill="#C8D8F0"/>
+    <path d="M52 26 l4 4 l-2 2 l-4 -4 z" fill="#C8D8F0"/>
+  </svg>
+  <div class="brand-text">
+    <h1>NOVA</h1>
+    <p>F O O D&nbsp;&nbsp;&nbsp;T R A I L E R</p>
+  </div>
+  <nav>
+    <a href="index.html">Catalogo</a>
+    <a href="cotizador.html">Cotizador</a>
+  </nav>
+</header>
+
+<main>
+  <div class="layout">
+    <div class="panel">
+      <h2>Catalogo de componentes</h2>
+      <div id="catalog"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Datos de la cotizacion</h2>
+      <div class="field-row">
+        <div class="field"><label>Cliente</label><input id="fCliente" type="text" placeholder="Nombre del cliente"></div>
+        <div class="field"><label>No. de cotizacion</label><input id="fNumero" type="text" placeholder="NFT-2024-003"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Entrega (ciudad, estado)</label><input id="fEntrega" type="text" placeholder="Houston, Texas"></div>
+        <div class="field"><label>Fecha</label><input id="fFecha" type="date"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Garantia</label><input id="fGarantia" type="text" value="1 Año — Nova Food Trailer"></div>
+        <div class="field"><label>Deposito inicial (USD)</label><input id="fDeposito" type="number" min="0" step="50" value="0"></div>
+      </div>
+
+      <h2 style="margin-top:14px;">Componentes de la cotizacion</h2>
+      <table class="builder">
+        <thead>
+          <tr><th>Descripcion</th><th class="num">Precio</th><th></th></tr>
+        </thead>
+        <tbody id="lineItems"></tbody>
+      </table>
+      <button id="addCustomLine" type="button" style="border:2px solid var(--blue); background:#fff; color:var(--blue); font-weight:700; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12.5px;">+ Agregar linea personalizada</button>
+
+      <div class="totals">
+        <div class="row"><span>Subtotal</span><span id="tSubtotal">$0.00</span></div>
+        <div class="row"><span>Deposito inicial</span><span id="tDeposito">- $0.00</span></div>
+        <div class="row total"><span>Saldo restante</span><span id="tSaldo">$0.00</span></div>
+      </div>
+
+      <h2 style="margin-top:14px;">Especificaciones / equipo incluido (texto libre)</h2>
+      <div class="field-row">
+        <div class="field" style="flex:1;">
+          <label>Cargar specs desde catalogo de tamanos</label>
+          <select id="fSizePreset">
+            <option value="">-- seleccionar tamano --</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Una linea por cada especificacion/equipo</label>
+        <textarea id="fSpecs" rows="8" placeholder="Aislamiento en paredes&#10;3 stainless steel sinks + 1 handwashing sink&#10;..."></textarea>
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="btnPreview" type="button">Generar cotizacion</button>
+        <button id="btnPrint" type="button">Imprimir / Guardar PDF</button>
+        <button id="btnReset" type="button">Limpiar todo</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="previewWrap">
+    <div id="previewDoc"></div>
+  </div>
+</main>
+
+<footer>
+  <b>Nova Food Trailers</b> &middot; Marcelo Ramos Schiaffino &middot; +1 (645) 235-3186 &middot; marceloramosch@gmail.com
+</footer>
+
+<script src="data/trailers.js"></script>
+<script src="data/components.js"></script>
+<script src="cotizador.js"></script>
+</body>
+</html>
