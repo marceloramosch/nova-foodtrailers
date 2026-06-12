@@ -150,11 +150,7 @@ function renderTopView(size, totalLength, kitchenLen, placed) {
   placed.forEach((item) => {
     const boxW = px(item.w);
     const boxH = px(equipHeight);
-    const cx = toX(item.x + item.w / 2);
-    const cy = toY(equipHeight / 2);
-    svg += `<rect x="${toX(item.x)}" y="${toY(0)}" width="${boxW}" height="${boxH}"
-      fill="${NOVA_BLUE}" fill-opacity="0.18" stroke="${NOVA_DARK}" stroke-width="1.5"/>`;
-    svg += equipmentLabel(cx, cy, item.name, boxW, boxH);
+    svg += renderEquipmentBox(toX(item.x), toY(0), boxW, boxH, item.name);
   });
 
   // Ventanas de servicio en la pared frontal ("front")
@@ -229,11 +225,7 @@ function renderKitchenView(size, totalLength, placed, hoodStart, hoodEnd) {
   placed.forEach((item) => {
     const boxW = px(item.w);
     const boxH = px(COUNTER_HEIGHT);
-    const cx = toX(item.x + item.w / 2);
-    const cy = counterTopY + boxH / 2;
-    svg += `<rect x="${toX(item.x)}" y="${counterTopY}" width="${boxW}" height="${boxH}"
-      fill="${NOVA_BLUE}" fill-opacity="0.18" stroke="${NOVA_DARK}" stroke-width="1.5"/>`;
-    svg += equipmentLabel(cx, cy, item.name, boxW, boxH);
+    svg += renderEquipmentBox(toX(item.x), counterTopY, boxW, boxH, item.name);
   });
 
   svg += renderFooter(toX, totalLength, H - px(FOOTER_SPACE), size);
@@ -288,6 +280,193 @@ function renderServiceView(size, totalLength, kitchenLen) {
 
   svg += renderFooter(toX, totalLength, H - px(FOOTER_SPACE), size);
   svg += `</svg>`;
+  return svg;
+}
+
+// Dibuja la caja de un equipo: el rectangulo, un icono representativo
+// (si el tipo de equipo se reconoce y hay espacio) y el nombre debajo.
+function renderEquipmentBox(x, y, boxW, boxH, name) {
+  let svg = `<rect x="${x}" y="${y}" width="${boxW}" height="${boxH}"
+    fill="${NOVA_BLUE}" fill-opacity="0.18" stroke="${NOVA_DARK}" stroke-width="1.5"/>`;
+
+  const type = detectEquipmentType(name);
+  const minSide = Math.min(boxW, boxH);
+  if (type && minSide >= 28) {
+    const iconAreaH = boxH * 0.55;
+    const s = Math.min(boxW - 8, iconAreaH - 6);
+    const iconX = x + (boxW - s) / 2;
+    const iconY = y + 4;
+    svg += drawEquipmentIcon(type, iconX, iconY, s);
+
+    const labelY = y + iconAreaH + 4;
+    const labelH = boxH - iconAreaH - 4;
+    svg += equipmentLabel(x + boxW / 2, labelY + labelH / 2, name, boxW, labelH);
+  } else {
+    svg += equipmentLabel(x + boxW / 2, y + boxH / 2, name, boxW, boxH);
+  }
+  return svg;
+}
+
+// Identifica el tipo de equipo a partir de su nombre, para elegir el
+// icono representativo correcto.
+function detectEquipmentType(name) {
+  const n = String(name).toLowerCase();
+  if (n.includes("freidora")) return "fryer";
+  if (n.includes("plancha")) return "griddle";
+  if (n.includes("parrilla")) return "grill";
+  if (n.includes("estufa") || n.includes("horno")) return "stove";
+  if (n.includes("hielo")) return "ice";
+  if (n.includes("fregadero") || n.includes("lavamanos")) return "sink";
+  if (n.includes("congelador") || n.includes("refrigerador")) return "fridge";
+  if (n.includes("vapor")) return "steamtable";
+  if (n.includes("mesa fria") || n.includes("prep")) return "preptable";
+  return null;
+}
+
+// Dibuja un icono de linea simple (estilo sketch) dentro de un cuadro de
+// lado "s" con esquina superior izquierda en (x, y).
+function drawEquipmentIcon(type, x, y, s) {
+  switch (type) {
+    case "griddle":
+      return iconGriddle(x, y, s);
+    case "grill":
+      return iconGrill(x, y, s);
+    case "fryer":
+      return iconFryer(x, y, s);
+    case "stove":
+      return iconStove(x, y, s);
+    case "sink":
+      return iconSink(x, y, s);
+    case "fridge":
+      return iconFridge(x, y, s);
+    case "steamtable":
+      return iconSteamTable(x, y, s);
+    case "preptable":
+      return iconPrepTable(x, y, s);
+    case "ice":
+      return iconIce(x, y, s);
+    default:
+      return "";
+  }
+}
+
+function iconBox(x, y, s) {
+  return `<rect x="${x}" y="${y}" width="${s}" height="${s}" fill="none" stroke="${NOVA_DARK}" stroke-width="1"/>`;
+}
+
+// Plancha: superficie con lineas de coccion
+function iconGriddle(x, y, s) {
+  let svg = iconBox(x, y, s);
+  for (let i = 1; i <= 3; i++) {
+    const ly = y + (s * i) / 4;
+    svg += `<line x1="${x + s * 0.1}" y1="${ly}" x2="${x + s * 0.9}" y2="${ly}" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+  }
+  return svg;
+}
+
+// Parrilla: rejilla
+function iconGrill(x, y, s) {
+  let svg = iconBox(x, y, s);
+  for (let i = 1; i <= 3; i++) {
+    const lx = x + (s * i) / 4;
+    svg += `<line x1="${lx}" y1="${y + s * 0.1}" x2="${lx}" y2="${y + s * 0.9}" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+  }
+  for (let i = 1; i <= 2; i++) {
+    const ly = y + (s * i) / 3;
+    svg += `<line x1="${x + s * 0.05}" y1="${ly}" x2="${x + s * 0.95}" y2="${ly}" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+  }
+  return svg;
+}
+
+// Freidora: canastas con malla y agarradera
+function iconFryer(x, y, s) {
+  let svg = iconBox(x, y, s);
+  const bw = s * 0.36;
+  const top = y + s * 0.18;
+  const bottom = y + s * 0.85;
+  [0.08, 0.56].forEach((off) => {
+    const bx = x + s * off;
+    svg += `<polygon points="${bx},${top} ${bx + bw},${top} ${bx + bw * 0.85},${bottom} ${bx + bw * 0.15},${bottom}"
+      fill="none" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+    svg += `<line x1="${bx + bw * 0.1}" y1="${top + (bottom - top) * 0.35}" x2="${bx + bw * 0.9}" y2="${top + (bottom - top) * 0.35}" stroke="${NOVA_DARK}" stroke-width="0.6"/>`;
+    svg += `<line x1="${bx + bw * 0.15}" y1="${top + (bottom - top) * 0.65}" x2="${bx + bw * 0.85}" y2="${top + (bottom - top) * 0.65}" stroke="${NOVA_DARK}" stroke-width="0.6"/>`;
+    svg += `<line x1="${bx + bw * 0.5}" y1="${top}" x2="${bx + bw * 0.5}" y2="${y + s * 0.05}" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+  });
+  return svg;
+}
+
+// Estufa con horno: quemadores arriba, puerta de horno abajo
+function iconStove(x, y, s) {
+  let svg = iconBox(x, y, s);
+  const topH = s * 0.42;
+  [0.28, 0.72].forEach((cxf) => {
+    [0.32, 0.78].forEach((cyf) => {
+      svg += `<circle cx="${x + s * cxf}" cy="${y + topH * cyf}" r="${s * 0.09}" fill="none" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+    });
+  });
+  const ovenY = y + topH + s * 0.05;
+  const ovenH = s - topH - s * 0.1;
+  svg += `<rect x="${x + s * 0.08}" y="${ovenY}" width="${s * 0.84}" height="${ovenH}" fill="none" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+  svg += `<line x1="${x + s * 0.08}" y1="${ovenY + ovenH * 0.3}" x2="${x + s * 0.92}" y2="${ovenY + ovenH * 0.3}" stroke="${NOVA_DARK}" stroke-width="0.6"/>`;
+  svg += `<rect x="${x + s * 0.35}" y="${ovenY + ovenH * 0.6}" width="${s * 0.3}" height="${ovenH * 0.1}" fill="${NOVA_DARK}"/>`;
+  return svg;
+}
+
+// Fregadero: tarjas con drenaje y llave
+function iconSink(x, y, s) {
+  let svg = iconBox(x, y, s);
+  svg += `<path d="M ${x + s * 0.5} ${y + s * 0.08} v ${s * 0.1} a ${s * 0.08} ${s * 0.08} 0 0 0 ${s * 0.16} 0 v -${s * 0.06}"
+    fill="none" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+  const basinW = s * 0.34;
+  [0.08, 0.54].forEach((off) => {
+    svg += `<rect x="${x + s * off}" y="${y + s * 0.35}" width="${basinW}" height="${s * 0.5}" rx="3"
+      fill="none" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+    svg += `<circle cx="${x + s * off + basinW / 2}" cy="${y + s * 0.78}" r="${s * 0.03}" fill="${NOVA_DARK}"/>`;
+  });
+  return svg;
+}
+
+// Refrigerador / congelador: puertas con manijas
+function iconFridge(x, y, s) {
+  let svg = iconBox(x, y, s);
+  svg += `<line x1="${x}" y1="${y + s * 0.45}" x2="${x + s}" y2="${y + s * 0.45}" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+  svg += `<rect x="${x + s * 0.85}" y="${y + s * 0.12}" width="${s * 0.06}" height="${s * 0.22}" fill="${NOVA_DARK}"/>`;
+  svg += `<rect x="${x + s * 0.85}" y="${y + s * 0.55}" width="${s * 0.06}" height="${s * 0.32}" fill="${NOVA_DARK}"/>`;
+  return svg;
+}
+
+// Mesa de vapor: pozos para charolas
+function iconSteamTable(x, y, s) {
+  let svg = iconBox(x, y, s);
+  const n = 3;
+  for (let i = 0; i < n; i++) {
+    const wellX = x + s * (0.06 + (i * 0.88) / n);
+    svg += `<rect x="${wellX}" y="${y + s * 0.2}" width="${s * 0.88 / n - 2}" height="${s * 0.6}" rx="2"
+      fill="none" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+  }
+  return svg;
+}
+
+// Mesa fria / prep table: superficie de trabajo + unidad refrigerada
+function iconPrepTable(x, y, s) {
+  let svg = iconBox(x, y, s);
+  svg += `<rect x="${x + s * 0.1}" y="${y + s * 0.1}" width="${s * 0.8}" height="${s * 0.35}" fill="none" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+  svg += `<rect x="${x + s * 0.15}" y="${y + s * 0.55}" width="${s * 0.3}" height="${s * 0.3}" fill="none" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+  svg += `<rect x="${x + s * 0.55}" y="${y + s * 0.55}" width="${s * 0.3}" height="${s * 0.3}" fill="none" stroke="${NOVA_DARK}" stroke-width="0.8"/>`;
+  return svg;
+}
+
+// Maquina de hielo: cubos + dispensador
+function iconIce(x, y, s) {
+  let svg = iconBox(x, y, s);
+  for (let r = 0; r < 2; r++) {
+    for (let c = 0; c < 3; c++) {
+      const cx2 = x + s * 0.12 + c * (s * 0.28);
+      const cy2 = y + s * 0.14 + r * (s * 0.3);
+      svg += `<rect x="${cx2}" y="${cy2}" width="${s * 0.18}" height="${s * 0.18}" fill="none" stroke="${NOVA_BLUE}" stroke-width="0.8"/>`;
+    }
+  }
+  svg += `<rect x="${x + s * 0.25}" y="${y + s * 0.82}" width="${s * 0.5}" height="${s * 0.08}" fill="${NOVA_DARK}"/>`;
   return svg;
 }
 
