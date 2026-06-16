@@ -154,6 +154,10 @@ button{cursor:pointer;font-family:inherit;}
 @keyframes qbPulse{0%{transform:scale(1);}40%{transform:scale(1.05);}100%{transform:scale(1);}}
 .qb-shake{animation:qbShake .4s ease;}
 @keyframes qbShake{0%,100%{transform:translateX(0);}20%{transform:translateX(-7px);}40%{transform:translateX(7px);}60%{transform:translateX(-5px);}80%{transform:translateX(5px);}}
+.qb-coming-soon{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;background:linear-gradient(135deg,var(--bg2) 0%,var(--bg3) 100%);border-radius:18px;border:1px solid var(--border);box-shadow:var(--shadow);padding:40px;margin-bottom:26px;text-align:center;}
+.qb-cs-icon{font-size:52px;margin-bottom:16px;}
+.qb-cs-title{font-family:Georgia,serif;font-size:22px;color:var(--text);margin-bottom:10px;}
+.qb-cs-text{font-size:14px;color:var(--text2);max-width:360px;line-height:1.65;}
 </style>
 </head>
 <body>
@@ -182,12 +186,10 @@ button{cursor:pointer;font-family:inherit;}
   </div>
 
   <div class="quote-builder">
-    <div class="qb-stage" id="qb3dStage">
-      <div class="qb-canvas" id="qb3dCanvas"></div>
-      <div class="qb-stage-badge" id="qb3dDims">8' × 20'</div>
-      <div class="qb-stage-hint" data-es="Arrastra para girar · scroll para zoom" data-en="Drag to rotate · scroll to zoom">Arrastra para girar · scroll para zoom</div>
-      <div class="qb-stage-loading" id="qb3dLoading" data-es="Cargando vista 3D…" data-en="Loading 3D view…">Cargando vista 3D…</div>
-      <div class="qb-swatches" id="qb3dSwatches"></div>
+    <div class="qb-coming-soon">
+      <div class="qb-cs-icon">🚧</div>
+      <h3 class="qb-cs-title" data-es="Vista 3D · Próximamente" data-en="3D View · Coming Soon">Vista 3D · Próximamente</h3>
+      <p class="qb-cs-text" data-es="El configurador 3D interactivo está en construcción. Mientras tanto, cotiza tu trailer con el asistente abajo." data-en="The interactive 3D configurator is under construction. Meanwhile, quote your trailer with the wizard below.">El configurador 3D interactivo está en construcción. Mientras tanto, cotiza tu trailer con el asistente abajo.</p>
     </div>
 
     <div class="qb-progress">
@@ -252,8 +254,6 @@ button{cursor:pointer;font-family:inherit;}
   </div>
 </main>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script>
 // ===== THEME =====
 const html = document.documentElement;
@@ -449,8 +449,10 @@ applyLang(currentLang);
   }
 })();
 
-// ===== 3D TRAILER CONFIGURATOR (Three.js) =====
+// ===== 3D TRAILER CONFIGURATOR — Coming Soon =====
 (function(){
+  // 3D temporarily disabled
+  return;
   const stage = document.getElementById('qb3dStage');
   if(!stage) return;
   function fail(){ stage.classList.add('hidden'); }

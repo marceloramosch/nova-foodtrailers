@@ -343,6 +343,82 @@ footer{
 .featured-testimonial .author-name{color:#fff;}
 .featured-testimonial .author-city{color:var(--silver);}
 
+/* ===== COTIZADOR EN LÍNEA ===== */
+#cotizador{background:var(--bg2);}
+.qb-progress{max-width:760px;margin:0 auto 30px;}
+.qb-progress-bar{height:7px;background:var(--bg3);border:1px solid var(--border);border-radius:999px;overflow:hidden;}
+.qb-progress-bar span{display:block;height:100%;width:33.34%;background:linear-gradient(90deg,var(--blue),#5b9bff);border-radius:999px;transition:width .55s cubic-bezier(.2,.7,.2,1);}
+.qb-steps-labels{display:flex;justify-content:space-between;margin-top:11px;}
+.qb-step-label{font-size:12px;font-weight:700;color:var(--text2);transition:color var(--transition);}
+.qb-step-label.active{color:var(--blue);}
+.qb-step-label.done{color:var(--blue);opacity:.55;}
+.qb-layout{display:grid;grid-template-columns:1fr 330px;gap:28px;align-items:start;max-width:1020px;margin:0 auto;}
+@media(max-width:860px){.qb-layout{grid-template-columns:1fr;}}
+.qb-main{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:32px;box-shadow:var(--shadow);min-height:340px;}
+@media(max-width:560px){.qb-main{padding:22px;}}
+.qb-step{animation:qbIn .45s cubic-bezier(.2,.7,.2,1);}
+@keyframes qbIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:none;}}
+.qb-step-title{font-family:Georgia,serif;font-size:23px;color:var(--text);margin-bottom:6px;}
+.qb-step-hint{font-size:13px;color:var(--text2);margin-bottom:18px;line-height:1.5;}
+.qb-size-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+@media(max-width:560px){.qb-size-grid{grid-template-columns:1fr 1fr;}}
+.qb-size{position:relative;text-align:left;background:var(--bg2);border:2px solid var(--border);border-radius:13px;padding:16px 15px;cursor:pointer;transition:transform .2s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease;}
+.qb-size:hover{border-color:var(--blue);transform:translateY(-3px);}
+.qb-size.sel{border-color:var(--blue);background:var(--bg3);box-shadow:0 0 0 3px rgba(45,107,196,.18);}
+.qs-name{font-family:Georgia,serif;font-size:19px;font-weight:700;color:var(--text);}
+.qs-desc{font-size:11.5px;color:var(--text2);margin:4px 0 9px;line-height:1.4;min-height:32px;}
+.qs-price{font-size:15px;font-weight:900;color:var(--blue);}
+.qs-pop{position:absolute;top:11px;right:11px;background:var(--blue);color:#fff;font-size:9px;font-weight:700;letter-spacing:.5px;padding:2px 8px;border-radius:999px;text-transform:uppercase;}
+.qs-check{position:absolute;top:10px;right:10px;width:23px;height:23px;border-radius:50%;background:var(--blue);color:#fff;display:none;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+.qb-size.sel .qs-check{display:flex;}
+.qb-size.sel .qs-pop{display:none;}
+.qb-group{margin-bottom:22px;}
+.qb-group-title{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text2);margin-bottom:12px;}
+.qb-group-title::before{content:'';width:9px;height:9px;border-radius:2px;background:var(--blue);}
+.qb-items{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:560px){.qb-items{grid-template-columns:1fr;}}
+.qb-item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--bg2);border:1.5px solid var(--border);border-radius:11px;padding:11px 13px;cursor:pointer;transition:border-color .18s ease,background .18s ease;text-align:left;}
+.qb-item:hover{border-color:var(--blue);}
+.qb-item.sel{border-color:var(--blue);background:var(--bg3);}
+.qb-item-l{display:flex;align-items:center;gap:10px;min-width:0;}
+.qb-tick{width:21px;height:21px;border-radius:6px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;background:transparent;transition:background .18s ease,border-color .18s ease,transform .18s ease;}
+.qb-item.sel .qb-tick{background:var(--blue);border-color:var(--blue);transform:scale(1.05);}
+.qb-item-name{font-size:13px;font-weight:600;color:var(--text);line-height:1.25;}
+.qb-item-price{font-size:12.5px;font-weight:800;color:var(--blue);white-space:nowrap;}
+.qb-nav{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap;}
+.qb-nav .btn{padding:13px 24px;}
+.qb-nav #qbNext,.qb-nav #qbSend{margin-left:auto;}
+@media(max-width:560px){.qb-nav .btn{flex:1;justify-content:center;}.qb-nav #qbNext,.qb-nav #qbSend{margin-left:0;}}
+.qb-sum-line{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--border);font-size:13.5px;color:var(--text);}
+.qb-sum-line span:last-child{font-weight:800;color:var(--blue);white-space:nowrap;}
+.qb-sum-base span:first-child{font-weight:800;}
+.qb-sum-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:16px;gap:12px;}
+.qb-sum-total .lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2);}
+.qb-sum-total .val{font-family:Georgia,serif;font-size:24px;font-weight:900;color:var(--text);text-align:right;}
+.qb-sum-empty{color:var(--text2);font-size:13px;padding:20px 0;text-align:center;}
+.qb-lead{margin-top:22px;background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:18px;}
+.qb-lead h4{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:12px;font-weight:700;}
+.qb-lead .form-field{margin-bottom:0;}
+.qb-aside{position:sticky;top:84px;}
+@media(max-width:860px){.qb-aside{position:static;}}
+.qb-price-card{background:linear-gradient(160deg,var(--dark) 0%,#1a3a7a 100%);border-radius:18px;padding:26px;color:#fff;box-shadow:0 14px 44px rgba(13,34,68,.30);}
+.qb-price-label{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--silver);font-weight:700;}
+.qb-price{font-family:Georgia,serif;font-size:42px;font-weight:900;color:#fff;line-height:1.05;margin:6px 0 3px;}
+.qb-price-range{font-size:13px;color:var(--silver);font-weight:600;}
+.qb-price-divider{height:1px;background:rgba(200,216,240,.2);margin:18px 0;}
+.qb-mini{font-size:12.5px;color:rgba(200,216,240,.85);margin-bottom:7px;display:flex;justify-content:space-between;gap:8px;}
+.qb-mini b{color:#fff;font-weight:700;}
+.qb-disclaimer{font-size:10.5px;color:rgba(200,216,240,.6);line-height:1.55;margin-top:16px;}
+.qb-pulse{animation:qbPulse .42s ease;}
+@keyframes qbPulse{0%{transform:scale(1);}40%{transform:scale(1.05);}100%{transform:scale(1);}}
+.qb-shake{animation:qbShake .4s ease;}
+@keyframes qbShake{0%,100%{transform:translateX(0);}20%{transform:translateX(-7px);}40%{transform:translateX(7px);}60%{transform:translateX(-5px);}80%{transform:translateX(5px);}}
+.qb-form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.qb-form-field label{display:block;font-size:11px;font-weight:700;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.qb-form-field input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-family:inherit;font-size:14px;transition:border-color var(--transition);}
+.qb-form-field input:focus{outline:none;border-color:var(--blue);}
+@media(max-width:500px){.qb-form-row{grid-template-columns:1fr;}}
+
 /* ===== 3D BUILDER CTA ===== */
 #builder3d{background:linear-gradient(135deg,var(--dark) 0%,#1a3a7a 100%);position:relative;overflow:hidden;}
 #builder3d::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 75% 40%,rgba(45,107,196,.4) 0%,transparent 60%);pointer-events:none;}
@@ -375,7 +451,7 @@ footer{
   <div class="nav-links">
     <a href="#home" data-es="Inicio" data-en="Home">Inicio</a>
     <a href="#productos" data-es="Productos" data-en="Products">Productos</a>
-    <a href="builder.html" data-es="Diseñador 3D" data-en="3D Builder">Diseñador 3D</a>
+    <a href="#cotizador" data-es="Cotizar" data-en="Quote">Cotizar</a>
     <a href="#proceso" data-es="Cómo funciona" data-en="How it works">Cómo funciona</a>
     <a href="#envios" data-es="Envíos" data-en="Shipping">Envíos</a>
     <a href="#testimonios" data-es="Clientes" data-en="Clients">Clientes</a>
@@ -658,7 +734,7 @@ footer{
           <span data-es="🎨 Colores en vivo" data-en="🎨 Live colors">🎨 Colores en vivo</span>
           <span data-es="⚡ Precio al instante" data-en="⚡ Instant price">⚡ Precio al instante</span>
         </div>
-        <a href="builder.html" class="btn btn-white builder-cta-btn" data-es="Abrir diseñador 3D →" data-en="Open 3D builder →">Abrir diseñador 3D →</a>
+        <a href="#cotizador" class="btn btn-white builder-cta-btn" data-es="Cotiza tu trailer →" data-en="Quote your trailer →">Cotiza tu trailer →</a>
       </div>
       <div class="builder-cta-visual">
         <div class="builder-cta-spin">↻ <span data-es="360°" data-en="360°">360°</span></div>
@@ -680,6 +756,76 @@ footer{
           <rect x="69" y="36" width="152" height="16" rx="3" fill="#2D6BC4" opacity=".9"/>
         </svg>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COTIZADOR EN LÍNEA ===== -->
+<section id="cotizador">
+  <div class="container">
+    <div class="center" style="margin-bottom:36px;">
+      <div class="tag" data-es="Cotizador en línea" data-en="Online Quote">Cotizador en línea</div>
+      <h2 class="section-title" data-es="Diseña y cotiza tu food trailer" data-en="Design and quote your food trailer">Diseña y cotiza tu food trailer</h2>
+      <p class="section-sub center" data-es="Sin registro ni llamadas. Elige tamaño y equipo, mira el precio en vivo y envíalo por WhatsApp en segundos." data-en="No sign-up, no calls. Pick size and equipment, watch the live price and send it via WhatsApp in seconds.">Sin registro ni llamadas. Elige tamaño y equipo, mira el precio en vivo y envíalo por WhatsApp en segundos.</p>
+    </div>
+
+    <div class="qb-progress">
+      <div class="qb-progress-bar"><span id="qbProgressFill"></span></div>
+      <div class="qb-steps-labels">
+        <span class="qb-step-label active" data-step="1" data-es="1 · Tamaño" data-en="1 · Size">1 · Tamaño</span>
+        <span class="qb-step-label" data-step="2" data-es="2 · Equipo" data-en="2 · Equipment">2 · Equipo</span>
+        <span class="qb-step-label" data-step="3" data-es="3 · Tu cotización" data-en="3 · Your quote">3 · Tu cotización</span>
+      </div>
+    </div>
+
+    <div class="qb-layout">
+      <div class="qb-main">
+        <div class="qb-step" data-step="1">
+          <h3 class="qb-step-title" data-es="Elige el tamaño base" data-en="Choose your base size">Elige el tamaño base</h3>
+          <p class="qb-step-hint" data-es="Selecciona el modelo que mejor se acomode a tu negocio. El precio se actualiza al instante." data-en="Pick the model that best fits your business. The price updates instantly.">Selecciona el modelo que mejor se acomode a tu negocio. El precio se actualiza al instante.</p>
+          <div class="qb-size-grid" id="qbSizeGrid"></div>
+        </div>
+        <div class="qb-step" data-step="2" hidden>
+          <h3 class="qb-step-title" data-es="Agrega tu equipo" data-en="Add your equipment">Agrega tu equipo</h3>
+          <p class="qb-step-hint" data-es="Toca para agregar o quitar. El precio se actualiza automáticamente." data-en="Tap to add or remove. The price updates automatically.">Toca para agregar o quitar. El precio se actualiza automáticamente.</p>
+          <div id="qbEquip"></div>
+        </div>
+        <div class="qb-step" data-step="3" hidden>
+          <h3 class="qb-step-title" data-es="Tu cotización estimada" data-en="Your estimated quote">Tu cotización estimada</h3>
+          <p class="qb-step-hint" data-es="Revisa tu configuración y envíala por WhatsApp. Confirmamos el precio final en menos de 24 horas." data-en="Review your build and send it via WhatsApp. We confirm the final price in under 24 hours.">Revisa tu configuración y envíala por WhatsApp. Confirmamos el precio final en menos de 24 horas.</p>
+          <div id="qbSummary"></div>
+          <div class="qb-lead">
+            <h4 data-es="¿A nombre de quién? (opcional)" data-en="Who is it for? (optional)">¿A nombre de quién? (opcional)</h4>
+            <div class="qb-form-row">
+              <div class="qb-form-field">
+                <label data-es="Nombre" data-en="Name">Nombre</label>
+                <input type="text" id="qbName" placeholder="Tu nombre">
+              </div>
+              <div class="qb-form-field">
+                <label data-es="WhatsApp / Teléfono" data-en="WhatsApp / Phone">WhatsApp / Teléfono</label>
+                <input type="tel" id="qbPhone" placeholder="+1 (000) 000-0000">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="qb-nav">
+          <button type="button" class="btn btn-outline" id="qbBack" hidden data-es="← Atrás" data-en="← Back">← Atrás</button>
+          <button type="button" class="btn btn-primary" id="qbNext" data-es="Siguiente →" data-en="Next →">Siguiente →</button>
+          <a class="btn btn-whatsapp" id="qbSend" target="_blank" hidden data-es="📲 Enviar por WhatsApp" data-en="📲 Send via WhatsApp">📲 Enviar por WhatsApp</a>
+        </div>
+      </div>
+
+      <aside class="qb-aside">
+        <div class="qb-price-card">
+          <div class="qb-price-label" data-es="Estimado" data-en="Estimate">Estimado</div>
+          <div class="qb-price" id="qbPrice">$0</div>
+          <div class="qb-price-range" id="qbRange">—</div>
+          <div class="qb-price-divider"></div>
+          <div class="qb-mini" id="qbMiniSize"></div>
+          <div class="qb-mini" id="qbMiniCount"></div>
+          <p class="qb-disclaimer" data-es="* Estimado en USD. No incluye flete. La cotización final la confirma el equipo Nova en menos de 24 h." data-en="* Estimate in USD. Freight not included. Final quote confirmed by the Nova team within 24 h.">* Estimado en USD. No incluye flete. La cotización final la confirma el equipo Nova en menos de 24 h.</p>
+        </div>
+      </aside>
     </div>
   </div>
 </section>
@@ -1210,6 +1356,157 @@ function toggleLang() {
 }
 
 applyLang(currentLang);
+
+// ===== COTIZADOR EN LÍNEA =====
+(function(){
+  const QB_DATA = {
+    bufferPct: 0.10,
+    sizes: [
+      { id:'8x14', name:"8' × 14'", es:'Compacto · para arrancar', en:'Compact · to get started', price:18500 },
+      { id:'8x16', name:"8' × 16'", es:'Especialidad: tacos, café, BBQ', en:'Specialty: tacos, coffee, BBQ', price:21000 },
+      { id:'8x20', name:"8' × 20'", es:'El más vendido', en:'Best seller', price:27500, popular:true },
+      { id:'8x24', name:"8' × 24'", es:'Negocio establecido', en:'Established business', price:33000 },
+      { id:'8x26', name:"8' × 26'", es:'Alto volumen · premium', en:'High volume · premium', price:36000 },
+      { id:'custom', name:'Custom', es:'A tu medida (8×10 – 8×30)', en:'Fully custom (8×10 – 8×30)', price:30000, custom:true }
+    ],
+    groups: [
+      { es:'Cocina', en:'Cooking', items:[
+        { id:'flattop', es:'Plancha / flat-top', en:'Flat-top grill', price:1800 },
+        { id:'fryer', es:'Freidora doble', en:'Double fryer', price:1400 },
+        { id:'range', es:'Estufa 4 quemadores', en:'4-burner range', price:1600 },
+        { id:'hood', es:'Campana + extracción', en:'Hood + ventilation', price:3200 },
+        { id:'charbroil', es:'Parrilla de carbón', en:'Charbroiler', price:1500 }
+      ]},
+      { es:'Refrigeración', en:'Refrigeration', items:[
+        { id:'fridge', es:'Refrigerador comercial', en:'Commercial fridge', price:2200 },
+        { id:'freezer', es:'Congelador', en:'Freezer', price:1900 },
+        { id:'prepcooler', es:'Mesa fría de preparación', en:'Prep cooler table', price:2400 }
+      ]},
+      { es:'Servicio', en:'Service', items:[
+        { id:'window2', es:'Ventana de servicio extra', en:'Extra service window', price:900 },
+        { id:'counter', es:'Barra de servicio', en:'Service counter', price:700 },
+        { id:'sink3', es:'Lavabo de 3 tarjas', en:'3-compartment sink', price:1200 }
+      ]},
+      { es:'Energía y agua', en:'Power & water', items:[
+        { id:'gen', es:'Generador', en:'Generator', price:3500 },
+        { id:'tanks', es:'Tanques de agua (limpia + gris)', en:'Water tanks (fresh + grey)', price:1100 },
+        { id:'heater', es:'Calentador de agua', en:'Water heater', price:600 }
+      ]},
+      { es:'Imagen y extras', en:'Branding & extras', items:[
+        { id:'wrap', es:'Rótulo y vinil completo', en:'Full vinyl wrap', price:2500 },
+        { id:'led', es:'Iluminación LED', en:'LED lighting', price:800 },
+        { id:'awning', es:'Toldo', en:'Awning', price:1200 },
+        { id:'floor', es:'Piso de aluminio diamante', en:'Diamond-plate floor', price:1500 }
+      ]}
+    ]
+  };
+
+  const state = { step:1, size:null, equip:new Set() };
+  let shown = 0;
+  const L = () => currentLang;
+  const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
+  const $ = id => document.getElementById(id);
+  const sizeById = id => QB_DATA.sizes.find(s => s.id === id);
+  function itemById(id){ for(const g of QB_DATA.groups){ const it=g.items.find(i=>i.id===id); if(it) return it; } return null; }
+  function subtotal(){ let t = state.size ? sizeById(state.size).price : 0; state.equip.forEach(id=>{ const it=itemById(id); if(it) t+=it.price; }); return t; }
+  const highEstimate = s => Math.round(s*(1+QB_DATA.bufferPct)/100)*100;
+
+  function animateNumber(el, from, to){
+    const dur=450, start=performance.now();
+    function tick(now){ const p=Math.min(1,(now-start)/dur); const e=1-Math.pow(1-p,3); el.textContent=fmt(from+(to-from)*e); if(p<1) requestAnimationFrame(tick); }
+    requestAnimationFrame(tick);
+  }
+  function renderSizes(){
+    const grid=$('qbSizeGrid'); if(!grid) return;
+    grid.innerHTML = QB_DATA.sizes.map(s=>{
+      const sel = state.size===s.id ? ' sel':'';
+      const desc = L()==='es'?s.es:s.en;
+      const pop = s.popular ? '<span class="qs-pop">Popular</span>':'';
+      const price = s.custom ? ((L()==='es'?'Desde ':'From ')+fmt(s.price)) : fmt(s.price);
+      return '<button type="button" class="qb-size'+sel+'" data-id="'+s.id+'">'+pop+'<span class="qs-check">✓</span><div class="qs-name">'+s.name+'</div><div class="qs-desc">'+desc+'</div><div class="qs-price">'+price+'</div></button>';
+    }).join('');
+  }
+  function renderEquip(){
+    const wrap=$('qbEquip'); if(!wrap) return;
+    wrap.innerHTML = QB_DATA.groups.map(g=>{
+      const title = L()==='es'?g.es:g.en;
+      const items = g.items.map(it=>{
+        const sel = state.equip.has(it.id)?' sel':'';
+        const name = L()==='es'?it.es:it.en;
+        return '<button type="button" class="qb-item'+sel+'" data-id="'+it.id+'"><span class="qb-item-l"><span class="qb-tick">✓</span><span class="qb-item-name">'+name+'</span></span><span class="qb-item-price">+'+fmt(it.price)+'</span></button>';
+      }).join('');
+      return '<div class="qb-group"><div class="qb-group-title">'+title+'</div><div class="qb-items">'+items+'</div></div>';
+    }).join('');
+  }
+  function updatePrice(pulse){
+    const sub=subtotal();
+    animateNumber($('qbPrice'), shown, sub); shown=sub;
+    $('qbRange').textContent = sub>0 ? (fmt(sub)+' – '+fmt(highEstimate(sub))) : '—';
+    const sz = state.size ? sizeById(state.size) : null;
+    $('qbMiniSize').innerHTML = (L()==='es'?'Tamaño':'Size')+' <b>'+(sz?sz.name:'—')+'</b>';
+    $('qbMiniCount').innerHTML = (L()==='es'?'Equipo':'Equipment')+' <b>'+state.equip.size+(L()==='es'?' piezas':' items')+'</b>';
+    if(pulse){ const c=document.querySelector('.qb-price-card'); if(c){ c.classList.remove('qb-pulse'); void c.offsetWidth; c.classList.add('qb-pulse'); } }
+  }
+  function renderSummary(){
+    const box=$('qbSummary'); if(!box) return;
+    if(!state.size){ box.innerHTML='<p class="qb-sum-empty">'+(L()==='es'?'Selecciona un tamaño para ver tu cotización.':'Select a size to see your quote.')+'</p>'; return; }
+    const sz=sizeById(state.size);
+    let h='<div class="qb-sum-line qb-sum-base"><span>'+(L()==='es'?'Base ':'Base ')+sz.name+'</span><span>'+fmt(sz.price)+'</span></div>';
+    state.equip.forEach(id=>{ const it=itemById(id); if(it){ const n=L()==='es'?it.es:it.en; h+='<div class="qb-sum-line"><span>'+n+'</span><span>+'+fmt(it.price)+'</span></div>'; } });
+    const sub=subtotal();
+    h+='<div class="qb-sum-total"><span class="lbl">'+(L()==='es'?'Estimado':'Estimate')+'</span><span class="val">'+fmt(sub)+' – '+fmt(highEstimate(sub))+'</span></div>';
+    box.innerHTML=h;
+  }
+  function buildWhatsApp(){
+    const sz = state.size ? sizeById(state.size) : null;
+    const name=($('qbName')||{}).value||'';
+    const phone=($('qbPhone')||{}).value||'';
+    const sub=subtotal(), lines=[];
+    lines.push(L()==='es'?'¡Hola Nova! Me interesa cotizar un food trailer:':'Hi Nova! I\'d like to quote a food trailer:');
+    lines.push('');
+    lines.push((L()==='es'?'Tamaño: ':'Size: ')+(sz?sz.name:'-'));
+    if(state.equip.size){ lines.push(L()==='es'?'Equipo:':'Equipment:'); state.equip.forEach(id=>{ const it=itemById(id); if(it) lines.push(' • '+(L()==='es'?it.es:it.en)+' ('+fmt(it.price)+')'); }); }
+    lines.push('');
+    lines.push((L()==='es'?'Estimado: ':'Estimate: ')+fmt(sub)+' – '+fmt(highEstimate(sub))+' USD');
+    if(name) lines.push((L()==='es'?'Nombre: ':'Name: ')+name);
+    if(phone) lines.push((L()==='es'?'WhatsApp: ':'WhatsApp: ')+phone);
+    const a=$('qbSend'); if(a) a.href='https://wa.me/16452353186?text='+encodeURIComponent(lines.join('\n'));
+  }
+  function setStep(n){
+    state.step=n;
+    document.querySelectorAll('#cotizador .qb-step').forEach(s=>{ s.hidden=(parseInt(s.dataset.step,10)!==n); });
+    const fill=$('qbProgressFill'); if(fill) fill.style.width=(n*33.34)+'%';
+    document.querySelectorAll('#cotizador .qb-step-label').forEach(l=>{ const d=parseInt(l.dataset.step,10); l.classList.toggle('active',d===n); l.classList.toggle('done',d<n); });
+    $('qbBack').hidden=n===1; $('qbNext').hidden=n===3; $('qbSend').hidden=n!==3;
+    if(n===3){ renderSummary(); buildWhatsApp(); }
+  }
+  function next(){
+    if(state.step===1&&!state.size){ const g=$('qbSizeGrid'); if(g){g.classList.remove('qb-shake');void g.offsetWidth;g.classList.add('qb-shake');} return; }
+    if(state.step<3) setStep(state.step+1);
+  }
+  function back(){ if(state.step>1) setStep(state.step-1); }
+  function selectSize(id){
+    state.size=id;
+    const g=$('qbSizeGrid'); if(g) g.querySelectorAll('.qb-size').forEach(el=>el.classList.toggle('sel',el.dataset.id===id));
+    updatePrice(true);
+  }
+  function toggle(id){
+    if(state.equip.has(id)) state.equip.delete(id); else state.equip.add(id);
+    const btn=$('qbEquip')&&$('qbEquip').querySelector('.qb-item[data-id="'+id+'"]');
+    if(btn) btn.classList.toggle('sel',state.equip.has(id));
+    updatePrice(true);
+  }
+  if($('qbSizeGrid')){
+    renderSizes(); renderEquip(); updatePrice(false); setStep(1);
+    $('qbSizeGrid').addEventListener('click',e=>{ const b=e.target.closest('.qb-size'); if(b) selectSize(b.dataset.id); });
+    $('qbEquip').addEventListener('click',e=>{ const b=e.target.closest('.qb-item'); if(b) toggle(b.dataset.id); });
+    $('qbNext').addEventListener('click',next);
+    $('qbBack').addEventListener('click',back);
+    ['qbName','qbPhone'].forEach(id=>{ const el=$(id); if(el) el.addEventListener('input',buildWhatsApp); });
+    window.qbOnLang=function(){ renderSizes(); renderEquip(); updatePrice(false); if(state.step===3){renderSummary();buildWhatsApp();} };
+    window.qbSelect=function(id,goStep2){ selectSize(id); if(goStep2) setStep(2); };
+  }
+})();
 
 // ===== MOBILE MENU =====
 function toggleMenu() {
