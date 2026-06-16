@@ -508,11 +508,12 @@ applyLang(currentLang);
   const M=(col,m,r)=>new THREE.MeshStandardMaterial({color:col, metalness:(m!=null?m:0.3), roughness:(r!=null?r:0.55)});
 
   function clearGroup(){
-    while(group.children.length){
-      const o=group.children.pop();
+    function disposeObj(o){
       if(o.geometry) o.geometry.dispose();
       if(o.material && o.material!==bodyMat) o.material.dispose();
+      o.children.slice().forEach(disposeObj);
     }
+    while(group.children.length) disposeObj(group.children.pop());
   }
   function mk(geo,mat){ const m=new THREE.Mesh(geo,mat); m.castShadow=true; group.add(m); return m; }
   function box(w,h,d,mat,x,y,z,rx,ry){
@@ -593,16 +594,50 @@ applyLang(currentLang);
     box(0.06,0.08,0.06, M(0x8090a8,0.6,0.4), Ln/2+0.04,cy+0.35, Wd*0.16);
     box(0.06,0.08,0.06, M(0x8090a8,0.6,0.4), Ln/2+0.04,cy-0.35, Wd*0.16);
 
-    // MAIN SERVICE WINDOW (curb side +z)
+    // MAIN SERVICE WINDOW — open canopy style (hinged at top)
     const wX=-Ln*0.10, wW=Ln*0.46, wH=Hh*0.52, wY=baseY+Hh*0.60;
     const fm=M(0x8090a8,0.55,0.36);
+    // Fixed frame
     box(wW+0.07,wH+0.07,0.044, fm, wX,wY,Wd/2+0.008);
-    box(wW-0.06,wH-0.06,0.038, M(0x0a1a38,0.72,0.07), wX,wY,Wd/2+0.04);
-    box(wW+0.07,0.04,0.055, fm, wX,wY,Wd/2+0.008);
-    // Service counter shelf
+    box(wW+0.07,0.04,0.055, fm, wX,wY,Wd/2+0.008); // center crossbar
+    // Dark interior backdrop (visible behind opening)
+    box(wW-0.08,wH-0.08,0.06, M(0x060e18,0.1,0.96), wX,wY,Wd/2-0.08);
+    // Interior equipment silhouette
+    box(wW*0.32,wH*0.26,0.05, M(0x1a3060,0.2,0.85), wX-wW*0.10,wY+wH*0.10,Wd/2-0.11);
+    box(wW*0.20,wH*0.22,0.05, M(0x112850,0.2,0.85), wX+wW*0.25,wY-wH*0.08,Wd/2-0.11);
+
+    // Open glass panel — pivot group at top hinge
+    const openAng=1.10; // ~63° from vertical (opens outward and up)
+    const panelH=wH-0.04, panelW2=wW-0.08;
+    const pPivot=new THREE.Group();
+    pPivot.position.set(wX, wY+wH/2, Wd/2+0.022);
+    const glassMeshA=new THREE.Mesh(new THREE.BoxGeometry(panelW2,panelH,0.055), M(0x7ab0cc,0.38,0.20));
+    glassMeshA.position.set(0,-panelH/2,0); glassMeshA.castShadow=true; pPivot.add(glassMeshA);
+    const fBorderA=new THREE.Mesh(new THREE.BoxGeometry(panelW2+0.07,panelH+0.07,0.025), fm);
+    fBorderA.position.set(0,-panelH/2,0.045); pPivot.add(fBorderA);
+    pPivot.rotation.x=-openAng;
+    group.add(pPivot);
+
+    // Support arms (diagonal rods from wall to open panel edge)
+    const panBotY=(wY+wH/2)-panelH*Math.cos(openAng);
+    const panBotZ=(Wd/2+0.022)+panelH*Math.sin(openAng);
+    const wallY=wY-wH*0.28, wallZ=Wd/2+0.06;
+    const suppDy=panBotY-wallY, suppDz=panBotZ-wallZ;
+    const suppLen=Math.sqrt(suppDy*suppDy+suppDz*suppDz);
+    const suppRotX=Math.atan2(suppDz,suppDy);
+    for(const sx of[wX-wW*0.34, wX+wW*0.34]){
+      const rod=new THREE.Mesh(new THREE.BoxGeometry(0.042,suppLen,0.042), M(0x8090a8,0.65,0.38));
+      rod.position.set(sx,(wallY+panBotY)*0.5,(wallZ+panBotZ)*0.5);
+      rod.rotation.x=suppRotX; rod.castShadow=true; group.add(rod);
+    }
+
+    // Service counter shelf + supports
     box(wW+0.14,0.065,0.38, M(0x2a3850,0.5,0.42), wX,wY-wH/2-0.03,Wd/2+0.18);
     box(0.04,0.30,0.34, M(0x3a4a60,0.5,0.45), wX-wW/2+0.12,wY-wH/2-0.18,Wd/2+0.18);
     box(0.04,0.30,0.34, M(0x3a4a60,0.5,0.45), wX+wW/2-0.12,wY-wH/2-0.18,Wd/2+0.18);
+
+    // Entry step plate
+    box(wW*0.55,0.06,0.42, M(0x8090a8,0.62,0.40), wX,wY-wH/2-0.22,Wd/2+0.21);
 
     if(cfg.window2){
       const w2X=Ln*0.30, w2W=Ln*0.22, w2H=wH*0.85;
