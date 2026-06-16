@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nova Food Trailers — Diseñador 3D</title>
+<meta name="description" content="Diseña tu food trailer en 3D: elige tamaño y equipo, gíralo en 360°, cámbiale el color y mira el precio en vivo. Nova Food Trailers.">
+<meta name="robots" content="index,follow">
+<link rel="icon" type="image/png" href="assets/nova_logo.png">
+<style>
+/* ===== TOKENS ===== */
+:root{
+  --blue:#2D6BC4; --dark:#0D2244; --silver:#C8D8F0; --light:#EEF3FC;
+  --bg:#ffffff; --bg2:#f4f7fc; --bg3:#e8f0fb;
+  --text:#0D2244; --text2:#5b6b8c; --border:#C8D8F0; --card:#ffffff;
+  --nav:rgba(255,255,255,0.97); --shadow:0 4px 24px rgba(45,107,196,.10);
+  --radius:12px; --transition:.25s ease;
+}
+[data-theme="dark"]{
+  --bg:#080f1f; --bg2:#0c1830; --bg3:#0f203c;
+  --text:#dce8ff; --text2:#7a9cc8; --border:#1a3260; --card:#0f1f3d;
+  --nav:rgba(8,15,31,0.97); --shadow:0 4px 24px rgba(0,0,0,.40);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);transition:background var(--transition),color var(--transition);min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+button{cursor:pointer;font-family:inherit;}
+.tag{display:inline-block;background:var(--blue);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:999px;margin-bottom:12px;}
+.btn{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;padding:13px 24px;border-radius:8px;border:2px solid var(--blue);transition:all var(--transition);}
+.btn-primary{background:var(--blue);color:#fff;}
+.btn-primary:hover{background:var(--dark);border-color:var(--dark);}
+.btn-outline{background:transparent;color:var(--blue);}
+.btn-outline:hover{background:var(--blue);color:#fff;}
+.btn-whatsapp{background:#25D366;color:#fff;border-color:#25D366;}
+.btn-whatsapp:hover{background:#1ebe5d;border-color:#1ebe5d;}
+
+/* ===== APP BAR ===== */
+.appbar{
+  position:sticky;top:0;z-index:100;background:var(--nav);
+  border-bottom:1px solid var(--border);backdrop-filter:blur(10px);
+  padding:0 22px;display:flex;align-items:center;gap:16px;height:64px;
+}
+.appbar .logo{display:flex;align-items:center;gap:10px;}
+.appbar .logo img{width:44px;height:44px;}
+.appbar .logo .brand{font-family:Georgia,serif;font-size:20px;letter-spacing:3px;color:var(--text);line-height:1;}
+.appbar .logo .sub{font-size:9px;letter-spacing:4px;color:var(--blue);font-weight:700;}
+.appbar .spacer{margin-left:auto;}
+.appbar-actions{display:flex;align-items:center;gap:8px;}
+.appbar a.back{font-size:13px;font-weight:700;color:var(--text2);padding:7px 12px;border-radius:7px;transition:all var(--transition);}
+.appbar a.back:hover{color:var(--blue);background:var(--bg2);}
+.lang-btn,.theme-btn{border:1px solid var(--border);background:var(--bg2);color:var(--text2);border-radius:6px;padding:6px 10px;font-size:12px;font-weight:700;transition:all var(--transition);}
+.lang-btn:hover,.theme-btn:hover{border-color:var(--blue);color:var(--blue);}
+@media(max-width:560px){.appbar .logo .sub{display:none;} .appbar a.back span{display:none;}}
+
+/* ===== APP LAYOUT ===== */
+.app-wrap{max-width:1120px;margin:0 auto;padding:34px 22px 70px;}
+.app-head{text-align:center;margin-bottom:26px;}
+.app-head h1{font-family:Georgia,serif;font-size:clamp(26px,4vw,40px);color:var(--text);line-height:1.15;margin-bottom:10px;}
+.app-head p{font-size:15px;color:var(--text2);max-width:600px;margin:0 auto;line-height:1.6;}
+
+/* ===== FORM FIELDS ===== */
+.form-field{margin-bottom:16px;}
+.form-field label{display:block;font-size:11px;font-weight:700;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.form-field input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--text);font-family:inherit;font-size:14px;transition:border-color var(--transition);}
+.form-field input:focus{outline:none;border-color:var(--blue);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:500px){.form-row{grid-template-columns:1fr;}}
+
+/* ===== 3D STAGE ===== */
+.qb-stage{position:relative;margin:0 auto 26px;border-radius:18px;overflow:hidden;border:1px solid var(--border);background:radial-gradient(ellipse at 50% 32%,var(--bg3) 0%,var(--bg2) 70%,var(--bg) 100%);box-shadow:var(--shadow);}
+.qb-stage.hidden{display:none;}
+.qb-canvas{width:100%;height:460px;cursor:grab;}
+.qb-canvas:active{cursor:grabbing;}
+@media(max-width:560px){.qb-canvas{height:320px;}}
+.qb-canvas canvas{display:block;}
+.qb-stage-badge{position:absolute;top:14px;left:14px;background:rgba(13,34,68,.80);color:#fff;font-family:Georgia,serif;font-weight:700;font-size:15px;padding:6px 13px;border-radius:9px;backdrop-filter:blur(4px);pointer-events:none;}
+.qb-stage-hint{position:absolute;top:18px;right:16px;color:var(--text2);font-size:11px;font-weight:600;opacity:.75;pointer-events:none;}
+.qb-stage-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--text2);letter-spacing:.5px;}
+.qb-stage.ready .qb-stage-loading{display:none;}
+.qb-swatches{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:9px;background:rgba(13,34,68,.30);backdrop-filter:blur(7px);padding:9px 12px;border-radius:999px;border:1px solid rgba(200,216,240,.25);}
+.qb-swatch{width:25px;height:25px;border-radius:50%;border:2px solid rgba(255,255,255,.55);cursor:pointer;transition:transform .15s ease;padding:0;}
+.qb-swatch:hover{transform:scale(1.18);}
+.qb-swatch.sel{border-color:#fff;box-shadow:0 0 0 2px var(--blue);transform:scale(1.12);}
+
+/* ===== QUOTE BUILDER ===== */
+.qb-progress{max-width:760px;margin:0 auto 30px;}
+.qb-progress-bar{height:7px;background:var(--bg3);border:1px solid var(--border);border-radius:999px;overflow:hidden;}
+.qb-progress-bar span{display:block;height:100%;width:33.34%;background:linear-gradient(90deg,var(--blue),#5b9bff);border-radius:999px;transition:width .55s cubic-bezier(.2,.7,.2,1);}
+.qb-steps-labels{display:flex;justify-content:space-between;margin-top:11px;}
+.qb-step-label{font-size:12px;font-weight:700;color:var(--text2);letter-spacing:.3px;transition:color var(--transition);}
+.qb-step-label.active{color:var(--blue);}
+.qb-step-label.done{color:var(--blue);opacity:.55;}
+.qb-layout{display:grid;grid-template-columns:1fr 330px;gap:28px;align-items:start;max-width:1020px;margin:0 auto;}
+@media(max-width:860px){.qb-layout{grid-template-columns:1fr;}}
+.qb-main{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:32px;box-shadow:var(--shadow);min-height:340px;}
+@media(max-width:560px){.qb-main{padding:22px;}}
+.qb-step{animation:qbIn .45s cubic-bezier(.2,.7,.2,1);}
+@keyframes qbIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:none;}}
+.qb-step-title{font-family:Georgia,serif;font-size:23px;color:var(--text);margin-bottom:6px;}
+.qb-step-hint{font-size:13px;color:var(--text2);margin-bottom:18px;line-height:1.5;}
+.qb-size-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+@media(max-width:560px){.qb-size-grid{grid-template-columns:1fr 1fr;}}
+.qb-size{position:relative;text-align:left;background:var(--bg2);border:2px solid var(--border);border-radius:13px;padding:16px 15px;transition:transform .2s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease;}
+.qb-size:hover{border-color:var(--blue);transform:translateY(-3px);}
+.qb-size.sel{border-color:var(--blue);background:var(--bg3);box-shadow:0 0 0 3px rgba(45,107,196,.18);}
+.qb-size .qs-name{font-family:Georgia,serif;font-size:19px;font-weight:700;color:var(--text);}
+.qb-size .qs-desc{font-size:11.5px;color:var(--text2);margin:4px 0 9px;line-height:1.4;min-height:32px;}
+.qb-size .qs-price{font-size:15px;font-weight:900;color:var(--blue);}
+.qb-size .qs-pop{position:absolute;top:11px;right:11px;background:var(--blue);color:#fff;font-size:9px;font-weight:700;letter-spacing:.5px;padding:2px 8px;border-radius:999px;text-transform:uppercase;}
+.qb-size .qs-check{position:absolute;top:10px;right:10px;width:23px;height:23px;border-radius:50%;background:var(--blue);color:#fff;display:none;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+.qb-size.sel .qs-check{display:flex;}
+.qb-size.sel .qs-pop{display:none;}
+.qb-group{margin-bottom:22px;}
+.qb-group:last-child{margin-bottom:0;}
+.qb-group-title{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text2);margin-bottom:12px;}
+.qb-group-title::before{content:'';width:9px;height:9px;border-radius:2px;background:var(--blue);}
+.qb-items{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:560px){.qb-items{grid-template-columns:1fr;}}
+.qb-item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--bg2);border:1.5px solid var(--border);border-radius:11px;padding:11px 13px;transition:border-color .18s ease,background .18s ease;text-align:left;}
+.qb-item:hover{border-color:var(--blue);}
+.qb-item.sel{border-color:var(--blue);background:var(--bg3);}
+.qb-item-l{display:flex;align-items:center;gap:10px;min-width:0;}
+.qb-tick{width:21px;height:21px;border-radius:6px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;background:transparent;transition:background .18s ease,border-color .18s ease,transform .18s ease;}
+.qb-item.sel .qb-tick{background:var(--blue);border-color:var(--blue);transform:scale(1.05);}
+.qb-item-name{font-size:13px;font-weight:600;color:var(--text);line-height:1.25;}
+.qb-item-price{font-size:12.5px;font-weight:800;color:var(--blue);white-space:nowrap;}
+.qb-nav{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap;}
+.qb-nav .btn{padding:13px 24px;}
+.qb-nav #qbNext,.qb-nav #qbSend{margin-left:auto;}
+@media(max-width:560px){.qb-nav .btn{flex:1;justify-content:center;}.qb-nav #qbNext,.qb-nav #qbSend{margin-left:0;}}
+.qb-sum-line{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--border);font-size:13.5px;color:var(--text);}
+.qb-sum-line span:last-child{font-weight:800;color:var(--blue);white-space:nowrap;}
+.qb-sum-base span:first-child{font-weight:800;}
+.qb-sum-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:16px;gap:12px;}
+.qb-sum-total .lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2);}
+.qb-sum-total .val{font-family:Georgia,serif;font-size:24px;font-weight:900;color:var(--text);text-align:right;}
+.qb-sum-empty{color:var(--text2);font-size:13px;padding:20px 0;text-align:center;}
+.qb-lead{margin-top:22px;background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:18px;}
+.qb-lead h4{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:12px;font-weight:700;}
+.qb-lead .form-field{margin-bottom:0;}
+.qb-aside{position:sticky;top:84px;}
+@media(max-width:860px){.qb-aside{position:static;}}
+.qb-price-card{background:linear-gradient(160deg,var(--dark) 0%,#1a3a7a 100%);border-radius:18px;padding:26px;color:#fff;box-shadow:0 14px 44px rgba(13,34,68,.30);}
+.qb-price-label{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--silver);font-weight:700;}
+.qb-price{font-family:Georgia,serif;font-size:42px;font-weight:900;color:#fff;line-height:1.05;margin:6px 0 3px;}
+.qb-price-range{font-size:13px;color:var(--silver);font-weight:600;}
+.qb-price-divider{height:1px;background:rgba(200,216,240,.2);margin:18px 0;}
+.qb-mini{font-size:12.5px;color:rgba(200,216,240,.85);margin-bottom:7px;display:flex;justify-content:space-between;gap:8px;}
+.qb-mini b{color:#fff;font-weight:700;}
+.qb-disclaimer{font-size:10.5px;color:rgba(200,216,240,.6);line-height:1.55;margin-top:16px;}
+.qb-pulse{animation:qbPulse .42s ease;}
+@keyframes qbPulse{0%{transform:scale(1);}40%{transform:scale(1.05);}100%{transform:scale(1);}}
+.qb-shake{animation:qbShake .4s ease;}
+@keyframes qbShake{0%,100%{transform:translateX(0);}20%{transform:translateX(-7px);}40%{transform:translateX(7px);}60%{transform:translateX(-5px);}80%{transform:translateX(5px);}}
+</style>
+</head>
+<body>
+
+<header class="appbar">
+  <a href="index.html" class="logo">
+    <img src="assets/nova_logo.png" alt="Nova">
+    <div>
+      <div class="brand">NOVA</div>
+      <div class="sub" data-es="DISEÑADOR 3D" data-en="3D BUILDER">DISEÑADOR 3D</div>
+    </div>
+  </a>
+  <div class="spacer"></div>
+  <div class="appbar-actions">
+    <a href="index.html" class="back">← <span data-es="Volver al sitio" data-en="Back to site">Volver al sitio</span></a>
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+  </div>
+</header>
+
+<main class="app-wrap">
+  <div class="app-head">
+    <div class="tag" data-es="Diseñador 3D" data-en="3D Builder">Diseñador 3D</div>
+    <h1 data-es="Diseña tu food trailer en 3D" data-en="Design your food trailer in 3D">Diseña tu food trailer en 3D</h1>
+    <p data-es="Elige el tamaño y el equipo, gíralo en 360°, cámbiale el color y mira el precio en vivo. Sin registro. Cuando termines, lo envías por WhatsApp." data-en="Pick the size and equipment, rotate it 360°, change its color and watch the price live. No sign-up. When you're done, send it via WhatsApp.">Elige el tamaño y el equipo, gíralo en 360°, cámbiale el color y mira el precio en vivo. Sin registro. Cuando termines, lo envías por WhatsApp.</p>
+  </div>
+
+  <div class="quote-builder">
+    <div class="qb-stage" id="qb3dStage">
+      <div class="qb-canvas" id="qb3dCanvas"></div>
+      <div class="qb-stage-badge" id="qb3dDims">8' × 20'</div>
+      <div class="qb-stage-hint" data-es="Arrastra para girar · scroll para zoom" data-en="Drag to rotate · scroll to zoom">Arrastra para girar · scroll para zoom</div>
+      <div class="qb-stage-loading" id="qb3dLoading" data-es="Cargando vista 3D…" data-en="Loading 3D view…">Cargando vista 3D…</div>
+      <div class="qb-swatches" id="qb3dSwatches"></div>
+    </div>
+
+    <div class="qb-progress">
+      <div class="qb-progress-bar"><span id="qbProgressFill"></span></div>
+      <div class="qb-steps-labels">
+        <span class="qb-step-label active" data-step="1" data-es="1 · Tamaño" data-en="1 · Size">1 · Tamaño</span>
+        <span class="qb-step-label" data-step="2" data-es="2 · Equipo" data-en="2 · Equipment">2 · Equipo</span>
+        <span class="qb-step-label" data-step="3" data-es="3 · Tu cotización" data-en="3 · Your quote">3 · Tu cotización</span>
+      </div>
+    </div>
+
+    <div class="qb-layout">
+      <div class="qb-main">
+        <div class="qb-step" data-step="1">
+          <h3 class="qb-step-title" data-es="Elige el tamaño base" data-en="Choose your base size">Elige el tamaño base</h3>
+          <p class="qb-step-hint" data-es="Selecciona el modelo que mejor se acomode a tu negocio. El trailer 3D cambia al instante." data-en="Pick the model that best fits your business. The 3D trailer updates instantly.">Selecciona el modelo que mejor se acomode a tu negocio. El trailer 3D cambia al instante.</p>
+          <div class="qb-size-grid" id="qbSizeGrid"></div>
+        </div>
+        <div class="qb-step" data-step="2" hidden>
+          <h3 class="qb-step-title" data-es="Agrega tu equipo" data-en="Add your equipment">Agrega tu equipo</h3>
+          <p class="qb-step-hint" data-es="Toca para agregar o quitar. El precio y el modelo 3D se actualizan solos." data-en="Tap to add or remove. The price and 3D model update instantly.">Toca para agregar o quitar. El precio y el modelo 3D se actualizan solos.</p>
+          <div id="qbEquip"></div>
+        </div>
+        <div class="qb-step" data-step="3" hidden>
+          <h3 class="qb-step-title" data-es="Tu cotización estimada" data-en="Your estimated quote">Tu cotización estimada</h3>
+          <p class="qb-step-hint" data-es="Revisa tu configuración y envíala por WhatsApp. Te confirmamos el precio final en menos de 24 horas." data-en="Review your build and send it via WhatsApp. We confirm the final price in under 24 hours.">Revisa tu configuración y envíala por WhatsApp. Te confirmamos el precio final en menos de 24 horas.</p>
+          <div id="qbSummary"></div>
+          <div class="qb-lead">
+            <h4 data-es="¿A nombre de quién? (opcional)" data-en="Who is it for? (optional)">¿A nombre de quién? (opcional)</h4>
+            <div class="form-row">
+              <div class="form-field">
+                <label data-es="Nombre" data-en="Name">Nombre</label>
+                <input type="text" id="qbName" placeholder="Tu nombre">
+              </div>
+              <div class="form-field">
+                <label data-es="WhatsApp / Teléfono" data-en="WhatsApp / Phone">WhatsApp / Teléfono</label>
+                <input type="tel" id="qbPhone" placeholder="+1 (000) 000-0000">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="qb-nav">
+          <button type="button" class="btn btn-outline" id="qbBack" hidden data-es="← Atrás" data-en="← Back">← Atrás</button>
+          <button type="button" class="btn btn-primary" id="qbNext" data-es="Siguiente →" data-en="Next →">Siguiente →</button>
+          <a class="btn btn-whatsapp" id="qbSend" target="_blank" hidden data-es="Enviar por WhatsApp" data-en="Send via WhatsApp">Enviar por WhatsApp</a>
+        </div>
+      </div>
+
+      <aside class="qb-aside">
+        <div class="qb-price-card">
+          <div class="qb-price-label" data-es="Estimado" data-en="Estimate">Estimado</div>
+          <div class="qb-price" id="qbPrice">$0</div>
+          <div class="qb-price-range" id="qbRange">—</div>
+          <div class="qb-price-divider"></div>
+          <div class="qb-mini" id="qbMiniSize"></div>
+          <div class="qb-mini" id="qbMiniCount"></div>
+          <p class="qb-disclaimer" data-es="* Estimado en USD. No incluye flete. La cotización final la confirma el equipo Nova en menos de 24 h." data-en="* Estimate in USD. Freight not included. Final quote confirmed by the Nova team within 24 h.">* Estimado en USD. No incluye flete. La cotización final la confirma el equipo Nova en menos de 24 h.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+// ===== THEME =====
+const html = document.documentElement;
+const themeBtn = document.getElementById('themeBtn');
+function applyTheme(t){ html.setAttribute('data-theme',t); themeBtn.textContent = t==='dark'?'☀️':'🌙'; localStorage.setItem('nft-theme',t); }
+function toggleTheme(){ applyTheme(html.getAttribute('data-theme')==='dark'?'light':'dark'); }
+applyTheme(localStorage.getItem('nft-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
+
+// ===== LANGUAGE =====
+let currentLang = localStorage.getItem('nft-lang') || 'es';
+function applyLang(lang){
+  currentLang = lang;
+  document.getElementById('langBtn').textContent = lang==='es'?'EN':'ES';
+  html.setAttribute('lang', lang);
+  localStorage.setItem('nft-lang', lang);
+  document.querySelectorAll('[data-es]').forEach(el=>{
+    const val = el.dataset[lang]; if(!val) return;
+    if(el.tagName==='INPUT'||el.tagName==='TEXTAREA') el.placeholder=val;
+    else el.textContent=val;
+  });
+  if(window.qbOnLang) window.qbOnLang();
+}
+function toggleLang(){ applyLang(currentLang==='es'?'en':'es'); }
+applyLang(currentLang);
+
+// ===== QUOTE BUILDER =====
+(function(){
+  // ---- CONFIG: estos precios son PLACEHOLDER — edítalos libremente aquí ----
+  const QB_DATA = {
+    bufferPct: 0.10,
+    sizes: [
+      { id:'8x14', name:"8' × 14'", es:'Compacto · para arrancar', en:'Compact · to get started', price:18500 },
+      { id:'8x16', name:"8' × 16'", es:'Especialidad: tacos, café, BBQ', en:'Specialty: tacos, coffee, BBQ', price:21000 },
+      { id:'8x20', name:"8' × 20'", es:'El más vendido', en:'Best seller', price:27500, popular:true },
+      { id:'8x24', name:"8' × 24'", es:'Negocio establecido', en:'Established business', price:33000 },
+      { id:'8x26', name:"8' × 26'", es:'Alto volumen · premium', en:'High volume · premium', price:36000 },
+      { id:'custom', name:'Custom', es:'A tu medida (8×10 – 8×30)', en:'Fully custom (8×10 – 8×30)', price:30000, custom:true }
+    ],
+    groups: [
+      { es:'Cocina', en:'Cooking', items:[
+        { id:'flattop', es:'Plancha / flat-top', en:'Flat-top grill', price:1800 },
+        { id:'fryer', es:'Freidora doble', en:'Double fryer', price:1400 },
+        { id:'range', es:'Estufa 4 quemadores', en:'4-burner range', price:1600 },
+        { id:'hood', es:'Campana + extracción', en:'Hood + ventilation', price:3200 },
+        { id:'charbroil', es:'Parrilla de carbón', en:'Charbroiler', price:1500 }
+      ]},
+      { es:'Refrigeración', en:'Refrigeration', items:[
+        { id:'fridge', es:'Refrigerador comercial', en:'Commercial fridge', price:2200 },
+        { id:'freezer', es:'Congelador', en:'Freezer', price:1900 },
+        { id:'prepcooler', es:'Mesa fría de preparación', en:'Prep cooler table', price:2400 }
+      ]},
+      { es:'Servicio', en:'Service', items:[
+        { id:'window2', es:'Ventana de servicio extra', en:'Extra service window', price:900 },
+        { id:'counter', es:'Barra de servicio', en:'Service counter', price:700 },
+        { id:'sink3', es:'Lavabo de 3 tarjas', en:'3-compartment sink', price:1200 }
+      ]},
+      { es:'Energía y agua', en:'Power & water', items:[
+        { id:'gen', es:'Generador', en:'Generator', price:3500 },
+        { id:'tanks', es:'Tanques de agua (limpia + gris)', en:'Water tanks (fresh + grey)', price:1100 },
+        { id:'heater', es:'Calentador de agua', en:'Water heater', price:600 }
+      ]},
+      { es:'Imagen y extras', en:'Branding &amp; extras', items:[
+        { id:'wrap', es:'Rótulo y vinil completo', en:'Full vinyl wrap', price:2500 },
+        { id:'led', es:'Iluminación LED', en:'LED lighting', price:800 },
+        { id:'awning', es:'Toldo', en:'Awning', price:1200 },
+        { id:'floor', es:'Piso de aluminio diamante', en:'Diamond-plate floor', price:1500 }
+      ]}
+    ]
+  };
+
+  const state = { step:1, size:null, equip:new Set() };
+  let shown = 0;
+  const L = () => currentLang;
+  const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
+  const $ = id => document.getElementById(id);
+  const sizeById = id => QB_DATA.sizes.find(s => s.id === id);
+  function itemById(id){ for(const g of QB_DATA.groups){ const it=g.items.find(i=>i.id===id); if(it) return it; } return null; }
+  function subtotal(){ let t = state.size ? sizeById(state.size).price : 0; state.equip.forEach(id=>{ const it=itemById(id); if(it) t+=it.price; }); return t; }
+  const highEstimate = s => Math.round(s*(1+QB_DATA.bufferPct)/100)*100;
+
+  function animateNumber(el, from, to){
+    const dur=450, start=performance.now();
+    function tick(now){ const p=Math.min(1,(now-start)/dur); const e=1-Math.pow(1-p,3); el.textContent=fmt(from+(to-from)*e); if(p<1) requestAnimationFrame(tick); }
+    requestAnimationFrame(tick);
+  }
+  function renderSizes(){
+    const grid=$('qbSizeGrid'); if(!grid) return;
+    grid.innerHTML = QB_DATA.sizes.map(s=>{
+      const sel = state.size===s.id ? ' sel':'';
+      const desc = L()==='es'?s.es:s.en;
+      const pop = s.popular ? '<span class="qs-pop">Popular</span>':'';
+      const price = s.custom ? ((L()==='es'?'Desde ':'From ')+fmt(s.price)) : fmt(s.price);
+      return '<button type="button" class="qb-size'+sel+'" data-id="'+s.id+'">'+pop+'<span class="qs-check">✓</span><div class="qs-name">'+s.name+'</div><div class="qs-desc">'+desc+'</div><div class="qs-price">'+price+'</div></button>';
+    }).join('');
+  }
+  function renderEquip(){
+    const wrap=$('qbEquip'); if(!wrap) return;
+    wrap.innerHTML = QB_DATA.groups.map(g=>{
+      const title = L()==='es'?g.es:g.en;
+      const items = g.items.map(it=>{
+        const sel = state.equip.has(it.id)?' sel':'';
+        const name = L()==='es'?it.es:it.en;
+        return '<button type="button" class="qb-item'+sel+'" data-id="'+it.id+'"><span class="qb-item-l"><span class="qb-tick">✓</span><span class="qb-item-name">'+name+'</span></span><span class="qb-item-price">+'+fmt(it.price)+'</span></button>';
+      }).join('');
+      return '<div class="qb-group"><div class="qb-group-title">'+title+'</div><div class="qb-items">'+items+'</div></div>';
+    }).join('');
+  }
+  function updatePrice(pulse){
+    const sub=subtotal();
+    animateNumber($('qbPrice'), shown, sub); shown=sub;
+    $('qbRange').textContent = sub>0 ? (fmt(sub)+' – '+fmt(highEstimate(sub))) : '—';
+    const sz = state.size ? sizeById(state.size) : null;
+    $('qbMiniSize').innerHTML = (L()==='es'?'Tamaño':'Size')+' <b>'+(sz?sz.name:'—')+'</b>';
+    $('qbMiniCount').innerHTML = (L()==='es'?'Equipo':'Equipment')+' <b>'+state.equip.size+(L()==='es'?' piezas':' items')+'</b>';
+    if(pulse){ const c=document.querySelector('.qb-price-card'); if(c){ c.classList.remove('qb-pulse'); void c.offsetWidth; c.classList.add('qb-pulse'); } }
+  }
+  function renderSummary(){
+    const box=$('qbSummary'); if(!box) return;
+    if(!state.size){ box.innerHTML='<p class="qb-sum-empty">'+(L()==='es'?'Selecciona un tamaño para ver tu cotización.':'Select a size to see your quote.')+'</p>'; return; }
+    const sz=sizeById(state.size);
+    let html='<div class="qb-sum-line qb-sum-base"><span>'+(L()==='es'?'Base ':'Base ')+sz.name+'</span><span>'+fmt(sz.price)+'</span></div>';
+    state.equip.forEach(id=>{ const it=itemById(id); if(it){ const n=L()==='es'?it.es:it.en; html+='<div class="qb-sum-line"><span>'+n+'</span><span>+'+fmt(it.price)+'</span></div>'; } });
+    const sub=subtotal();
+    html+='<div class="qb-sum-total"><span class="lbl">'+(L()==='es'?'Estimado':'Estimate')+'</span><span class="val">'+fmt(sub)+' – '+fmt(highEstimate(sub))+'</span></div>';
+    box.innerHTML=html;
+  }
+  function buildWhatsApp(){
+    const sz = state.size ? sizeById(state.size) : null;
+    const name=($('qbName')||{}).value||'';
+    const phone=($('qbPhone')||{}).value||'';
+    const sub=subtotal(), lines=[];
+    lines.push(L()==='es'?'¡Hola Nova! Diseñé mi food trailer en el Diseñador 3D:':'Hi Nova! I designed my food trailer in the 3D Builder:');
+    lines.push('');
+    lines.push((L()==='es'?'Tamaño: ':'Size: ')+(sz?sz.name:'-'));
+    if(state.equip.size){ lines.push(L()==='es'?'Equipo:':'Equipment:'); state.equip.forEach(id=>{ const it=itemById(id); if(it) lines.push(' • '+(L()==='es'?it.es:it.en)+' ('+fmt(it.price)+')'); }); }
+    lines.push('');
+    lines.push((L()==='es'?'Estimado: ':'Estimate: ')+fmt(sub)+' – '+fmt(highEstimate(sub))+' USD');
+    if(name) lines.push((L()==='es'?'Nombre: ':'Name: ')+name);
+    if(phone) lines.push((L()==='es'?'WhatsApp: ':'WhatsApp: ')+phone);
+    const a=$('qbSend'); if(a) a.href='https://wa.me/16452353186?text='+encodeURIComponent(lines.join('\n'));
+  }
+  function setStep(n){
+    state.step=n;
+    document.querySelectorAll('.qb-step').forEach(s=>{ s.hidden = (parseInt(s.dataset.step,10)!==n); });
+    const fill=$('qbProgressFill'); if(fill) fill.style.width=(n*33.34)+'%';
+    document.querySelectorAll('.qb-step-label').forEach(l=>{ const d=parseInt(l.dataset.step,10); l.classList.toggle('active',d===n); l.classList.toggle('done',d<n); });
+    $('qbBack').hidden = n===1;
+    $('qbNext').hidden = n===3;
+    $('qbSend').hidden = n!==3;
+    if(n===3){ renderSummary(); buildWhatsApp(); }
+  }
+  function next(){
+    if(state.step===1 && !state.size){ const g=$('qbSizeGrid'); if(g){ g.classList.remove('qb-shake'); void g.offsetWidth; g.classList.add('qb-shake'); } return; }
+    if(state.step<3) setStep(state.step+1);
+  }
+  function back(){ if(state.step>1) setStep(state.step-1); }
+
+  // map size -> trailer length (feet) for the 3D model
+  const LEN = {'8x14':14,'8x16':16,'8x20':20,'8x24':24,'8x26':26,'custom':22};
+  function sync3D(){
+    if(!window.qb3dUpdate) return;
+    const sz = state.size ? sizeById(state.size) : null;
+    window.qb3dUpdate({
+      lengthFt: sz ? (LEN[sz.id]||20) : 20,
+      label: sz ? sz.name : "8' × 20'",
+      awning: state.equip.has('awning'),
+      gen: state.equip.has('gen'),
+      window2: state.equip.has('window2')
+    });
+  }
+  function selectSize(id){
+    state.size=id;
+    const g=$('qbSizeGrid'); if(g) g.querySelectorAll('.qb-size').forEach(el=>el.classList.toggle('sel', el.dataset.id===id));
+    updatePrice(true); sync3D();
+  }
+  function toggle(id){
+    if(state.equip.has(id)) state.equip.delete(id); else state.equip.add(id);
+    const btn=$('qbEquip') && $('qbEquip').querySelector('.qb-item[data-id="'+id+'"]');
+    if(btn) btn.classList.toggle('sel', state.equip.has(id));
+    updatePrice(true); sync3D();
+  }
+
+  if($('qbSizeGrid')){
+    renderSizes(); renderEquip(); updatePrice(false); setStep(1);
+    $('qbSizeGrid').addEventListener('click', e=>{ const b=e.target.closest('.qb-size'); if(b) selectSize(b.dataset.id); });
+    $('qbEquip').addEventListener('click', e=>{ const b=e.target.closest('.qb-item'); if(b) toggle(b.dataset.id); });
+    $('qbNext').addEventListener('click', next);
+    $('qbBack').addEventListener('click', back);
+    ['qbName','qbPhone'].forEach(id=>{ const el=$(id); if(el) el.addEventListener('input', buildWhatsApp); });
+    window.qbSelect = function(id, goStep2){ selectSize(id); if(goStep2) setStep(2); };
+    window.qbOnLang = function(){ renderSizes(); renderEquip(); updatePrice(false); if(state.step===3){ renderSummary(); buildWhatsApp(); } };
+    window.qbSync3D = sync3D;
+  }
+})();
+
+// ===== 3D TRAILER CONFIGURATOR (Three.js) =====
+(function(){
+  const stage = document.getElementById('qb3dStage');
+  if(!stage) return;
+  function fail(){ stage.classList.add('hidden'); }
+  if(typeof THREE === 'undefined' || !THREE.OrbitControls){ fail(); return; }
+  try{
+    const t=document.createElement('canvas');
+    if(!(window.WebGLRenderingContext && (t.getContext('webgl')||t.getContext('experimental-webgl')))){ fail(); return; }
+  }catch(e){ fail(); return; }
+
+  const mount = document.getElementById('qb3dCanvas');
+  const W = () => mount.clientWidth || 700;
+  const H = () => mount.clientHeight || 460;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(42, W()/H(), 0.1, 100);
+  camera.position.set(7.5, 4.4, 8.5);
+  const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+  renderer.setSize(W(), H());
+  mount.appendChild(renderer.domElement);
+
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x33405e, 0.95));
+  const key = new THREE.DirectionalLight(0xffffff, 0.95); key.position.set(6,11,6); scene.add(key);
+  const fill = new THREE.DirectionalLight(0x88aaff, 0.35); fill.position.set(-7,4,-5); scene.add(fill);
+
+  function radialShadow(){
+    const c=document.createElement('canvas'); c.width=c.height=128;
+    const ctx=c.getContext('2d');
+    const g=ctx.createRadialGradient(64,64,6,64,64,64);
+    g.addColorStop(0,'rgba(0,0,0,0.5)'); g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g; ctx.fillRect(0,0,128,128);
+    return new THREE.CanvasTexture(c);
+  }
+  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(15,8), new THREE.MeshBasicMaterial({map:radialShadow(), transparent:true, depthWrite:false, opacity:0.55}));
+  shadow.rotation.x = -Math.PI/2; shadow.position.y = 0.005; scene.add(shadow);
+
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true; controls.dampingFactor = 0.08;
+  controls.enablePan = false; controls.minDistance = 6; controls.maxDistance = 17;
+  controls.maxPolarAngle = Math.PI*0.5; controls.target.set(0,1.25,0);
+  controls.autoRotate = true; controls.autoRotateSpeed = 0.9;
+  let idleT;
+  controls.addEventListener('start',()=>{ controls.autoRotate=false; clearTimeout(idleT); });
+  controls.addEventListener('end',()=>{ clearTimeout(idleT); idleT=setTimeout(()=>{ controls.autoRotate=true; }, 4000); });
+
+  const FT = 0.3;
+  const group = new THREE.Group(); scene.add(group);
+  const cfg = { lengthFt:20, color:0x2D6BC4, awning:false, gen:false, window2:false };
+  const bodyMat = new THREE.MeshStandardMaterial({color:cfg.color, metalness:0.35, roughness:0.45});
+  const M = (color,m,r)=>new THREE.MeshStandardMaterial({color:color, metalness:(m==null?0.3:m), roughness:(r==null?0.55:r)});
+
+  function clearGroup(){
+    while(group.children.length){
+      const o=group.children.pop();
+      if(o.geometry) o.geometry.dispose();
+      if(o.material && o.material!==bodyMat) o.material.dispose();
+    }
+  }
+  function addBox(w,h,d,mat,x,y,z,rx){
+    const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d), mat);
+    m.position.set(x,y,z); if(rx) m.rotation.x=rx; group.add(m); return m;
+  }
+  function wheel(x,z){
+    const tire=new THREE.Mesh(new THREE.CylinderGeometry(0.42,0.42,0.26,24), M(0x14181f,0.1,0.85));
+    tire.rotation.x=Math.PI/2; tire.position.set(x,0.42,z); group.add(tire);
+    const hub=new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.15,0.28,16), M(0xC8D8F0,0.7,0.3));
+    hub.rotation.x=Math.PI/2; hub.position.set(x,0.42,z); group.add(hub);
+  }
+  function build(){
+    clearGroup();
+    const Ln=cfg.lengthFt*FT, Wd=2.4, Hh=2.0, baseY=1.0, cy=baseY+Hh/2;
+    addBox(Ln, Hh, Wd, bodyMat, 0, cy, 0);
+    addBox(Ln*0.99, 0.12, Wd*0.99, M(0xcfd9ec,0.4,0.5), 0, baseY+Hh+0.05, 0);
+    addBox(Ln+0.02, 0.2, Wd+0.02, M(0x0d2244,0.3,0.6), 0, baseY+Hh*0.27, 0);
+    addBox(Ln*0.46, Hh*0.5, 0.05, M(0xe8eef9,0.3,0.5), -Ln*0.12, baseY+Hh*0.6, Wd/2+0.02);
+    addBox(Ln*0.40, Hh*0.40, 0.06, M(0x0b1830,0.65,0.12), -Ln*0.12, baseY+Hh*0.6, Wd/2+0.06);
+    if(cfg.window2){
+      addBox(Ln*0.22, Hh*0.42, 0.05, M(0xe8eef9,0.3,0.5), Ln*0.30, baseY+Hh*0.6, Wd/2+0.02);
+      addBox(Ln*0.17, Hh*0.32, 0.06, M(0x0b1830,0.65,0.12), Ln*0.30, baseY+Hh*0.6, Wd/2+0.06);
+    }
+    addBox(0.05, Hh*0.72, Wd*0.5, M(0x0c1d3e,0.3,0.5), -Ln/2-0.02, baseY+Hh*0.46, 0);
+    addBox(0.06, 0.16, 0.04, M(0xC8D8F0,0.6,0.3), -Ln/2-0.05, baseY+Hh*0.46, Wd*0.2);
+    addBox(0.95, 0.09, 0.13, M(0x475569,0.5,0.5), Ln/2+0.45, baseY+0.02, 0);
+    addBox(0.18, 0.2, 0.2, M(0x334155,0.5,0.5), Ln/2+0.88, baseY+0.02, 0);
+    const z=Wd/2+0.07;
+    wheel(-Ln*0.07, z); wheel(-Ln*0.07, -z);
+    wheel(-Ln*0.26, z); wheel(-Ln*0.26, -z);
+    if(cfg.gen){ addBox(0.5,0.42,0.5, M(0x1b2535,0.4,0.6), Ln/2+0.5, baseY+0.27, 0); }
+    if(cfg.awning){
+      addBox(Ln*0.5, 0.04, 0.75, M(0x2D6BC4,0.2,0.6), -Ln*0.12, baseY+Hh*0.9, Wd/2+0.34, -0.38);
+      addBox(0.04,0.5,0.04, M(0x334155,0.4,0.5), -Ln*0.12-Ln*0.22, baseY+Hh*0.62, Wd/2+0.66);
+      addBox(0.04,0.5,0.04, M(0x334155,0.4,0.5), -Ln*0.12+Ln*0.22, baseY+Hh*0.62, Wd/2+0.66);
+    }
+  }
+
+  const SW=[{n:'Nova Blue',c:0x2D6BC4},{n:'Midnight',c:0x1b1b22},{n:'Red',c:0xb5302a},{n:'White',c:0xdfe5ee},{n:'Green',c:0x1e7a48},{n:'Orange',c:0xd9712a}];
+  const sc=document.getElementById('qb3dSwatches');
+  if(sc){
+    sc.innerHTML=SW.map((s,i)=>'<button type="button" class="qb-swatch'+(i===0?' sel':'')+'" data-c="'+s.c+'" title="'+s.n+'" aria-label="'+s.n+'" style="background:#'+s.c.toString(16).padStart(6,'0')+'"></button>').join('');
+    sc.addEventListener('click',e=>{
+      const b=e.target.closest('.qb-swatch'); if(!b) return;
+      cfg.color=parseInt(b.dataset.c,10); bodyMat.color.setHex(cfg.color);
+      sc.querySelectorAll('.qb-swatch').forEach(x=>x.classList.toggle('sel', x===b));
+    });
+  }
+
+  function onResize(){ const w=W(),h=H(); camera.aspect=w/h; camera.updateProjectionMatrix(); renderer.setSize(w,h); }
+  if(window.ResizeObserver){ new ResizeObserver(onResize).observe(mount); }
+  window.addEventListener('resize', onResize);
+
+  window.qb3dUpdate = function(p){
+    let rebuild=false;
+    if(p.lengthFt!=null && p.lengthFt!==cfg.lengthFt){ cfg.lengthFt=p.lengthFt; rebuild=true; }
+    if(p.awning!=null && p.awning!==cfg.awning){ cfg.awning=p.awning; rebuild=true; }
+    if(p.gen!=null && p.gen!==cfg.gen){ cfg.gen=p.gen; rebuild=true; }
+    if(p.window2!=null && p.window2!==cfg.window2){ cfg.window2=p.window2; rebuild=true; }
+    if(p.label){ const d=document.getElementById('qb3dDims'); if(d) d.textContent=p.label; }
+    if(rebuild) build();
+  };
+
+  build();
+  stage.classList.add('ready');
+  (function loop(){ requestAnimationFrame(loop); controls.update(); renderer.render(scene,camera); })();
+  if(window.qbSync3D) window.qbSync3D();
+})();
+
+// ===== PRESELECT FROM ?size= =====
+(function(){
+  const sz=new URLSearchParams(location.search).get('size');
+  const valid=['8x14','8x16','8x20','8x24','8x26','custom'];
+  if(sz && valid.indexOf(sz)>=0 && window.qbSelect){ window.qbSelect(sz, true); }
+})();
+</script>
+</body>
+</html>
