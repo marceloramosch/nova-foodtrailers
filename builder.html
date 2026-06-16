@@ -465,42 +465,47 @@ applyLang(currentLang);
   const H = () => mount.clientHeight || 460;
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(42, W()/H(), 0.1, 100);
-  camera.position.set(7.5, 4.4, 8.5);
+  const camera = new THREE.PerspectiveCamera(40, W()/H(), 0.1, 100);
+  camera.position.set(8.5, 5.2, 9.5);
+
   const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
   renderer.setSize(W(), H());
   mount.appendChild(renderer.domElement);
 
-  scene.add(new THREE.HemisphereLight(0xffffff, 0x33405e, 0.95));
-  const key = new THREE.DirectionalLight(0xffffff, 0.95); key.position.set(6,11,6); scene.add(key);
-  const fill = new THREE.DirectionalLight(0x88aaff, 0.35); fill.position.set(-7,4,-5); scene.add(fill);
+  scene.add(new THREE.HemisphereLight(0xcce0ff, 0x334466, 0.85));
+  const key = new THREE.DirectionalLight(0xffffff, 1.1); key.position.set(8,14,8); scene.add(key);
+  const fill = new THREE.DirectionalLight(0x88aaff, 0.38); fill.position.set(-8,5,-6); scene.add(fill);
+  const rim = new THREE.DirectionalLight(0xfff0dd, 0.28); rim.position.set(3,6,-8); scene.add(rim);
 
   function radialShadow(){
-    const c=document.createElement('canvas'); c.width=c.height=128;
+    const c=document.createElement('canvas'); c.width=c.height=256;
     const ctx=c.getContext('2d');
-    const g=ctx.createRadialGradient(64,64,6,64,64,64);
-    g.addColorStop(0,'rgba(0,0,0,0.5)'); g.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=g; ctx.fillRect(0,0,128,128);
+    const g=ctx.createRadialGradient(128,128,10,128,128,128);
+    g.addColorStop(0,'rgba(0,0,0,0.42)'); g.addColorStop(0.55,'rgba(0,0,0,0.15)'); g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g; ctx.fillRect(0,0,256,256);
     return new THREE.CanvasTexture(c);
   }
-  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(15,8), new THREE.MeshBasicMaterial({map:radialShadow(), transparent:true, depthWrite:false, opacity:0.55}));
-  shadow.rotation.x = -Math.PI/2; shadow.position.y = 0.005; scene.add(shadow);
+  const shadowPlane = new THREE.Mesh(
+    new THREE.PlaneGeometry(20,11),
+    new THREE.MeshBasicMaterial({map:radialShadow(), transparent:true, depthWrite:false, opacity:0.55})
+  );
+  shadowPlane.rotation.x=-Math.PI/2; shadowPlane.position.y=0.003; scene.add(shadowPlane);
 
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true; controls.dampingFactor = 0.08;
-  controls.enablePan = false; controls.minDistance = 6; controls.maxDistance = 17;
-  controls.maxPolarAngle = Math.PI*0.5; controls.target.set(0,1.25,0);
-  controls.autoRotate = true; controls.autoRotateSpeed = 0.9;
+  controls.enableDamping=true; controls.dampingFactor=0.07;
+  controls.enablePan=false; controls.minDistance=5.5; controls.maxDistance=18;
+  controls.maxPolarAngle=Math.PI*0.475; controls.target.set(0,1.55,0);
+  controls.autoRotate=true; controls.autoRotateSpeed=0.8;
   let idleT;
   controls.addEventListener('start',()=>{ controls.autoRotate=false; clearTimeout(idleT); });
   controls.addEventListener('end',()=>{ clearTimeout(idleT); idleT=setTimeout(()=>{ controls.autoRotate=true; }, 4000); });
 
-  const FT = 0.3;
-  const group = new THREE.Group(); scene.add(group);
-  const cfg = { lengthFt:20, color:0x2D6BC4, awning:false, gen:false, window2:false };
-  const bodyMat = new THREE.MeshStandardMaterial({color:cfg.color, metalness:0.35, roughness:0.45});
-  const M = (color,m,r)=>new THREE.MeshStandardMaterial({color:color, metalness:(m==null?0.3:m), roughness:(r==null?0.55:r)});
+  const FT=0.305;
+  const group=new THREE.Group(); scene.add(group);
+  const cfg={lengthFt:20, color:0x2D6BC4, awning:false, gen:false, window2:false};
+  const bodyMat=new THREE.MeshStandardMaterial({color:cfg.color, metalness:0.30, roughness:0.42});
+  const M=(col,m,r)=>new THREE.MeshStandardMaterial({color:col, metalness:(m!=null?m:0.3), roughness:(r!=null?r:0.55)});
 
   function clearGroup(){
     while(group.children.length){
@@ -509,40 +514,153 @@ applyLang(currentLang);
       if(o.material && o.material!==bodyMat) o.material.dispose();
     }
   }
-  function addBox(w,h,d,mat,x,y,z,rx){
-    const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d), mat);
-    m.position.set(x,y,z); if(rx) m.rotation.x=rx; group.add(m); return m;
+  function mk(geo,mat){ const m=new THREE.Mesh(geo,mat); m.castShadow=true; group.add(m); return m; }
+  function box(w,h,d,mat,x,y,z,rx,ry){
+    const m=mk(new THREE.BoxGeometry(w,h,d),mat);
+    m.position.set(x,y,z); if(rx) m.rotation.x=rx; if(ry) m.rotation.y=ry; return m;
   }
-  function wheel(x,z){
-    const tire=new THREE.Mesh(new THREE.CylinderGeometry(0.42,0.42,0.26,24), M(0x14181f,0.1,0.85));
-    tire.rotation.x=Math.PI/2; tire.position.set(x,0.42,z); group.add(tire);
-    const hub=new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.15,0.28,16), M(0xC8D8F0,0.7,0.3));
-    hub.rotation.x=Math.PI/2; hub.position.set(x,0.42,z); group.add(hub);
+  function cyl(rt,rb,h,segs,mat,x,y,z,rx){
+    const m=mk(new THREE.CylinderGeometry(rt,rb,h,segs),mat);
+    m.position.set(x,y,z); if(rx!=null) m.rotation.x=rx; return m;
   }
+  function tor(r,tube,rs,ts,mat,x,y,z,rx){
+    const m=mk(new THREE.TorusGeometry(r,tube,rs,ts),mat);
+    m.position.set(x,y,z); if(rx!=null) m.rotation.x=rx; return m;
+  }
+
+  function buildWheel(wx,wz){
+    const ay=0.50, wr=0.44;
+    cyl(wr,wr,0.28,28, M(0x111418,0.04,0.93), wx,ay,wz, Math.PI/2);
+    tor(wr*0.72,0.028,8,28, M(0x1c2028,0.1,0.88), wx,ay, wz+(wz>0?0.12:-0.12), Math.PI/2);
+    cyl(wr*0.56,wr*0.56,0.31,10, M(0xb8c8d8,0.80,0.22), wx,ay,wz, Math.PI/2);
+    cyl(0.11,0.11,0.33,8, M(0xe0e8f0,0.84,0.18), wx,ay,wz, Math.PI/2);
+  }
+
   function build(){
     clearGroup();
-    const Ln=cfg.lengthFt*FT, Wd=2.4, Hh=2.0, baseY=1.0, cy=baseY+Hh/2;
-    addBox(Ln, Hh, Wd, bodyMat, 0, cy, 0);
-    addBox(Ln*0.99, 0.12, Wd*0.99, M(0xcfd9ec,0.4,0.5), 0, baseY+Hh+0.05, 0);
-    addBox(Ln+0.02, 0.2, Wd+0.02, M(0x0d2244,0.3,0.6), 0, baseY+Hh*0.27, 0);
-    addBox(Ln*0.46, Hh*0.5, 0.05, M(0xe8eef9,0.3,0.5), -Ln*0.12, baseY+Hh*0.6, Wd/2+0.02);
-    addBox(Ln*0.40, Hh*0.40, 0.06, M(0x0b1830,0.65,0.12), -Ln*0.12, baseY+Hh*0.6, Wd/2+0.06);
+    const Ln=cfg.lengthFt*FT, Wd=2.44, Hh=2.12;
+    const axY=0.50, baseY=axY+0.5+0.06;
+    const cy=baseY+Hh/2, roofY=baseY+Hh;
+
+    // CHASSIS FRAME
+    const bm=M(0x1a2030,0.65,0.45);
+    box(Ln+0.75,0.10,0.13, bm, -0.08,0.20, Wd*0.30);
+    box(Ln+0.75,0.10,0.13, bm, -0.08,0.20,-Wd*0.30);
+    box(0.10,0.10,Wd*0.64, bm, Ln/2,0.20,0);
+    box(0.10,0.10,Wd*0.64, bm,-Ln/2-0.08,0.20,0);
+
+    // MAIN BODY
+    bodyMat.color.setHex(cfg.color);
+    const body=new THREE.Mesh(new THREE.BoxGeometry(Ln,Hh,Wd),bodyMat);
+    body.position.set(0,cy,0); body.castShadow=true; group.add(body);
+
+    // Corner trim strips (vertical)
+    const ct=M(0x7a90aa,0.55,0.38);
+    for(const sx of[-1,1]) for(const sz of[-1,1])
+      box(0.07,Hh*1.02,0.07,ct, sx*(Ln/2+0.01),cy,sz*(Wd/2+0.01));
+
+    // Horizontal trim stripes
+    const tr=M(0xC8D8F0,0.55,0.32);
+    box(Ln*0.99,0.055,Wd*1.002,tr, 0,baseY+Hh*0.72,0);
+    box(Ln*0.99,0.055,Wd*1.002,tr, 0,baseY+Hh*0.35,0);
+
+    // Bottom skirt rail
+    box(Ln+0.04,0.14,Wd+0.04, M(0x0d1e3a,0.35,0.58), 0,baseY+0.05,0);
+
+    // ROOF CAP
+    box(Ln+0.06,0.09,Wd+0.06, M(0xc5d0de,0.42,0.48), 0,roofY+0.045,0);
+    const rl=M(0x7a90aa,0.5,0.4);
+    box(0.07,0.20,Wd+0.08, rl,  Ln/2+0.02,roofY+0.05,0);
+    box(0.07,0.20,Wd+0.08, rl, -Ln/2-0.02,roofY+0.05,0);
+    box(Ln+0.12,0.20,0.07, rl, 0,roofY+0.05, Wd/2+0.02);
+    box(Ln+0.12,0.20,0.07, rl, 0,roofY+0.05,-Wd/2-0.02);
+
+    // Roof AC unit
+    box(0.82,0.30,0.65, M(0xccd5e0,0.42,0.42), -Ln*0.14,roofY+0.24,0);
+    for(let i=0;i<5;i++) box(0.74,0.04,0.04, M(0x8899aa,0.5,0.5), -Ln*0.14,roofY+0.11+i*0.045,0.30);
+
+    // Roof exhaust vent
+    box(0.38,0.16,0.38, M(0x8090a8,0.5,0.45), Ln*0.18,roofY+0.12,0);
+    box(0.30,0.05,0.30, M(0x607080,0.4,0.52), Ln*0.18,roofY+0.21,0);
+
+    // FRONT CAP
+    box(0.055,Hh*0.92,Wd*0.90, M(0x0c1a32,0.32,0.58), -Ln/2-0.02,cy,0);
+    box(0.04,0.16,Wd*0.70, M(0x1e3050,0.4,0.55), -Ln/2-0.02,baseY+Hh*0.19,0);
+
+    // REAR DOOR
+    box(0.055,Hh*0.88,Wd*0.32, M(0x152340,0.34,0.56), Ln/2+0.02,cy-0.06,0);
+    box(0.07,0.04,0.24, M(0xC8D8F0,0.72,0.28), Ln/2+0.06,cy-0.05,0.08);
+    box(0.06,0.08,0.06, M(0x8090a8,0.6,0.4), Ln/2+0.04,cy+0.35, Wd*0.16);
+    box(0.06,0.08,0.06, M(0x8090a8,0.6,0.4), Ln/2+0.04,cy-0.35, Wd*0.16);
+
+    // MAIN SERVICE WINDOW (curb side +z)
+    const wX=-Ln*0.10, wW=Ln*0.46, wH=Hh*0.52, wY=baseY+Hh*0.60;
+    const fm=M(0x8090a8,0.55,0.36);
+    box(wW+0.07,wH+0.07,0.044, fm, wX,wY,Wd/2+0.008);
+    box(wW-0.06,wH-0.06,0.038, M(0x0a1a38,0.72,0.07), wX,wY,Wd/2+0.04);
+    box(wW+0.07,0.04,0.055, fm, wX,wY,Wd/2+0.008);
+    // Service counter shelf
+    box(wW+0.14,0.065,0.38, M(0x2a3850,0.5,0.42), wX,wY-wH/2-0.03,Wd/2+0.18);
+    box(0.04,0.30,0.34, M(0x3a4a60,0.5,0.45), wX-wW/2+0.12,wY-wH/2-0.18,Wd/2+0.18);
+    box(0.04,0.30,0.34, M(0x3a4a60,0.5,0.45), wX+wW/2-0.12,wY-wH/2-0.18,Wd/2+0.18);
+
     if(cfg.window2){
-      addBox(Ln*0.22, Hh*0.42, 0.05, M(0xe8eef9,0.3,0.5), Ln*0.30, baseY+Hh*0.6, Wd/2+0.02);
-      addBox(Ln*0.17, Hh*0.32, 0.06, M(0x0b1830,0.65,0.12), Ln*0.30, baseY+Hh*0.6, Wd/2+0.06);
+      const w2X=Ln*0.30, w2W=Ln*0.22, w2H=wH*0.85;
+      box(w2W+0.07,w2H+0.07,0.044, fm, w2X,wY,Wd/2+0.008);
+      box(w2W-0.06,w2H-0.06,0.038, M(0x0a1a38,0.72,0.07), w2X,wY,Wd/2+0.04);
+      box(w2W+0.14,0.065,0.32, M(0x2a3850,0.5,0.42), w2X,wY-w2H/2-0.03,Wd/2+0.18);
     }
-    addBox(0.05, Hh*0.72, Wd*0.5, M(0x0c1d3e,0.3,0.5), -Ln/2-0.02, baseY+Hh*0.46, 0);
-    addBox(0.06, 0.16, 0.04, M(0xC8D8F0,0.6,0.3), -Ln/2-0.05, baseY+Hh*0.46, Wd*0.2);
-    addBox(0.95, 0.09, 0.13, M(0x475569,0.5,0.5), Ln/2+0.45, baseY+0.02, 0);
-    addBox(0.18, 0.2, 0.2, M(0x334155,0.5,0.5), Ln/2+0.88, baseY+0.02, 0);
-    const z=Wd/2+0.07;
-    wheel(-Ln*0.07, z); wheel(-Ln*0.07, -z);
-    wheel(-Ln*0.26, z); wheel(-Ln*0.26, -z);
-    if(cfg.gen){ addBox(0.5,0.42,0.5, M(0x1b2535,0.4,0.6), Ln/2+0.5, baseY+0.27, 0); }
+
+    // MARKER / CLEARANCE LIGHTS
+    const redL=M(0xcc2200,0.25,0.65), orgL=M(0xdd6600,0.25,0.65);
+    for(const sz of[Wd/2+0.02,-Wd/2-0.02]){
+      box(0.065,0.065,0.065, orgL, -Ln/2+0.10,roofY-0.09,sz);
+      box(0.065,0.065,0.065, redL,  Ln/2-0.10,roofY-0.09,sz);
+      box(0.065,0.065,0.065, orgL, -Ln/2+0.10,baseY+0.10,sz);
+    }
+
+    // HITCH TONGUE / A-FRAME
+    const hm=M(0x2a3545,0.62,0.42);
+    box(0.9,0.09,0.12, hm,-Ln/2-0.48,0.26, 0.24);
+    box(0.9,0.09,0.12, hm,-Ln/2-0.48,0.26,-0.24);
+    box(0.20,0.24,0.20, M(0x111820,0.65,0.42), -Ln/2-0.90,0.36,0);
+    box(0.10,0.10,0.10, M(0x889aaa,0.70,0.30), -Ln/2-1.01,0.42,0);
+    box(0.07,0.58,0.07, M(0x8090a8,0.62,0.32), -Ln/2-0.48,0.08,0);
+    box(0.14,0.055,0.14, M(0x1a1f2e,0.5,0.5), -Ln/2-0.48,-0.17,0);
+
+    // WHEELS & FENDERS (dual axle)
+    const wzOff=Wd/2+0.18;
+    const axles=[-Ln*0.11,-Ln*0.27];
+    for(const ax of axles){
+      box(0.07,0.07,Wd+wzOff*2+0.16, M(0x222a38,0.65,0.45), ax,axY*0.65,0);
+      for(const side of[1,-1]){
+        buildWheel(ax, side*wzOff);
+        // Fender arch (3-piece: top bar + two legs)
+        const fz=side*(Wd/2+0.022);
+        box(1.04,0.14,0.07, bodyMat, ax,axY+0.66,fz);
+        box(0.14,0.52,0.07, bodyMat, ax-0.45,axY+0.28,fz);
+        box(0.14,0.52,0.07, bodyMat, ax+0.45,axY+0.28,fz);
+      }
+    }
+
+    // GENERATOR
+    if(cfg.gen){
+      box(0.62,0.50,0.60, M(0x1a2535,0.45,0.60), Ln/2+0.32,0.34,0);
+      box(0.06,0.32,0.06, M(0x2a3545,0.5,0.5), Ln/2+0.10,0.72,0.24);
+      box(0.50,0.055,0.04, M(0x1e2c40,0.4,0.62), Ln/2+0.32,0.46,0.32);
+      box(0.50,0.055,0.04, M(0x1e2c40,0.4,0.62), Ln/2+0.32,0.36,0.32);
+    }
+
+    // AWNING
     if(cfg.awning){
-      addBox(Ln*0.5, 0.04, 0.75, M(0x2D6BC4,0.2,0.6), -Ln*0.12, baseY+Hh*0.9, Wd/2+0.34, -0.38);
-      addBox(0.04,0.5,0.04, M(0x334155,0.4,0.5), -Ln*0.12-Ln*0.22, baseY+Hh*0.62, Wd/2+0.66);
-      addBox(0.04,0.5,0.04, M(0x334155,0.4,0.5), -Ln*0.12+Ln*0.22, baseY+Hh*0.62, Wd/2+0.66);
+      const awW=wW+Ln*0.14, awX=wX;
+      const awMat=new THREE.MeshStandardMaterial({color:cfg.color,metalness:0.18,roughness:0.68,transparent:true,opacity:0.88});
+      const aw=new THREE.Mesh(new THREE.BoxGeometry(awW,0.04,1.15),awMat);
+      aw.position.set(awX,baseY+Hh*0.87,Wd/2+0.57); aw.rotation.x=-0.30; aw.castShadow=true; group.add(aw);
+      const vm=new THREE.Mesh(new THREE.BoxGeometry(awW,0.26,0.03),awMat);
+      vm.position.set(awX,baseY+Hh*0.72,Wd/2+1.10); vm.castShadow=true; group.add(vm);
+      for(const armX of[awX-awW/2+0.10, awX+awW/2-0.10])
+        box(0.038,0.72,0.038, M(0x8090a8,0.62,0.38), armX,baseY+Hh*0.56,Wd/2+0.95);
     }
   }
 
@@ -553,6 +671,7 @@ applyLang(currentLang);
     sc.addEventListener('click',e=>{
       const b=e.target.closest('.qb-swatch'); if(!b) return;
       cfg.color=parseInt(b.dataset.c,10); bodyMat.color.setHex(cfg.color);
+      build();
       sc.querySelectorAll('.qb-swatch').forEach(x=>x.classList.toggle('sel', x===b));
     });
   }
@@ -561,13 +680,13 @@ applyLang(currentLang);
   if(window.ResizeObserver){ new ResizeObserver(onResize).observe(mount); }
   window.addEventListener('resize', onResize);
 
-  window.qb3dUpdate = function(p){
+  window.qb3dUpdate=function(p){
     let rebuild=false;
-    if(p.lengthFt!=null && p.lengthFt!==cfg.lengthFt){ cfg.lengthFt=p.lengthFt; rebuild=true; }
-    if(p.awning!=null && p.awning!==cfg.awning){ cfg.awning=p.awning; rebuild=true; }
-    if(p.gen!=null && p.gen!==cfg.gen){ cfg.gen=p.gen; rebuild=true; }
-    if(p.window2!=null && p.window2!==cfg.window2){ cfg.window2=p.window2; rebuild=true; }
-    if(p.label){ const d=document.getElementById('qb3dDims'); if(d) d.textContent=p.label; }
+    if(p.lengthFt!=null&&p.lengthFt!==cfg.lengthFt){cfg.lengthFt=p.lengthFt;rebuild=true;}
+    if(p.awning!=null&&p.awning!==cfg.awning){cfg.awning=p.awning;rebuild=true;}
+    if(p.gen!=null&&p.gen!==cfg.gen){cfg.gen=p.gen;rebuild=true;}
+    if(p.window2!=null&&p.window2!==cfg.window2){cfg.window2=p.window2;rebuild=true;}
+    if(p.label){const d=document.getElementById('qb3dDims');if(d)d.textContent=p.label;}
     if(rebuild) build();
   };
 
