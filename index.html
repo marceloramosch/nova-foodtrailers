@@ -164,24 +164,15 @@ nav{
 }
 .product-card:hover{transform:translateY(-6px);box-shadow:0 12px 36px rgba(45,107,196,.15);}
 .product-thumb{
-  background:linear-gradient(135deg,var(--dark),#1a3a7a);
-  height:220px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--dark) 0%,#1a3a7a 100%);
+  height:180px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;
   position:relative;overflow:hidden;
 }
-.product-thumb img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1;transition:transform .5s ease;}
-.product-card:hover .product-thumb img{transform:scale(1.06);}
+.product-thumb .thumb-logo{width:auto;height:48px;object-fit:contain;opacity:.3;filter:brightness(10);}
 .product-thumb .thumb-size{
-  font-family:Georgia,serif;font-size:48px;font-weight:900;color:rgba(255,255,255,.25);
-  letter-spacing:3px;position:absolute;bottom:10px;right:14px;z-index:2;pointer-events:none;
-  text-shadow:0 2px 12px rgba(0,0,0,.3);
+  font-family:Georgia,serif;font-size:36px;font-weight:900;color:rgba(200,216,240,.2);
+  letter-spacing:4px;
 }
-.product-thumb::after{
-  content:'';position:absolute;inset:0;z-index:1;
-  background:linear-gradient(to top,rgba(13,34,68,.5) 0%,transparent 50%);
-  pointer-events:none;
-}
-.product-thumb.no-img{background:linear-gradient(135deg,var(--dark),#1a3a7a);}
-.product-thumb.no-img .thumb-size{color:rgba(200,216,240,.15);font-size:72px;text-shadow:none;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;right:auto;bottom:auto;}
 .hero-photo .hero-placeholder{
   width:100%;min-height:340px;
   background:linear-gradient(135deg,#1a3a7a,#2D6BC4);
@@ -455,25 +446,19 @@ footer{
 @media(max-width:520px){.gallery-grid{grid-template-columns:1fr;}}
 .gallery-item{
   position:relative;border-radius:14px;overflow:hidden;
-  aspect-ratio:4/3;
+  aspect-ratio:3/4;background:var(--bg3);
   transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s ease;
 }
 .gallery-item:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.2);}
-.gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;position:relative;z-index:1;}
+.gallery-item img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform .5s ease;}
 .gallery-item:hover img{transform:scale(1.05);}
-.gallery-item .gallery-placeholder{
-  width:100%;height:100%;position:relative;
-}
 .gallery-overlay{
   position:absolute;inset:0;z-index:2;
-  background:linear-gradient(to top,rgba(13,34,68,.85) 0%,rgba(13,34,68,.1) 40%,transparent 60%);
-  display:flex;flex-direction:column;justify-content:flex-end;padding:20px;
-  opacity:1;
+  background:linear-gradient(to top,rgba(13,34,68,.85) 0%,rgba(13,34,68,.15) 35%,transparent 55%);
+  display:flex;flex-direction:column;justify-content:flex-end;padding:18px;
 }
-.gallery-label{font-size:15px;font-weight:700;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.3);}
-.gallery-desc{font-size:12px;color:rgba(200,216,240,.85);margin-top:3px;}
-.gallery-item.featured{grid-column:span 2;aspect-ratio:21/9;}
-@media(max-width:520px){.gallery-item.featured{grid-column:span 1;aspect-ratio:4/3;}}
+.gallery-label{font-size:14px;font-weight:700;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.4);}
+.gallery-desc{font-size:11.5px;color:rgba(200,216,240,.85);margin-top:2px;}
 .gallery-cta{text-align:center;margin-top:32px;}
 </style>
 </head>
@@ -586,8 +571,8 @@ footer{
 
       <div class="product-card">
         <div class="product-thumb">
-          <img src="assets/IMG_3208.JPG" alt="8x14 Food Trailer" onerror="this.parentElement.classList.add('no-img')">
-          <span class="thumb-size">14'</span>
+          <img class="thumb-logo" src="assets/nova_logo.png" alt="">
+          <span class="thumb-size">8' × 14'</span>
         </div>
         <div class="product-body">
           <div class="product-size">8' × 14'</div>
@@ -602,9 +587,9 @@ footer{
 
       <div class="product-card">
         <div class="product-thumb">
-          <img src="assets/IMG_3209.JPG" alt="8x20 Food Trailer" onerror="this.parentElement.classList.add('no-img')">
           <div class="badge-popular" data-es="Popular" data-en="Popular">Popular</div>
-          <span class="thumb-size">20'</span>
+          <img class="thumb-logo" src="assets/nova_logo.png" alt="">
+          <span class="thumb-size">8' × 20'</span>
         </div>
         <div class="product-body">
           <div class="product-size">8' × 20'</div>
@@ -619,8 +604,8 @@ footer{
 
       <div class="product-card">
         <div class="product-thumb">
-          <img src="assets/IMG_3210.JPG" alt="8x24 Food Trailer" onerror="this.parentElement.classList.add('no-img')">
-          <span class="thumb-size">24'</span>
+          <img class="thumb-logo" src="assets/nova_logo.png" alt="">
+          <span class="thumb-size">8' × 24'</span>
         </div>
         <div class="product-body">
           <div class="product-size">8' × 24'</div>
@@ -635,8 +620,8 @@ footer{
 
       <div class="product-card">
         <div class="product-thumb">
-          <img src="assets/IMG_3213.JPG" alt="8x16 Food Trailer" onerror="this.parentElement.classList.add('no-img')">
-          <span class="thumb-size">16'</span>
+          <img class="thumb-logo" src="assets/nova_logo.png" alt="">
+          <span class="thumb-size">8' × 16'</span>
         </div>
         <div class="product-body">
           <div class="product-size">8' × 16'</div>
@@ -651,9 +636,9 @@ footer{
 
       <div class="product-card">
         <div class="product-thumb">
-          <img src="assets/IMG_3211.JPG" alt="8x26 Food Trailer" onerror="this.parentElement.classList.add('no-img')">
           <div class="badge-popular" data-es="Premium" data-en="Premium">Premium</div>
-          <span class="thumb-size">26'</span>
+          <img class="thumb-logo" src="assets/nova_logo.png" alt="">
+          <span class="thumb-size">8' × 26'</span>
         </div>
         <div class="product-body">
           <div class="product-size">8' × 26'</div>
@@ -695,31 +680,46 @@ footer{
       <p class="section-sub center" data-es="Cada trailer es fabricado a la medida con los más altos estándares de calidad. Aquí algunos de nuestros proyectos recientes." data-en="Every trailer is custom-built to the highest quality standards. Here are some of our recent projects.">Cada trailer es fabricado a la medida con los más altos estándares de calidad. Aquí algunos de nuestros proyectos recientes.</p>
     </div>
     <div class="gallery-grid">
-      <div class="gallery-item featured">
-        <div class="gallery-placeholder" style="background:linear-gradient(135deg,#b91c1c,#dc2626);">
-          <img src="assets/IMG_3209.JPG" alt="Red food trailer with LED lights" onerror="this.style.display='none'">
-        </div>
+      <div class="gallery-item">
+        <img src="assets/IMG_3209.JPG" alt="Red food trailer with LED lights at night">
         <div class="gallery-overlay">
-          <div class="gallery-label" data-es="8' × 24' — Rojo con luces LED" data-en="8' × 24' — Red with LED lights">8' × 24' — Rojo con luces LED</div>
+          <div class="gallery-label" data-es="Rojo · Luces LED" data-en="Red · LED Lights">Rojo · Luces LED</div>
           <div class="gallery-desc" data-es="Ventanas panorámicas, iluminación completa" data-en="Panoramic windows, full lighting">Ventanas panorámicas, iluminación completa</div>
         </div>
       </div>
       <div class="gallery-item">
-        <div class="gallery-placeholder" style="background:linear-gradient(135deg,#ca8a04,#eab308);">
-          <img src="assets/IMG_3208.JPG" alt="Yellow food trailer with AC" onerror="this.style.display='none'">
-        </div>
+        <img src="assets/IMG_3208.JPG" alt="Yellow food trailer with AC">
         <div class="gallery-overlay">
-          <div class="gallery-label" data-es="8' × 20' — Amarillo con A/C" data-en="8' × 20' — Yellow with A/C">8' × 20' — Amarillo con A/C</div>
-          <div class="gallery-desc" data-es="Ventana de servicio, porch trasero" data-en="Service window, rear porch">Ventana de servicio, porch trasero</div>
+          <div class="gallery-label" data-es="Amarillo · A/C y porch" data-en="Yellow · A/C & porch">Amarillo · A/C y porch</div>
+          <div class="gallery-desc" data-es="Ventana de servicio, escaleras traseras" data-en="Service window, rear stairs">Ventana de servicio, escaleras traseras</div>
         </div>
       </div>
       <div class="gallery-item">
-        <div class="gallery-placeholder" style="background:linear-gradient(135deg,#374151,#4b5563);">
-          <img src="assets/IMG_3211.JPG" alt="Dark gray food trailer" onerror="this.style.display='none'">
-        </div>
+        <img src="assets/IMG_3210.JPG" alt="Red food trailer daytime">
         <div class="gallery-overlay">
-          <div class="gallery-label" data-es="8' × 24' — Gris oscuro premium" data-en="8' × 24' — Dark gray premium">8' × 24' — Gris oscuro premium</div>
-          <div class="gallery-desc" data-es="Acabado elegante, paneles de acero" data-en="Elegant finish, steel panels">Acabado elegante, paneles de acero</div>
+          <div class="gallery-label" data-es="Rojo · Ventanas de servicio" data-en="Red · Service Windows">Rojo · Ventanas de servicio</div>
+          <div class="gallery-desc" data-es="Doble ventana, counter de acero" data-en="Double window, steel counter">Doble ventana, counter de acero</div>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img src="assets/IMG_3211.JPG" alt="Dark gray premium food trailer">
+        <div class="gallery-overlay">
+          <div class="gallery-label" data-es="Gris oscuro · Premium" data-en="Dark Gray · Premium">Gris oscuro · Premium</div>
+          <div class="gallery-desc" data-es="Acabado elegante, paneles de acero inoxidable" data-en="Elegant finish, stainless steel panels">Acabado elegante, paneles de acero inoxidable</div>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img src="assets/IMG_3212.JPG" alt="Red food trailer in factory with open windows">
+        <div class="gallery-overlay">
+          <div class="gallery-label" data-es="Rojo · Ventanas abiertas" data-en="Red · Open Windows">Rojo · Ventanas abiertas</div>
+          <div class="gallery-desc" data-es="Counter de servicio, campana, LEDs" data-en="Service counter, hood, LEDs">Counter de servicio, campana, LEDs</div>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img src="assets/IMG_3213.JPG" alt="Green food trailer with awning open">
+        <div class="gallery-overlay">
+          <div class="gallery-label" data-es="Verde · Toldo desplegado" data-en="Green · Awning Open">Verde · Toldo desplegado</div>
+          <div class="gallery-desc" data-es="Ventanas panorámicas, listo para operar" data-en="Panoramic windows, ready to operate">Ventanas panorámicas, listo para operar</div>
         </div>
       </div>
     </div>
