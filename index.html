@@ -427,25 +427,23 @@ footer{
 @media(max-width:520px){.gallery-grid{grid-template-columns:1fr;}}
 .gallery-item{
   position:relative;border-radius:14px;overflow:hidden;
-  aspect-ratio:4/3;cursor:pointer;
+  aspect-ratio:4/3;
   transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s ease;
 }
 .gallery-item:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.2);}
-.gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;}
+.gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;position:relative;z-index:1;}
 .gallery-item:hover img{transform:scale(1.05);}
 .gallery-item .gallery-placeholder{
-  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
-  font-family:Georgia,serif;font-size:18px;font-weight:700;color:rgba(255,255,255,.7);
+  width:100%;height:100%;position:relative;
 }
 .gallery-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(13,34,68,.8) 0%,transparent 50%);
-  display:flex;flex-direction:column;justify-content:flex-end;padding:18px;
-  opacity:0;transition:opacity .35s ease;
+  position:absolute;inset:0;z-index:2;
+  background:linear-gradient(to top,rgba(13,34,68,.85) 0%,rgba(13,34,68,.1) 40%,transparent 60%);
+  display:flex;flex-direction:column;justify-content:flex-end;padding:20px;
+  opacity:1;
 }
-.gallery-item:hover .gallery-overlay{opacity:1;}
-.gallery-label{font-size:14px;font-weight:700;color:#fff;}
-.gallery-desc{font-size:12px;color:rgba(200,216,240,.8);margin-top:3px;}
+.gallery-label{font-size:15px;font-weight:700;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.3);}
+.gallery-desc{font-size:12px;color:rgba(200,216,240,.85);margin-top:3px;}
 .gallery-item.featured{grid-column:span 2;aspect-ratio:21/9;}
 @media(max-width:520px){.gallery-item.featured{grid-column:span 1;aspect-ratio:4/3;}}
 .gallery-cta{text-align:center;margin-top:32px;}
@@ -570,7 +568,7 @@ footer{
           <div class="product-price">$18,500 <span data-es="precio base" data-en="base price">precio base</span></div>
         </div>
         <div class="product-footer">
-          <a href="builder.html?size=8x14" class="btn btn-primary" data-es="Cotizar" data-en="Quote">Cotizar</a>
+          <a href="#cotizador" onclick="if(window.qbSelect)qbSelect('8x14',true)" class="btn btn-primary" data-es="Cotizar" data-en="Quote">Cotizar</a>
           <a href="https://wa.me/16452353186?text=Hola%2C%20me%20interesa%20una%20cotizaci%C3%B3n%20gratis%20para%20un%20trailer%20personalizado" target="_blank" class="btn btn-outline" data-es="Cotización Gratis" data-en="Free Quote">Cotización Gratis</a>
         </div>
       </div>
@@ -586,7 +584,7 @@ footer{
           <div class="product-price">$27,500 <span data-es="precio base" data-en="base price">precio base</span></div>
         </div>
         <div class="product-footer">
-          <a href="builder.html?size=8x20" class="btn btn-primary" data-es="Cotizar" data-en="Quote">Cotizar</a>
+          <a href="#cotizador" onclick="if(window.qbSelect)qbSelect('8x20',true)" class="btn btn-primary" data-es="Cotizar" data-en="Quote">Cotizar</a>
           <a href="https://wa.me/16452353186?text=Hola%2C%20me%20interesa%20una%20cotizaci%C3%B3n%20gratis%20para%20un%20trailer%20personalizado" target="_blank" class="btn btn-outline" data-es="Cotización Gratis" data-en="Free Quote">Cotización Gratis</a>
         </div>
       </div>
@@ -601,7 +599,7 @@ footer{
           <div class="product-price">$33,000 <span data-es="precio base" data-en="base price">precio base</span></div>
         </div>
         <div class="product-footer">
-          <a href="builder.html?size=8x24" class="btn btn-primary" data-es="Cotizar" data-en="Quote">Cotizar</a>
+          <a href="#cotizador" onclick="if(window.qbSelect)qbSelect('8x24',true)" class="btn btn-primary" data-es="Cotizar" data-en="Quote">Cotizar</a>
           <a href="https://wa.me/16452353186?text=Hola%2C%20me%20interesa%20una%20cotizaci%C3%B3n%20gratis%20para%20un%20trailer%20personalizado" target="_blank" class="btn btn-outline" data-es="Cotización Gratis" data-en="Free Quote">Cotización Gratis</a>
         </div>
       </div>
@@ -616,7 +614,7 @@ footer{
           <div class="product-price">$21,000 <span data-es="precio base" data-en="base price">precio base</span></div>
         </div>
         <div class="product-footer">
-          <a href="builder.html?size=8x16" class="btn btn-primary" data-es="Cotizar" data-en="Quote">Cotizar</a>
+          <a href="#cotizador" onclick="if(window.qbSelect)qbSelect('8x16',true)" class="btn btn-primary" data-es="Cotizar" data-en="Quote">Cotizar</a>
           <a href="https://wa.me/16452353186?text=Hola%2C%20me%20interesa%20una%20cotizaci%C3%B3n%20gratis%20para%20un%20trailer%20personalizado" target="_blank" class="btn btn-outline" data-es="Cotización Gratis" data-en="Free Quote">Cotización Gratis</a>
         </div>
       </div>
@@ -632,7 +630,7 @@ footer{
           <div class="product-price">$36,000 <span data-es="precio base" data-en="base price">precio base</span></div>
         </div>
         <div class="product-footer">
-          <a href="builder.html?size=8x26" class="btn btn-primary" data-es="Cotizar" data-en="Quote">Cotizar</a>
+          <a href="#cotizador" onclick="if(window.qbSelect)qbSelect('8x26',true)" class="btn btn-primary" data-es="Cotizar" data-en="Quote">Cotizar</a>
           <a href="https://wa.me/16452353186?text=Hola%2C%20me%20interesa%20una%20cotizaci%C3%B3n%20gratis%20para%20un%20trailer%20personalizado" target="_blank" class="btn btn-outline" data-es="Cotización Gratis" data-en="Free Quote">Cotización Gratis</a>
         </div>
       </div>
