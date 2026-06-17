@@ -551,7 +551,7 @@ footer{
       <div class="stat-label" data-es="Tamaños disponibles" data-en="Sizes available">Tamaños disponibles</div>
     </div>
     <div>
-      <div class="stat-num">1 año</div>
+      <div class="stat-num" data-es="1 año" data-en="1 year">1 año</div>
       <div class="stat-label" data-es="Garantía incluida" data-en="Warranty included">Garantía incluida</div>
     </div>
   </div>
@@ -770,7 +770,7 @@ footer{
             <div class="qb-form-row">
               <div class="qb-form-field">
                 <label data-es="Nombre" data-en="Name">Nombre</label>
-                <input type="text" id="qbName" placeholder="Tu nombre">
+                <input type="text" id="qbName" placeholder="Tu nombre" data-es="Tu nombre" data-en="Your name">
               </div>
               <div class="qb-form-field">
                 <label data-es="WhatsApp / Teléfono" data-en="WhatsApp / Phone">WhatsApp / Teléfono</label>
@@ -1133,7 +1133,7 @@ footer{
           <div class="form-row">
             <div class="form-field">
               <label data-es="Nombre completo" data-en="Full name">Nombre completo</label>
-              <input type="text" name="name" required placeholder="Tu nombre">
+              <input type="text" name="name" required placeholder="Tu nombre" data-es="Tu nombre" data-en="Your name">
             </div>
             <div class="form-field">
               <label data-es="WhatsApp / Teléfono" data-en="WhatsApp / Phone">WhatsApp / Teléfono</label>
@@ -1170,7 +1170,7 @@ footer{
           </div>
           <div class="form-field">
             <label data-es="¿Qué vas a vender?" data-en="What are you going to sell?">¿Qué vas a vender?</label>
-            <textarea name="message" rows="3" placeholder="Tacos, BBQ, bebidas, postres..."></textarea>
+            <textarea name="message" rows="3" placeholder="Tacos, BBQ, bebidas, postres..." data-es="Tacos, BBQ, bebidas, postres..." data-en="Tacos, BBQ, drinks, desserts..."></textarea>
           </div>
           <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;" data-es="Solicitar cotización gratis" data-en="Request free quote">Solicitar cotización gratis</button>
           <div class="form-success" id="formSuccess">
@@ -1247,7 +1247,7 @@ footer{
       <a href="#contacto" data-es="Contacto" data-en="Contact">Contacto</a>
     </div>
     <div class="footer-col">
-      <h4>Contact</h4>
+      <h4 data-es="Contacto" data-en="Contact">Contacto</h4>
       <a href="tel:+16452353186">+1 (645) 235-3186</a>
       <a href="mailto:marceloramosch@gmail.com">marceloramosch@gmail.com</a>
       <a href="https://wa.me/16452353186" target="_blank">WhatsApp</a>
@@ -1290,7 +1290,7 @@ let currentLang = localStorage.getItem('nft-lang') || 'es';
 
 function applyLang(lang) {
   currentLang = lang;
-  document.getElementById('langBtn').textContent = lang === 'es' ? 'EN' : 'ES';
+  document.getElementById('langBtn').textContent = lang === 'es' ? 'ES' : 'EN';
   html.setAttribute('lang', lang);
   localStorage.setItem('nft-lang', lang);
   document.querySelectorAll('[data-es]').forEach(el => {
@@ -1485,8 +1485,10 @@ function submitForm(e) {
   const form = e.target;
   const data = Object.fromEntries(new FormData(form));
   // Build WhatsApp message with form data and open
-  const msg = encodeURIComponent(
-    `Hola Nova Food Trailers! Me interesa un food trailer.\n\nNombre: ${data.name}\nTel/WA: ${data.phone}\nEmail: ${data.email || 'N/A'}\nCiudad: ${data.city || 'N/A'}\nTamaño: ${data.size || 'Por definir'}\n¿Qué vendo?: ${data.message || 'N/A'}`
+  const isEn = currentLang === 'en';
+  const msg = encodeURIComponent(isEn
+    ? `Hi Nova Food Trailers! I'm interested in a food trailer.\n\nName: ${data.name}\nPhone/WA: ${data.phone}\nEmail: ${data.email || 'N/A'}\nCity: ${data.city || 'N/A'}\nSize: ${data.size || 'TBD'}\nWhat I sell: ${data.message || 'N/A'}`
+    : `Hola Nova Food Trailers! Me interesa un food trailer.\n\nNombre: ${data.name}\nTel/WA: ${data.phone}\nEmail: ${data.email || 'N/A'}\nCiudad: ${data.city || 'N/A'}\nTamaño: ${data.size || 'Por definir'}\n¿Qué vendo?: ${data.message || 'N/A'}`
   );
   window.open(`https://wa.me/16452353186?text=${msg}`, '_blank');
   document.getElementById('formSuccess').style.display = 'block';
