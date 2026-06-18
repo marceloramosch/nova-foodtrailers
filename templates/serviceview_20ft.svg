@@ -1,0 +1,278 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1020" width="1500" height="1020" font-family="Arial,Helvetica,sans-serif">
+  <defs>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#555" stroke-width="0.7"/>
+    </pattern>
+    <pattern id="hatchX" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#555" stroke-width="0.7"/>
+    </pattern>
+  </defs>
+
+  <rect width="1500" height="1020" fill="white"/>
+
+  <!-- NOVA LOGO -->
+  <g transform="translate(30,25)">
+    <text x="0" y="28" font-size="32" font-weight="900" fill="#0D2244" letter-spacing="2">N</text>
+    <text x="0" y="55" font-size="18" font-weight="900" fill="#0D2244" letter-spacing="1">FT</text>
+    <text x="40" y="36" font-size="11" fill="#444">NOVA</text>
+    <text x="40" y="50" font-size="11" fill="#444">FOOD TRAILERS</text>
+  </g>
+
+  <!-- SPECS TABLE -->
+  <g transform="translate(20,80)">
+    <rect x="0" y="0" width="280" height="18" fill="#333"/>
+    <text x="5" y="13" font-size="10" font-weight="700" fill="white">SPECS</text>
+    <text x="145" y="13" font-size="10" font-weight="700" fill="white">FOLIO #</text>
+    <line x1="140" y1="0" x2="140" y2="18" stroke="#666" stroke-width="0.5"/>
+
+    <g font-size="8" fill="#111">
+      <rect x="0" y="18" width="280" height="16" fill="#f5f5f5" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="30" font-weight="700">CUSTOMER</text><line x1="140" y1="18" x2="140" y2="34" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="34" width="280" height="16" fill="white" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="46" font-weight="700">OFFICE</text><line x1="140" y1="34" x2="140" y2="50" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="50" width="280" height="16" fill="#f5f5f5" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="62" font-weight="700">DESTINATION</text><line x1="140" y1="50" x2="140" y2="66" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="66" width="280" height="16" fill="white" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="78" font-weight="700">SIZE</text><text x="145" y="78">20 × 8 × 7</text><line x1="140" y1="66" x2="140" y2="82" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="82" width="280" height="16" fill="#f5f5f5" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="94" font-weight="700">MODEL</text><line x1="140" y1="82" x2="140" y2="98" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="98" width="280" height="16" fill="white" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="110" font-weight="700">FLOOR</text><text x="145" y="110">Plate Diamond</text><line x1="140" y1="98" x2="140" y2="114" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="114" width="280" height="16" fill="#f5f5f5" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="126" font-weight="700">AXLES</text><line x1="140" y1="114" x2="140" y2="130" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="130" width="280" height="16" fill="white" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="142" font-weight="700">COLOR</text><line x1="140" y1="130" x2="140" y2="146" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="146" width="280" height="16" fill="#f5f5f5" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="158" font-weight="700">A / C</text><text x="145" y="158">1 Ton / 2 Ton</text><line x1="140" y1="146" x2="140" y2="162" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="162" width="280" height="16" fill="white" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="174" font-weight="700">LOUVER</text><text x="145" y="174">Front / Back</text><line x1="140" y1="162" x2="140" y2="178" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="178" width="280" height="16" fill="#f5f5f5" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="190" font-weight="700">PLUMBING</text><text x="145" y="190">Pex</text><line x1="140" y1="178" x2="140" y2="194" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="194" width="280" height="16" fill="white" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="206" font-weight="700">CLEAN WATER TANK</text><line x1="140" y1="194" x2="140" y2="210" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="210" width="280" height="16" fill="#f5f5f5" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="222" font-weight="700">WASTE WATER TANK</text><line x1="140" y1="210" x2="140" y2="226" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="226" width="280" height="16" fill="white" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="238" font-weight="700">TANK CARRIER</text><line x1="140" y1="226" x2="140" y2="242" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="242" width="280" height="16" fill="#f5f5f5" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="254" font-weight="700">GENERATOR</text><line x1="140" y1="242" x2="140" y2="258" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="258" width="280" height="16" fill="white" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="270" font-weight="700">WINDOW SIZE</text><text x="145" y="270">4'x3' | 5'x3' | 6'x3'</text><line x1="140" y1="258" x2="140" y2="274" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="274" width="280" height="16" fill="#f5f5f5" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="286" font-weight="700">WINDOW TYPE</text><line x1="140" y1="274" x2="140" y2="290" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="290" width="280" height="16" fill="white" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="302" font-weight="700">WHEELS</text><text x="145" y="302">White</text><line x1="140" y1="290" x2="140" y2="306" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="306" width="280" height="16" fill="#f5f5f5" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="318" font-weight="700">VENT HOOD</text><line x1="140" y1="306" x2="140" y2="322" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="322" width="280" height="16" fill="white" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="334" font-weight="700">VENT HOOD SIZE</text><line x1="140" y1="322" x2="140" y2="338" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="338" width="280" height="16" fill="#f5f5f5" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="350" font-weight="700">WATER BOMB</text><text x="145" y="350">70 Psi 1/2 hp 110v</text><line x1="140" y1="338" x2="140" y2="354" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="354" width="280" height="22" fill="white" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="366" font-weight="700">SINK | HANDWASH |</text>
+      <text x="5" y="374" font-weight="700">SPLASHGUARD</text><line x1="140" y1="354" x2="140" y2="376" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="376" width="280" height="16" fill="#f5f5f5" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="388" font-weight="700">GAS OUTLETS</text><line x1="140" y1="376" x2="140" y2="392" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="392" width="280" height="22" fill="white" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="404" font-weight="700">TOP AND BOTTOM</text>
+      <text x="5" y="412" font-weight="700">FACINGS</text><text x="145" y="406">Alum smooth</text><line x1="140" y1="392" x2="140" y2="414" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="414" width="280" height="16" fill="#f5f5f5" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="426" font-weight="700">CORNER'S</text><line x1="140" y1="414" x2="140" y2="430" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="430" width="280" height="16" fill="white" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="442" font-weight="700">WATER HEATER</text><text x="145" y="442">Electric 4 Gal</text><line x1="140" y1="430" x2="140" y2="446" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="446" width="280" height="16" fill="#f5f5f5" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="458" font-weight="700">SINK FAUCET</text><text x="145" y="458">Spring</text><line x1="140" y1="446" x2="140" y2="462" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="462" width="280" height="16" fill="white" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="474" font-weight="700">ELECTRICA MAIN PLUG</text><text x="145" y="474">L14-30 - 30A</text><line x1="140" y1="462" x2="140" y2="478" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="478" width="280" height="22" fill="#f5f5f5" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="490" font-weight="700">ELECTRIC OUTLETS /</text>
+      <text x="5" y="498" font-weight="700">VOLTAGE</text><text x="145" y="492">0 / 110V | 0 / 220V</text><line x1="140" y1="478" x2="140" y2="500" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="500" width="280" height="16" fill="white" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="512" font-weight="700">EXTERIOR LIGHT</text><text x="145" y="512">Reflector</text><line x1="140" y1="500" x2="140" y2="516" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="516" width="280" height="18" fill="#eee" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="529" font-weight="700" font-size="9">OBSERVATIONS:</text>
+
+      <rect x="0" y="534" width="280" height="50" fill="white" stroke="#ccc" stroke-width="0.3"/>
+
+      <rect x="0" y="584" width="280" height="16" fill="#eee" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="596" font-weight="700" font-size="9">COMPONENTS</text>
+
+      <rect x="0" y="600" width="280" height="140" fill="white" stroke="#ccc" stroke-width="0.3"/>
+      <text x="5" y="614">1)</text><text x="5" y="630">2)</text><text x="5" y="646">3)</text><text x="5" y="662">4)</text>
+      <text x="5" y="678">5)</text><text x="5" y="694">6)</text><text x="5" y="710">7)</text><text x="5" y="726">8)</text>
+    </g>
+    <rect x="0" y="0" width="280" height="740" fill="none" stroke="#333" stroke-width="1.5"/>
+  </g>
+
+  <!-- INTERIOR VIEW - RIGHT (20ft = 1000px wide) -->
+  <g transform="translate(330,60)">
+    <g font-size="10" fill="#333" text-anchor="middle">
+      <text x="39" y="-6">1</text><text x="89" y="-6">2</text><text x="139" y="-6">3</text><text x="189" y="-6">4</text>
+      <text x="239" y="-6">5</text><text x="289" y="-6">6</text><text x="339" y="-6">7</text><text x="389" y="-6">8</text>
+      <text x="439" y="-6">9</text><text x="489" y="-6">10</text><text x="539" y="-6">11</text><text x="589" y="-6">12</text>
+      <text x="639" y="-6">13</text><text x="689" y="-6">14</text><text x="739" y="-6">15</text><text x="789" y="-6">16</text>
+      <text x="839" y="-6">17</text><text x="889" y="-6">18</text><text x="939" y="-6">19</text><text x="989" y="-6">20</text>
+    </g>
+
+    <rect x="0" y="0" width="1028" height="378" fill="none" stroke="#222" stroke-width="2.5"/>
+
+    <rect x="0" y="0" width="1028" height="14" fill="url(#hatch)"/>
+    <rect x="0" y="0" width="1028" height="14" fill="url(#hatchX)" opacity="0.5"/>
+    <rect x="0" y="364" width="1028" height="14" fill="url(#hatch)"/>
+    <rect x="0" y="364" width="1028" height="14" fill="url(#hatchX)" opacity="0.5"/>
+    <rect x="0" y="0" width="14" height="378" fill="url(#hatch)"/>
+    <rect x="0" y="0" width="14" height="378" fill="url(#hatchX)" opacity="0.5"/>
+    <rect x="1014" y="0" width="14" height="378" fill="url(#hatch)"/>
+    <rect x="1014" y="0" width="14" height="378" fill="url(#hatchX)" opacity="0.5"/>
+
+    <rect x="14" y="14" width="1000" height="350" fill="white"/>
+
+    <g stroke="#ddd" stroke-width="0.5">
+      <line x1="64" y1="14" x2="64" y2="364"/><line x1="114" y1="14" x2="114" y2="364"/>
+      <line x1="164" y1="14" x2="164" y2="364"/><line x1="214" y1="14" x2="214" y2="364"/>
+      <line x1="264" y1="14" x2="264" y2="364"/><line x1="314" y1="14" x2="314" y2="364"/>
+      <line x1="364" y1="14" x2="364" y2="364"/><line x1="414" y1="14" x2="414" y2="364"/>
+      <line x1="464" y1="14" x2="464" y2="364"/><line x1="514" y1="14" x2="514" y2="364"/>
+      <line x1="564" y1="14" x2="564" y2="364"/><line x1="614" y1="14" x2="614" y2="364"/>
+      <line x1="664" y1="14" x2="664" y2="364"/><line x1="714" y1="14" x2="714" y2="364"/>
+      <line x1="764" y1="14" x2="764" y2="364"/><line x1="814" y1="14" x2="814" y2="364"/>
+      <line x1="864" y1="14" x2="864" y2="364"/><line x1="914" y1="14" x2="914" y2="364"/>
+      <line x1="964" y1="14" x2="964" y2="364"/>
+      <line x1="14" y1="64" x2="1014" y2="64"/><line x1="14" y1="114" x2="1014" y2="114"/>
+      <line x1="14" y1="164" x2="1014" y2="164"/><line x1="14" y1="214" x2="1014" y2="214"/>
+      <line x1="14" y1="264" x2="1014" y2="264"/><line x1="14" y1="314" x2="1014" y2="314"/>
+    </g>
+
+    <g font-size="10" fill="#333" text-anchor="start">
+      <text x="1034" y="42">7</text><text x="1034" y="92">6</text><text x="1034" y="142">5</text><text x="1034" y="192">4</text>
+      <text x="1034" y="242">3</text><text x="1034" y="292">2</text><text x="1034" y="342">1</text>
+    </g>
+
+    <line x1="14" y1="14" x2="14" y2="364" stroke="#222" stroke-width="1"/>
+    <line x1="1014" y1="14" x2="1014" y2="364" stroke="#222" stroke-width="1"/>
+    <line x1="14" y1="14" x2="1014" y2="14" stroke="#222" stroke-width="1"/>
+    <line x1="14" y1="364" x2="1014" y2="364" stroke="#222" stroke-width="1"/>
+
+    <text x="950" y="400" font-size="11" font-weight="700" fill="#333">INTERIOR</text>
+    <text x="950" y="414" font-size="11" font-weight="700" fill="#333">VIEW - RIGHT</text>
+  </g>
+
+  <!-- Direction arrow RIGHT -->
+  <g transform="translate(1390,220)">
+    <text x="0" y="-8" font-size="14" text-anchor="middle">↑</text>
+    <polygon points="-10,10 10,10 0,-2" fill="#222"/>
+    <polygon points="8,12 20,20 8,28" fill="#222"/>
+    <line x1="0" y1="20" x2="8" y2="20" stroke="#222" stroke-width="2"/>
+  </g>
+
+  <!-- INTERIOR VIEW - LEFT (20ft) -->
+  <g transform="translate(330,520)">
+    <g font-size="10" fill="#333" text-anchor="middle">
+      <text x="39" y="-6">20</text><text x="89" y="-6">19</text><text x="139" y="-6">18</text><text x="189" y="-6">17</text>
+      <text x="239" y="-6">16</text><text x="289" y="-6">15</text><text x="339" y="-6">14</text><text x="389" y="-6">13</text>
+      <text x="439" y="-6">12</text><text x="489" y="-6">11</text><text x="539" y="-6">10</text><text x="589" y="-6">9</text>
+      <text x="639" y="-6">8</text><text x="689" y="-6">7</text><text x="739" y="-6">6</text><text x="789" y="-6">5</text>
+      <text x="839" y="-6">4</text><text x="889" y="-6">3</text><text x="939" y="-6">2</text><text x="989" y="-6">1</text>
+    </g>
+
+    <rect x="0" y="0" width="1028" height="378" fill="none" stroke="#222" stroke-width="2.5"/>
+
+    <rect x="0" y="0" width="1028" height="14" fill="url(#hatch)"/>
+    <rect x="0" y="0" width="1028" height="14" fill="url(#hatchX)" opacity="0.5"/>
+    <rect x="0" y="364" width="1028" height="14" fill="url(#hatch)"/>
+    <rect x="0" y="364" width="1028" height="14" fill="url(#hatchX)" opacity="0.5"/>
+    <rect x="0" y="0" width="14" height="378" fill="url(#hatch)"/>
+    <rect x="0" y="0" width="14" height="378" fill="url(#hatchX)" opacity="0.5"/>
+    <rect x="1014" y="0" width="14" height="378" fill="url(#hatch)"/>
+    <rect x="1014" y="0" width="14" height="378" fill="url(#hatchX)" opacity="0.5"/>
+
+    <rect x="14" y="14" width="1000" height="350" fill="white"/>
+
+    <g stroke="#ddd" stroke-width="0.5">
+      <line x1="64" y1="14" x2="64" y2="364"/><line x1="114" y1="14" x2="114" y2="364"/>
+      <line x1="164" y1="14" x2="164" y2="364"/><line x1="214" y1="14" x2="214" y2="364"/>
+      <line x1="264" y1="14" x2="264" y2="364"/><line x1="314" y1="14" x2="314" y2="364"/>
+      <line x1="364" y1="14" x2="364" y2="364"/><line x1="414" y1="14" x2="414" y2="364"/>
+      <line x1="464" y1="14" x2="464" y2="364"/><line x1="514" y1="14" x2="514" y2="364"/>
+      <line x1="564" y1="14" x2="564" y2="364"/><line x1="614" y1="14" x2="614" y2="364"/>
+      <line x1="664" y1="14" x2="664" y2="364"/><line x1="714" y1="14" x2="714" y2="364"/>
+      <line x1="764" y1="14" x2="764" y2="364"/><line x1="814" y1="14" x2="814" y2="364"/>
+      <line x1="864" y1="14" x2="864" y2="364"/><line x1="914" y1="14" x2="914" y2="364"/>
+      <line x1="964" y1="14" x2="964" y2="364"/>
+      <line x1="14" y1="64" x2="1014" y2="64"/><line x1="14" y1="114" x2="1014" y2="114"/>
+      <line x1="14" y1="164" x2="1014" y2="164"/><line x1="14" y1="214" x2="1014" y2="214"/>
+      <line x1="14" y1="264" x2="1014" y2="264"/><line x1="14" y1="314" x2="1014" y2="314"/>
+    </g>
+
+    <g font-size="10" fill="#333" text-anchor="start">
+      <text x="1034" y="42">7</text><text x="1034" y="92">6</text><text x="1034" y="142">5</text><text x="1034" y="192">4</text>
+      <text x="1034" y="242">3</text><text x="1034" y="292">2</text><text x="1034" y="342">1</text>
+    </g>
+
+    <line x1="14" y1="14" x2="14" y2="364" stroke="#222" stroke-width="1"/>
+    <line x1="1014" y1="14" x2="1014" y2="364" stroke="#222" stroke-width="1"/>
+    <line x1="14" y1="14" x2="1014" y2="14" stroke="#222" stroke-width="1"/>
+    <line x1="14" y1="364" x2="1014" y2="364" stroke="#222" stroke-width="1"/>
+
+    <text x="950" y="400" font-size="11" font-weight="700" fill="#333">INTERIOR</text>
+    <text x="950" y="414" font-size="11" font-weight="700" fill="#333">VIEW - LEFT</text>
+  </g>
+
+  <!-- Direction arrow LEFT -->
+  <g transform="translate(340,690)">
+    <text x="0" y="-8" font-size="14" text-anchor="middle">↑</text>
+    <polygon points="-10,10 10,10 0,-2" fill="#222"/>
+    <polygon points="-8,12 -20,20 -8,28" fill="#222"/>
+    <line x1="0" y1="20" x2="-8" y2="20" stroke="#222" stroke-width="2"/>
+  </g>
+
+  <!-- SLOGAN -->
+  <g transform="translate(15,580)">
+    <text transform="rotate(-90)" x="0" y="0" font-size="22" font-weight="900" fill="#0D2244" letter-spacing="3">BUILD IT. OWN IT.</text>
+  </g>
+
+  <!-- SIGNATURE AREA -->
+  <g transform="translate(0,940)">
+    <line x1="100" y1="15" x2="400" y2="15" stroke="#333" stroke-width="0.8"/>
+    <text x="250" y="30" text-anchor="middle" font-size="11" font-weight="700" fill="#333">CUSTOMER</text>
+
+    <line x1="550" y1="15" x2="850" y2="15" stroke="#333" stroke-width="0.8"/>
+    <text x="700" y="30" text-anchor="middle" font-size="11" font-weight="700" fill="#333">SALES REP</text>
+
+    <text x="1380" y="18" text-anchor="end" font-size="20" font-weight="900" fill="#0D2244" letter-spacing="1">NOVA</text>
+    <text x="1380" y="35" text-anchor="end" font-size="11" font-weight="400" fill="#333" letter-spacing="3">FOOD TRAILERS</text>
+
+    <text x="750" y="55" text-anchor="middle" font-size="7" fill="#666">By signing and submitting this document, the customer acknowledges and agrees that no further changes or</text>
+    <text x="750" y="64" text-anchor="middle" font-size="7" fill="#666">modifications can be made to the trailer design and engineering. This agreement is final and binding.</text>
+  </g>
+</svg>
