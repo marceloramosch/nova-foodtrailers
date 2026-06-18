@@ -1,157 +1,160 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 652 954" width="652" height="954" font-family="Arial,sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 910 1064" width="910" height="1064" font-family="Arial, Helvetica, sans-serif">
 <defs>
-<pattern id="h" width="6" height="6" patternUnits="userSpaceOnUse">
-<line x1="0" y1="0" x2="6" y2="6" stroke="#333" stroke-width="0.7"/>
-<line x1="6" y1="0" x2="0" y2="6" stroke="#333" stroke-width="0.7"/>
-</pattern>
+  <pattern id="wall" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <rect width="7" height="7" fill="#e9ecef"/>
+    <line x1="0" y1="0" x2="0" y2="7" stroke="#2b2b2b" stroke-width="1.1"/>
+  </pattern>
+  <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#3a3a3a"/>
+    <stop offset="100%" stop-color="#1c1c1c"/>
+  </linearGradient>
+  <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#777"/>
+    <stop offset="50%" stop-color="#555"/>
+    <stop offset="100%" stop-color="#3d3d3d"/>
+  </linearGradient>
 </defs>
-<rect width="652" height="954" fill="white"/>
-<rect x="50" y="35" width="532" height="16" fill="url(#h)" stroke="#222" stroke-width="2"/>
-<rect x="50" y="401" width="532" height="16" fill="url(#h)" stroke="#222" stroke-width="2"/>
-<rect x="50" y="35" width="16" height="382" fill="url(#h)" stroke="#222" stroke-width="2"/>
-<rect x="566" y="35" width="16" height="382" fill="url(#h)" stroke="#222" stroke-width="2"/>
-<rect x="66" y="51" width="500" height="350" fill="white"/>
-<g stroke="#c0c0c0" stroke-width="0.4">
-<line x1="116" y1="51" x2="116" y2="401"/>
-<line x1="166" y1="51" x2="166" y2="401"/>
-<line x1="216" y1="51" x2="216" y2="401"/>
-<line x1="266" y1="51" x2="266" y2="401"/>
-<line x1="316" y1="51" x2="316" y2="401"/>
-<line x1="366" y1="51" x2="366" y2="401"/>
-<line x1="416" y1="51" x2="416" y2="401"/>
-<line x1="466" y1="51" x2="466" y2="401"/>
-<line x1="516" y1="51" x2="516" y2="401"/>
-<line x1="66" y1="101" x2="566" y2="101"/>
-<line x1="66" y1="151" x2="566" y2="151"/>
-<line x1="66" y1="201" x2="566" y2="201"/>
-<line x1="66" y1="251" x2="566" y2="251"/>
-<line x1="66" y1="301" x2="566" y2="301"/>
-<line x1="66" y1="351" x2="566" y2="351"/>
+<rect width="910" height="1064" fill="#ffffff"/>
+<rect x="203" y="51" width="500" height="378" fill="#000" opacity="0.06"/>
+<rect x="214" y="62" width="472" height="350" fill="#ffffff"/>
+<g stroke="#d3d8df" stroke-width="0.6">
+<line x1="264" y1="62" x2="264" y2="412"/>
+<line x1="314" y1="62" x2="314" y2="412"/>
+<line x1="364" y1="62" x2="364" y2="412"/>
+<line x1="414" y1="62" x2="414" y2="412"/>
+<line x1="464" y1="62" x2="464" y2="412"/>
+<line x1="514" y1="62" x2="514" y2="412"/>
+<line x1="564" y1="62" x2="564" y2="412"/>
+<line x1="614" y1="62" x2="614" y2="412"/>
+<line x1="664" y1="62" x2="664" y2="412"/>
+<line x1="214" y1="112" x2="686" y2="112"/>
+<line x1="214" y1="162" x2="686" y2="162"/>
+<line x1="214" y1="212" x2="686" y2="212"/>
+<line x1="214" y1="262" x2="686" y2="262"/>
+<line x1="214" y1="312" x2="686" y2="312"/>
+<line x1="214" y1="362" x2="686" y2="362"/>
 </g>
-<rect x="66" y="51" width="500" height="350" fill="none" stroke="#222" stroke-width="1.2"/>
-<text x="91" y="30" text-anchor="middle" font-size="11" fill="#333">1</text>
-<text x="141" y="30" text-anchor="middle" font-size="11" fill="#333">2</text>
-<text x="191" y="30" text-anchor="middle" font-size="11" fill="#333">3</text>
-<text x="241" y="30" text-anchor="middle" font-size="11" fill="#333">4</text>
-<text x="291" y="30" text-anchor="middle" font-size="11" fill="#333">5</text>
-<text x="341" y="30" text-anchor="middle" font-size="11" fill="#333">6</text>
-<text x="391" y="30" text-anchor="middle" font-size="11" fill="#333">7</text>
-<text x="441" y="30" text-anchor="middle" font-size="11" fill="#333">8</text>
-<text x="491" y="30" text-anchor="middle" font-size="11" fill="#333">9</text>
-<text x="541" y="30" text-anchor="middle" font-size="11" fill="#333">10</text>
-<text x="590" y="80" font-size="11" fill="#333">7</text>
-<text x="590" y="130" font-size="11" fill="#333">6</text>
-<text x="590" y="180" font-size="11" fill="#333">5</text>
-<text x="590" y="230" font-size="11" fill="#333">4</text>
-<text x="590" y="280" font-size="11" fill="#333">3</text>
-<text x="590" y="330" font-size="11" fill="#333">2</text>
-<text x="590" y="380" font-size="11" fill="#333">1</text>
-<rect x="40" y="401" width="10" height="16" fill="#666" stroke="#333" stroke-width="1.5"/>
-<circle cx="391" cy="451" r="24" fill="#d5d9e0" stroke="#555" stroke-width="2.5"/>
-<circle cx="391" cy="451" r="19" fill="none" stroke="#999" stroke-width="0.5"/>
-<circle cx="391" cy="451" r="9" fill="#bbb" stroke="#777" stroke-width="1.5"/>
-<circle cx="391" cy="446" r="1.5" fill="#888"/>
-<circle cx="396" cy="449" r="1.5" fill="#888"/>
-<circle cx="394" cy="455" r="1.5" fill="#888"/>
-<circle cx="388" cy="455" r="1.5" fill="#888"/>
-<circle cx="386" cy="449" r="1.5" fill="#888"/>
-<path d="M364,417 Q364,429 391,429 Q418,429 418,417" fill="none" stroke="#444" stroke-width="1.5"/>
-<circle cx="441" cy="451" r="24" fill="#d5d9e0" stroke="#555" stroke-width="2.5"/>
-<circle cx="441" cy="451" r="19" fill="none" stroke="#999" stroke-width="0.5"/>
-<circle cx="441" cy="451" r="9" fill="#bbb" stroke="#777" stroke-width="1.5"/>
-<circle cx="441" cy="446" r="1.5" fill="#888"/>
-<circle cx="446" cy="449" r="1.5" fill="#888"/>
-<circle cx="444" cy="455" r="1.5" fill="#888"/>
-<circle cx="438" cy="455" r="1.5" fill="#888"/>
-<circle cx="436" cy="449" r="1.5" fill="#888"/>
-<path d="M414,417 Q414,429 441,429 Q468,429 468,417" fill="none" stroke="#444" stroke-width="1.5"/>
-<line x1="391" y1="451" x2="441" y2="451" stroke="#666" stroke-width="4"/>
-<line x1="10" y1="483" x2="642" y2="483" stroke="#aaa" stroke-width="0.5" stroke-dasharray="6,4"/>
-<line x1="582" y1="410" x2="632" y2="410" stroke="#444" stroke-width="5"/>
-<rect x="626" y="401" width="6" height="20" fill="#555" stroke="#333" stroke-width="1"/>
-<circle cx="640" cy="410" r="7" fill="none" stroke="#333" stroke-width="3"/>
-<circle cx="640" cy="410" r="2.5" fill="#444"/>
-<rect x="602" y="419" width="4" height="42" fill="#666" stroke="#444" stroke-width="1"/>
-<circle cx="604" cy="463" r="7" fill="#999" stroke="#666" stroke-width="1.5"/>
-<line x1="47" y1="386" x2="47" y2="447" stroke="#444" stroke-width="3"/>
-<line x1="47" y1="429" x2="65" y2="429" stroke="#444" stroke-width="2.5"/>
-<text x="577" y="499" text-anchor="end" font-size="12" font-weight="700" fill="#333">INTERIOR</text>
-<text x="577" y="513" text-anchor="end" font-size="12" font-weight="700" fill="#333">VIEW - RIGHT</text>
-<rect x="50" y="492" width="532" height="16" fill="url(#h)" stroke="#222" stroke-width="2"/>
-<rect x="50" y="858" width="532" height="16" fill="url(#h)" stroke="#222" stroke-width="2"/>
-<rect x="50" y="492" width="16" height="382" fill="url(#h)" stroke="#222" stroke-width="2"/>
-<rect x="566" y="492" width="16" height="382" fill="url(#h)" stroke="#222" stroke-width="2"/>
-<rect x="66" y="508" width="500" height="350" fill="white"/>
-<g stroke="#c0c0c0" stroke-width="0.4">
-<line x1="116" y1="508" x2="116" y2="858"/>
-<line x1="166" y1="508" x2="166" y2="858"/>
-<line x1="216" y1="508" x2="216" y2="858"/>
-<line x1="266" y1="508" x2="266" y2="858"/>
-<line x1="316" y1="508" x2="316" y2="858"/>
-<line x1="366" y1="508" x2="366" y2="858"/>
-<line x1="416" y1="508" x2="416" y2="858"/>
-<line x1="466" y1="508" x2="466" y2="858"/>
-<line x1="516" y1="508" x2="516" y2="858"/>
-<line x1="66" y1="558" x2="566" y2="558"/>
-<line x1="66" y1="608" x2="566" y2="608"/>
-<line x1="66" y1="658" x2="566" y2="658"/>
-<line x1="66" y1="708" x2="566" y2="708"/>
-<line x1="66" y1="758" x2="566" y2="758"/>
-<line x1="66" y1="808" x2="566" y2="808"/>
+<rect x="200" y="48" width="500" height="14" fill="url(#wall)" stroke="#1a1a1a" stroke-width="1.6"/>
+<rect x="200" y="48" width="14" height="378" fill="url(#wall)" stroke="#1a1a1a" stroke-width="1.6"/>
+<rect x="686" y="48" width="14" height="378" fill="url(#wall)" stroke="#1a1a1a" stroke-width="1.6"/>
+<rect x="200" y="412" width="500" height="14" fill="url(#floor)" stroke="#111" stroke-width="1.4"/>
+<rect x="200" y="48" width="500" height="378" fill="none" stroke="#111" stroke-width="2"/>
+<rect x="214" y="62" width="472" height="350" fill="none" stroke="#222" stroke-width="1.1"/>
+<text x="239.0" y="41" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">1</text>
+<text x="289.0" y="41" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">2</text>
+<text x="339.0" y="41" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">3</text>
+<text x="389.0" y="41" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">4</text>
+<text x="439.0" y="41" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">5</text>
+<text x="489.0" y="41" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">6</text>
+<text x="539.0" y="41" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">7</text>
+<text x="589.0" y="41" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">8</text>
+<text x="639.0" y="41" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">9</text>
+<text x="689.0" y="41" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">10</text>
+<text x="188" y="91.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">7</text>
+<text x="188" y="141.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">6</text>
+<text x="188" y="191.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">5</text>
+<text x="188" y="241.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">4</text>
+<text x="188" y="291.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">3</text>
+<text x="188" y="341.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">2</text>
+<text x="188" y="391.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">1</text>
+<rect x="196" y="412" width="12" height="14" fill="#5a5a5a" stroke="#2a2a2a" stroke-width="1.4"/>
+<line x1="188" y1="406" x2="188" y2="456" stroke="#444" stroke-width="3"/>
+<line x1="188" y1="444" x2="206" y2="444" stroke="#444" stroke-width="2.6"/>
+<line x1="190" y1="434" x2="202" y2="434" stroke="#444" stroke-width="4"/>
+<circle cx="210" cy="444" r="4.5" fill="none" stroke="#444" stroke-width="1.6"/>
+<rect x="210" y="428" width="480" height="5" fill="url(#metal)" stroke="#2a2a2a" stroke-width="0.8"/>
+<line x1="470" y1="432" x2="600" y2="432" stroke="#333" stroke-width="3.5"/>
+<path d="M487,431 Q505,426 523,431" fill="none" stroke="#555" stroke-width="1.8"/>
+<path d="M547,431 Q565,426 583,431" fill="none" stroke="#555" stroke-width="1.8"/>
+<rect x="475" y="419" width="14" height="26" rx="3" fill="#2a2a2a" stroke="#111" stroke-width="1.2"/>
+<circle cx="482" cy="432" r="4" fill="#555" stroke="#333" stroke-width="0.8"/>
+<rect x="581" y="419" width="14" height="26" rx="3" fill="#2a2a2a" stroke="#111" stroke-width="1.2"/>
+<circle cx="588" cy="432" r="4" fill="#555" stroke="#333" stroke-width="0.8"/>
+<rect x="700" y="411" width="175" height="16" fill="#222" stroke="#111" stroke-width="2"/>
+<rect x="871" y="407" width="22" height="24" rx="2" fill="#333" stroke="#111" stroke-width="2.2"/>
+<circle cx="899" cy="419" r="5" fill="#555" stroke="#222" stroke-width="2"/>
+<circle cx="899" cy="419" r="2" fill="#333"/>
+<rect x="765" y="427" width="10" height="70" fill="#444" stroke="#222" stroke-width="1.8"/>
+<rect x="760" y="497" width="20" height="5" rx="1" fill="#555" stroke="#222" stroke-width="1.4"/>
+<line x1="760" y1="435" x2="780" y2="435" stroke="#333" stroke-width="3"/>
+<circle cx="780" cy="435" r="3" fill="#555" stroke="#333" stroke-width="1"/>
+<path d="M805,427 q-4,12 0,22 q4,8 -2,14" fill="none" stroke="#444" stroke-width="2" stroke-dasharray="3,2"/>
+<path d="M822,427 q-4,12 0,22 q4,8 -2,14" fill="none" stroke="#444" stroke-width="2" stroke-dasharray="3,2"/>
+<line x1="10" y1="478" x2="900" y2="478" stroke="#b4bac1" stroke-width="0.8" stroke-dasharray="7,5"/>
+<text x="696" y="498" text-anchor="end" font-size="13" font-weight="700" fill="#1a1a2e" letter-spacing="1">INTERIOR VIEW - RIGHT</text>
+<rect x="718" y="44" width="44" height="40" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="1.8"/>
+<text x="734" y="71" text-anchor="middle" font-size="22" fill="#1a1a1a">&#8593;</text>
+<polygon points="752,56 762,64 752,72" fill="#1a1a1a"/>
+<rect x="203" y="579" width="500" height="378" fill="#000" opacity="0.06"/>
+<rect x="214" y="590" width="472" height="350" fill="#ffffff"/>
+<g stroke="#d3d8df" stroke-width="0.6">
+<line x1="264" y1="590" x2="264" y2="940"/>
+<line x1="314" y1="590" x2="314" y2="940"/>
+<line x1="364" y1="590" x2="364" y2="940"/>
+<line x1="414" y1="590" x2="414" y2="940"/>
+<line x1="464" y1="590" x2="464" y2="940"/>
+<line x1="514" y1="590" x2="514" y2="940"/>
+<line x1="564" y1="590" x2="564" y2="940"/>
+<line x1="614" y1="590" x2="614" y2="940"/>
+<line x1="664" y1="590" x2="664" y2="940"/>
+<line x1="214" y1="640" x2="686" y2="640"/>
+<line x1="214" y1="690" x2="686" y2="690"/>
+<line x1="214" y1="740" x2="686" y2="740"/>
+<line x1="214" y1="790" x2="686" y2="790"/>
+<line x1="214" y1="840" x2="686" y2="840"/>
+<line x1="214" y1="890" x2="686" y2="890"/>
 </g>
-<rect x="66" y="508" width="500" height="350" fill="none" stroke="#222" stroke-width="1.2"/>
-<text x="91" y="487" text-anchor="middle" font-size="11" fill="#333">10</text>
-<text x="141" y="487" text-anchor="middle" font-size="11" fill="#333">9</text>
-<text x="191" y="487" text-anchor="middle" font-size="11" fill="#333">8</text>
-<text x="241" y="487" text-anchor="middle" font-size="11" fill="#333">7</text>
-<text x="291" y="487" text-anchor="middle" font-size="11" fill="#333">6</text>
-<text x="341" y="487" text-anchor="middle" font-size="11" fill="#333">5</text>
-<text x="391" y="487" text-anchor="middle" font-size="11" fill="#333">4</text>
-<text x="441" y="487" text-anchor="middle" font-size="11" fill="#333">3</text>
-<text x="491" y="487" text-anchor="middle" font-size="11" fill="#333">2</text>
-<text x="541" y="487" text-anchor="middle" font-size="11" fill="#333">1</text>
-<text x="590" y="537" font-size="11" fill="#333">7</text>
-<text x="590" y="587" font-size="11" fill="#333">6</text>
-<text x="590" y="637" font-size="11" fill="#333">5</text>
-<text x="590" y="687" font-size="11" fill="#333">4</text>
-<text x="590" y="737" font-size="11" fill="#333">3</text>
-<text x="590" y="787" font-size="11" fill="#333">2</text>
-<text x="590" y="837" font-size="11" fill="#333">1</text>
-<rect x="582" y="858" width="10" height="16" fill="#666" stroke="#333" stroke-width="1.5"/>
-<circle cx="191" cy="908" r="24" fill="#d5d9e0" stroke="#555" stroke-width="2.5"/>
-<circle cx="191" cy="908" r="19" fill="none" stroke="#999" stroke-width="0.5"/>
-<circle cx="191" cy="908" r="9" fill="#bbb" stroke="#777" stroke-width="1.5"/>
-<circle cx="191" cy="903" r="1.5" fill="#888"/>
-<circle cx="196" cy="906" r="1.5" fill="#888"/>
-<circle cx="194" cy="912" r="1.5" fill="#888"/>
-<circle cx="188" cy="912" r="1.5" fill="#888"/>
-<circle cx="186" cy="906" r="1.5" fill="#888"/>
-<path d="M164,874 Q164,886 191,886 Q218,886 218,874" fill="none" stroke="#444" stroke-width="1.5"/>
-<circle cx="241" cy="908" r="24" fill="#d5d9e0" stroke="#555" stroke-width="2.5"/>
-<circle cx="241" cy="908" r="19" fill="none" stroke="#999" stroke-width="0.5"/>
-<circle cx="241" cy="908" r="9" fill="#bbb" stroke="#777" stroke-width="1.5"/>
-<circle cx="241" cy="903" r="1.5" fill="#888"/>
-<circle cx="246" cy="906" r="1.5" fill="#888"/>
-<circle cx="244" cy="912" r="1.5" fill="#888"/>
-<circle cx="238" cy="912" r="1.5" fill="#888"/>
-<circle cx="236" cy="906" r="1.5" fill="#888"/>
-<path d="M214,874 Q214,886 241,886 Q268,886 268,874" fill="none" stroke="#444" stroke-width="1.5"/>
-<line x1="191" y1="908" x2="241" y2="908" stroke="#666" stroke-width="4"/>
-<line x1="10" y1="940" x2="642" y2="940" stroke="#aaa" stroke-width="0.5" stroke-dasharray="6,4"/>
-<line x1="0" y1="867" x2="50" y2="867" stroke="#444" stroke-width="5"/>
-<rect x="0" y="858" width="6" height="20" fill="#555" stroke="#333" stroke-width="1"/>
-<circle cx="-8" cy="867" r="7" fill="none" stroke="#333" stroke-width="3"/>
-<circle cx="-8" cy="867" r="2.5" fill="#444"/>
-<rect x="26" y="876" width="4" height="42" fill="#666" stroke="#444" stroke-width="1"/>
-<circle cx="28" cy="920" r="7" fill="#999" stroke="#666" stroke-width="1.5"/>
-<line x1="585" y1="843" x2="585" y2="904" stroke="#444" stroke-width="3"/>
-<line x1="567" y1="886" x2="585" y2="886" stroke="#444" stroke-width="2.5"/>
-<text x="577" y="956" text-anchor="end" font-size="12" font-weight="700" fill="#333">INTERIOR</text>
-<text x="577" y="970" text-anchor="end" font-size="12" font-weight="700" fill="#333">VIEW - LEFT</text>
-<rect x="588" y="198" width="28" height="24" fill="white" stroke="#222" stroke-width="2"/>
-<text x="602" y="214" text-anchor="middle" font-size="15" font-weight="700" fill="#222">↑</text>
-<polygon points="606,230 620,240 606,250" fill="#222"/>
-<rect x="11" y="655" width="28" height="24" fill="white" stroke="#222" stroke-width="2"/>
-<text x="25" y="671" text-anchor="middle" font-size="15" font-weight="700" fill="#222">↑</text>
-<polygon points="21,687 7,697 21,707" fill="#222"/>
+<rect x="200" y="576" width="500" height="14" fill="url(#wall)" stroke="#1a1a1a" stroke-width="1.6"/>
+<rect x="200" y="576" width="14" height="378" fill="url(#wall)" stroke="#1a1a1a" stroke-width="1.6"/>
+<rect x="686" y="576" width="14" height="378" fill="url(#wall)" stroke="#1a1a1a" stroke-width="1.6"/>
+<rect x="200" y="940" width="500" height="14" fill="url(#floor)" stroke="#111" stroke-width="1.4"/>
+<rect x="200" y="576" width="500" height="378" fill="none" stroke="#111" stroke-width="2"/>
+<rect x="214" y="590" width="472" height="350" fill="none" stroke="#222" stroke-width="1.1"/>
+<text x="239.0" y="569" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">10</text>
+<text x="289.0" y="569" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">9</text>
+<text x="339.0" y="569" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">8</text>
+<text x="389.0" y="569" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">7</text>
+<text x="439.0" y="569" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">6</text>
+<text x="489.0" y="569" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">5</text>
+<text x="539.0" y="569" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">4</text>
+<text x="589.0" y="569" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">3</text>
+<text x="639.0" y="569" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">2</text>
+<text x="689.0" y="569" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">1</text>
+<text x="702" y="619.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">7</text>
+<text x="702" y="669.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">6</text>
+<text x="702" y="719.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">5</text>
+<text x="702" y="769.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">4</text>
+<text x="702" y="819.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">3</text>
+<text x="702" y="869.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">2</text>
+<text x="702" y="919.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2a2a2a">1</text>
+<rect x="706" y="940" width="12" height="14" fill="#5a5a5a" stroke="#2a2a2a" stroke-width="1.4"/>
+<line x1="726" y1="934" x2="726" y2="984" stroke="#444" stroke-width="3"/>
+<line x1="708" y1="972" x2="726" y2="972" stroke="#444" stroke-width="2.6"/>
+<line x1="712" y1="962" x2="724" y2="962" stroke="#444" stroke-width="4"/>
+<circle cx="704" cy="972" r="4.5" fill="none" stroke="#444" stroke-width="1.6"/>
+<rect x="210" y="956" width="480" height="5" fill="url(#metal)" stroke="#2a2a2a" stroke-width="0.8"/>
+<line x1="300" y1="960" x2="430" y2="960" stroke="#333" stroke-width="3.5"/>
+<path d="M317,959 Q335,954 353,959" fill="none" stroke="#555" stroke-width="1.8"/>
+<path d="M377,959 Q395,954 413,959" fill="none" stroke="#555" stroke-width="1.8"/>
+<rect x="305" y="947" width="14" height="26" rx="3" fill="#2a2a2a" stroke="#111" stroke-width="1.2"/>
+<circle cx="312" cy="960" r="4" fill="#555" stroke="#333" stroke-width="0.8"/>
+<rect x="411" y="947" width="14" height="26" rx="3" fill="#2a2a2a" stroke="#111" stroke-width="1.2"/>
+<circle cx="418" cy="960" r="4" fill="#555" stroke="#333" stroke-width="0.8"/>
+<rect x="25" y="939" width="175" height="16" fill="#222" stroke="#111" stroke-width="2"/>
+<rect x="7" y="935" width="22" height="24" rx="2" fill="#333" stroke="#111" stroke-width="2.2"/>
+<circle cx="1" cy="947" r="5" fill="#555" stroke="#222" stroke-width="2"/>
+<circle cx="1" cy="947" r="2" fill="#333"/>
+<rect x="125" y="955" width="10" height="70" fill="#444" stroke="#222" stroke-width="1.8"/>
+<rect x="120" y="1025" width="20" height="5" rx="1" fill="#555" stroke="#222" stroke-width="1.4"/>
+<line x1="120" y1="963" x2="140" y2="963" stroke="#333" stroke-width="3"/>
+<circle cx="120" cy="963" r="3" fill="#555" stroke="#333" stroke-width="1"/>
+<path d="M95,955 q4,12 0,22 q-4,8 2,14" fill="none" stroke="#444" stroke-width="2" stroke-dasharray="3,2"/>
+<path d="M78,955 q4,12 0,22 q-4,8 2,14" fill="none" stroke="#444" stroke-width="2" stroke-dasharray="3,2"/>
+<line x1="10" y1="1006" x2="900" y2="1006" stroke="#b4bac1" stroke-width="0.8" stroke-dasharray="7,5"/>
+<text x="696" y="1026" text-anchor="end" font-size="13" font-weight="700" fill="#1a1a2e" letter-spacing="1">INTERIOR VIEW - LEFT</text>
+<rect x="148" y="572" width="44" height="40" rx="3" fill="#fff" stroke="#1a1a1a" stroke-width="1.8"/>
+<text x="164" y="599" text-anchor="middle" font-size="22" fill="#1a1a1a">&#8593;</text>
+<polygon points="158,584 148,592 158,600" fill="#1a1a1a"/>
+<text x="10" y="22" font-size="15" font-weight="800" fill="#0D2244" letter-spacing="1">NOVA FOOD TRAILERS</text>
+<text x="898" y="22" text-anchor="end" font-size="12" font-weight="700" fill="#2a2a2a">10 FT &#183; SHELL (walls incl.)</text>
 </svg>
