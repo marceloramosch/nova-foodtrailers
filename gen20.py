@@ -19,7 +19,7 @@ BOX_W = FT * S                    # 1000
 INT_H = H * S                     # 350
 BOX_H = W + INT_H + W             # 378
 
-MARGIN_L = 60
+MARGIN_L = 170     # extra room for tongue on left view
 MARGIN_T = 48
 
 # ── positions ─────────────────────────────────────────────────
@@ -31,8 +31,8 @@ L_TOP  = R_BOT + GAP              # 576
 L_BOT  = L_TOP + BOX_H            # 954
 L_FLOOR = L_TOP + W + INT_H       # 940
 
-CANVAS_W = 1140
-CANVAS_H = L_BOT + 110            # ~1064
+CANVAS_W = MARGIN_L + BOX_W + 180  # room for tongue on right view
+CANVAS_H = L_BOT + 110
 
 # ── wheel / axle positions (fraction of trailer length from hitch end) ─────
 # Pan American places wheels roughly at 65-70% from front
@@ -109,65 +109,61 @@ def axle_assembly(cx, floor_y, side="right"):
         hcy = ay
         L(f'<circle cx="{hcx}" cy="{hcy}" r="4" fill="#555" stroke="#333" stroke-width="0.8"/>')
 
-def propane_tanks(x_start, floor_y, side="right"):
-    """Red propane tanks visible under the floor (Pan American style).
-    Two red cylinders/rounded-rects near the tongue end."""
-    ty = floor_y + W + 3   # just below floor
-    tw, th = 40, 18        # tank dimensions
-
-    if side == "right":
-        # Tanks near the right (tongue) end
-        tx1 = x_start + BOX_W - 140
-        tx2 = x_start + BOX_W - 85
-    else:
-        # Tanks near the left (tongue) end
-        tx1 = x_start + 85
-        tx2 = x_start + 140
-
-    for tx in [tx1, tx2]:
-        L(f'<rect x="{tx}" y="{ty}" width="{tw}" height="{th}" rx="8" fill="#c0392b" stroke="#922b21" stroke-width="1.3" opacity="0.92"/>')
-        # valve detail on top
-        vcx = tx + tw // 2
-        L(f'<rect x="{vcx-3}" y="{ty-2}" width="6" height="4" rx="1" fill="#922b21"/>')
-
 def hitch_tongue_right(x_end, floor_y):
-    """Simplified Pan American style hitch — right side.
-    A-frame tongue with coupler, smaller and simpler."""
+    """Pan American style hitch — right side.
+    Realistic A-frame tongue ~3ft (150px) with coupler and jack stand."""
     ty = floor_y + W // 2   # vertical center of floor
 
-    # A-frame tongue (two converging lines from trailer to coupler)
-    tongue_len = 45
+    tongue_len = 150   # ~3 feet
     coupler_x = x_end + tongue_len
 
-    # Upper and lower rails of A-frame
-    L(f'<line x1="{x_end}" y1="{ty-8}" x2="{coupler_x-5}" y2="{ty}" stroke="#444" stroke-width="2.8"/>')
-    L(f'<line x1="{x_end}" y1="{ty+8}" x2="{coupler_x-5}" y2="{ty}" stroke="#444" stroke-width="2.8"/>')
+    # Main A-frame rails (spread ~20px at trailer, converge to coupler)
+    spread = 20
+    L(f'<line x1="{x_end}" y1="{ty-spread//2}" x2="{coupler_x-10}" y2="{ty}" stroke="#444" stroke-width="3"/>')
+    L(f'<line x1="{x_end}" y1="{ty+spread//2}" x2="{coupler_x-10}" y2="{ty}" stroke="#444" stroke-width="3"/>')
 
-    # Coupler (ball hitch receiver)
-    L(f'<rect x="{coupler_x-6}" y="{ty-5}" width="12" height="10" rx="2" fill="#555" stroke="#333" stroke-width="1.4"/>')
-    L(f'<circle cx="{coupler_x}" cy="{ty}" r="3" fill="#777" stroke="#444" stroke-width="1"/>')
+    # Cross brace (midway along tongue)
+    mid_x = x_end + tongue_len // 2
+    brace_half = int(spread * 0.35)
+    L(f'<line x1="{mid_x}" y1="{ty-brace_half}" x2="{mid_x}" y2="{ty+brace_half}" stroke="#444" stroke-width="2"/>')
 
-    # Jack stand (simple vertical line with wheel)
-    jx = x_end + 20
-    L(f'<line x1="{jx}" y1="{ty+5}" x2="{jx}" y2="{ty+35}" stroke="#444" stroke-width="2.5"/>')
-    L(f'<circle cx="{jx}" cy="{ty+38}" r="5" fill="#666" stroke="#444" stroke-width="1.2"/>')
+    # Coupler housing
+    L(f'<rect x="{coupler_x-12}" y="{ty-7}" width="16" height="14" rx="2" fill="#555" stroke="#333" stroke-width="1.6"/>')
+    L(f'<circle cx="{coupler_x-4}" cy="{ty}" r="3.5" fill="#777" stroke="#444" stroke-width="1"/>')
+
+    # Jack stand with crank wheel
+    jx = x_end + 35
+    jack_top = ty + spread // 2 + 2
+    jack_bot = jack_top + 38
+    L(f'<line x1="{jx}" y1="{jack_top}" x2="{jx}" y2="{jack_bot}" stroke="#444" stroke-width="2.8"/>')
+    L(f'<circle cx="{jx}" cy="{jack_bot+5}" r="6" fill="#666" stroke="#444" stroke-width="1.3"/>')
+    # Crank handle
+    L(f'<line x1="{jx-5}" y1="{jack_top+4}" x2="{jx+5}" y2="{jack_top+4}" stroke="#555" stroke-width="1.8"/>')
 
 def hitch_tongue_left(x_start, floor_y):
-    """Simplified Pan American style hitch — left side (mirrored)."""
+    """Pan American style hitch — left side (mirrored)."""
     ty = floor_y + W // 2
 
-    tongue_len = 45
+    tongue_len = 150
     coupler_x = x_start - tongue_len
 
-    L(f'<line x1="{x_start}" y1="{ty-8}" x2="{coupler_x+5}" y2="{ty}" stroke="#444" stroke-width="2.8"/>')
-    L(f'<line x1="{x_start}" y1="{ty+8}" x2="{coupler_x+5}" y2="{ty}" stroke="#444" stroke-width="2.8"/>')
+    spread = 20
+    L(f'<line x1="{x_start}" y1="{ty-spread//2}" x2="{coupler_x+10}" y2="{ty}" stroke="#444" stroke-width="3"/>')
+    L(f'<line x1="{x_start}" y1="{ty+spread//2}" x2="{coupler_x+10}" y2="{ty}" stroke="#444" stroke-width="3"/>')
 
-    L(f'<rect x="{coupler_x-6}" y="{ty-5}" width="12" height="10" rx="2" fill="#555" stroke="#333" stroke-width="1.4"/>')
-    L(f'<circle cx="{coupler_x}" cy="{ty}" r="3" fill="#777" stroke="#444" stroke-width="1"/>')
+    mid_x = x_start - tongue_len // 2
+    brace_half = int(spread * 0.35)
+    L(f'<line x1="{mid_x}" y1="{ty-brace_half}" x2="{mid_x}" y2="{ty+brace_half}" stroke="#444" stroke-width="2"/>')
 
-    jx = x_start - 20
-    L(f'<line x1="{jx}" y1="{ty+5}" x2="{jx}" y2="{ty+35}" stroke="#444" stroke-width="2.5"/>')
-    L(f'<circle cx="{jx}" cy="{ty+38}" r="5" fill="#666" stroke="#444" stroke-width="1.2"/>')
+    L(f'<rect x="{coupler_x-4}" y="{ty-7}" width="16" height="14" rx="2" fill="#555" stroke="#333" stroke-width="1.6"/>')
+    L(f'<circle cx="{coupler_x+4}" cy="{ty}" r="3.5" fill="#777" stroke="#444" stroke-width="1"/>')
+
+    jx = x_start - 35
+    jack_top = ty + spread // 2 + 2
+    jack_bot = jack_top + 38
+    L(f'<line x1="{jx}" y1="{jack_top}" x2="{jx}" y2="{jack_bot}" stroke="#444" stroke-width="2.8"/>')
+    L(f'<circle cx="{jx}" cy="{jack_bot+5}" r="6" fill="#666" stroke="#444" stroke-width="1.3"/>')
+    L(f'<line x1="{jx-5}" y1="{jack_top+4}" x2="{jx+5}" y2="{jack_top+4}" stroke="#555" stroke-width="1.8"/>')
 
 def bumper_plumbing(x, floor_y, side="left"):
     """Bumper and plumbing stub on the rear wall side."""
@@ -249,9 +245,6 @@ chassis_rail(rx, R_FLOOR + W + 2, BOX_W)
 # Axle assembly
 axle_assembly(AXLE_X_RIGHT, R_FLOOR, side="right")
 
-# Propane tanks (red elements)
-propane_tanks(rx, R_FLOOR, side="right")
-
 # Hitch tongue (right end)
 hitch_tongue_right(rx + BOX_W, R_FLOOR)
 
@@ -289,9 +282,6 @@ chassis_rail(lx, L_FLOOR + W + 2, BOX_W)
 
 # Axle assembly
 axle_assembly(AXLE_X_LEFT, L_FLOOR, side="left")
-
-# Propane tanks (red elements)
-propane_tanks(lx, L_FLOOR, side="left")
 
 # Hitch tongue (left end)
 hitch_tongue_left(lx, L_FLOOR)
