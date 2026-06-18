@@ -411,14 +411,18 @@ footer{
 @media(max-width:860px){.qb-layout{grid-template-columns:1fr;}}
 .qb-main{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:32px;box-shadow:var(--shadow);min-height:340px;}
 @media(max-width:560px){.qb-main{padding:22px;}}
-.qb-step{animation:qbIn .5s cubic-bezier(.16,1,.3,1);}
+.qb-step{animation:qbIn .45s cubic-bezier(.16,1,.3,1);}
 @keyframes qbIn{from{opacity:0;transform:translateX(16px);}to{opacity:1;transform:none;}}
 .qb-step-title{font-family:Georgia,serif;font-size:23px;color:var(--text);margin-bottom:6px;}
 .qb-step-hint{font-size:13px;color:var(--text2);margin-bottom:18px;line-height:1.5;}
-.qb-size-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
-@media(max-width:560px){.qb-size-grid{grid-template-columns:1fr 1fr;}}
-.qb-size{position:relative;text-align:left;background:var(--bg2);border:2px solid var(--border);border-radius:13px;padding:16px 15px;cursor:pointer;transition:transform .2s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease;}
+.qb-size-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-height:420px;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding-right:4px;}
+.qb-size-grid::-webkit-scrollbar{width:4px;}
+.qb-size-grid::-webkit-scrollbar-track{background:transparent;}
+.qb-size-grid::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+@media(max-width:560px){.qb-size-grid{grid-template-columns:1fr 1fr;max-height:380px;}}
+.qb-size{position:relative;text-align:left;background:var(--bg2);border:2px solid var(--border);border-radius:13px;padding:16px 15px;cursor:pointer;transition:transform .25s cubic-bezier(.16,1,.3,1),border-color .2s ease,background .2s ease,box-shadow .25s ease;-webkit-tap-highlight-color:transparent;}
 .qb-size:hover{border-color:var(--blue);transform:translateY(-3px);}
+.qb-size:active{transform:scale(.97);}
 .qb-size.sel{border-color:var(--blue);background:var(--bg3);box-shadow:0 0 0 3px rgba(45,107,196,.18);}
 .qs-name{font-family:Georgia,serif;font-size:19px;font-weight:700;color:var(--text);}
 .qs-desc{font-size:11.5px;color:var(--text2);margin:4px 0 9px;line-height:1.4;min-height:32px;}
@@ -432,8 +436,9 @@ footer{
 .qb-group-title::before{content:'';width:9px;height:9px;border-radius:2px;background:var(--blue);}
 .qb-items{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 @media(max-width:560px){.qb-items{grid-template-columns:1fr;}}
-.qb-item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--bg2);border:1.5px solid var(--border);border-radius:11px;padding:11px 13px;cursor:pointer;transition:border-color .18s ease,background .18s ease;text-align:left;}
+.qb-item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--bg2);border:1.5px solid var(--border);border-radius:11px;padding:13px 14px;cursor:pointer;transition:border-color .18s ease,background .18s ease,transform .2s cubic-bezier(.16,1,.3,1);text-align:left;-webkit-tap-highlight-color:transparent;}
 .qb-item:hover{border-color:var(--blue);}
+.qb-item:active{transform:scale(.98);}
 .qb-item.sel{border-color:var(--blue);background:var(--bg3);}
 .qb-item-l{display:flex;align-items:center;gap:10px;min-width:0;}
 .qb-tick{width:21px;height:21px;border-radius:6px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;background:transparent;transition:background .18s ease,border-color .18s ease,transform .18s ease;}
@@ -455,7 +460,14 @@ footer{
 .qb-lead h4{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:12px;font-weight:700;}
 .qb-lead .form-field{margin-bottom:0;}
 .qb-aside{position:sticky;top:84px;}
-@media(max-width:860px){.qb-aside{position:static;}}
+@media(max-width:860px){.qb-aside{position:fixed;bottom:0;left:0;right:0;z-index:90;padding:0;}
+  .qb-price-card{border-radius:18px 18px 0 0;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  .qb-price-label{display:none;}
+  .qb-price{font-size:28px;margin:0;}
+  .qb-price-range{font-size:12px;}
+  .qb-price-divider,.qb-mini,.qb-disclaimer{display:none;}
+  .qb-layout{padding-bottom:80px;}
+}
 .qb-price-card{background:linear-gradient(160deg,var(--dark) 0%,#1a3a7a 100%);border-radius:18px;padding:26px;color:#fff;box-shadow:0 14px 44px rgba(13,34,68,.30);}
 .qb-price-label{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--silver);font-weight:700;}
 .qb-price{font-family:Georgia,serif;font-size:42px;font-weight:900;color:#fff;line-height:1.05;margin:6px 0 3px;}
@@ -1350,12 +1362,17 @@ applyLang(currentLang);
   const QB_DATA = {
     bufferPct: 0.10,
     sizes: [
+      { id:'8x10', name:"8' × 10'", es:'Mini · carrito o puesto', en:'Mini · cart or stand', price:14000 },
+      { id:'8x12', name:"8' × 12'", es:'Micro negocio · ideal 1 persona', en:'Micro business · ideal for 1', price:16500 },
       { id:'8x14', name:"8' × 14'", es:'Compacto · para arrancar', en:'Compact · to get started', price:18500 },
       { id:'8x16', name:"8' × 16'", es:'Especialidad: tacos, café, BBQ', en:'Specialty: tacos, coffee, BBQ', price:21000 },
+      { id:'8x18', name:"8' × 18'", es:'Versátil · cocina cómoda', en:'Versatile · comfortable kitchen', price:24500 },
       { id:'8x20', name:"8' × 20'", es:'El más vendido', en:'Best seller', price:27500, popular:true },
+      { id:'8x22', name:"8' × 22'", es:'Cocina amplia + almacén', en:'Spacious kitchen + storage', price:30000 },
       { id:'8x24', name:"8' × 24'", es:'Negocio establecido', en:'Established business', price:33000 },
       { id:'8x26', name:"8' × 26'", es:'Alto volumen · premium', en:'High volume · premium', price:36000 },
-      { id:'custom', name:'Custom', es:'A tu medida (8×10 – 8×30)', en:'Fully custom (8×10 – 8×30)', price:30000, custom:true }
+      { id:'8x28', name:"8' × 28'", es:'Operación grande · doble eje', en:'Large operation · tandem axle', price:39000 },
+      { id:'8x30', name:"8' × 30'", es:'Máximo tamaño · full kitchen', en:'Maximum size · full kitchen', price:42000 }
     ],
     groups: [
       { es:'Cocina', en:'Cooking', items:[
@@ -1363,17 +1380,21 @@ applyLang(currentLang);
         { id:'fryer', es:'Freidora doble', en:'Double fryer', price:1400 },
         { id:'range', es:'Estufa 4 quemadores', en:'4-burner range', price:1600 },
         { id:'hood', es:'Campana + extracción', en:'Hood + ventilation', price:3200 },
-        { id:'charbroil', es:'Parrilla de carbón', en:'Charbroiler', price:1500 }
+        { id:'charbroil', es:'Parrilla de carbón', en:'Charbroiler', price:1500 },
+        { id:'pizzaoven', es:'Horno de pizza (Gozney)', en:'Pizza oven (Gozney)', price:2800 },
+        { id:'steam', es:'Mesa de vapor / baño maría', en:'Steam table / bain-marie', price:1100 }
       ]},
-      { es:'Refrigeración', en:'Refrigeration', items:[
+      { es:'Refrigeración y temperatura', en:'Refrigeration & temp', items:[
         { id:'fridge', es:'Refrigerador comercial', en:'Commercial fridge', price:2200 },
         { id:'freezer', es:'Congelador', en:'Freezer', price:1900 },
-        { id:'prepcooler', es:'Mesa fría de preparación', en:'Prep cooler table', price:2400 }
+        { id:'prepcooler', es:'Mesa fría de preparación', en:'Prep cooler table', price:2400 },
+        { id:'heatcab', es:'Gabinete caliente (heat cabinet)', en:'Heated holding cabinet', price:1800 }
       ]},
       { es:'Servicio', en:'Service', items:[
         { id:'window2', es:'Ventana de servicio extra', en:'Extra service window', price:900 },
         { id:'counter', es:'Barra de servicio', en:'Service counter', price:700 },
-        { id:'sink3', es:'Lavabo de 3 tarjas', en:'3-compartment sink', price:1200 }
+        { id:'sink3', es:'Lavabo de 3 tarjas', en:'3-compartment sink', price:1200 },
+        { id:'handsink', es:'Lavamanos', en:'Hand wash sink', price:500 }
       ]},
       { es:'Energía y agua', en:'Power & water', items:[
         { id:'gen', es:'Generador', en:'Generator', price:3500 },
@@ -1384,7 +1405,9 @@ applyLang(currentLang);
         { id:'wrap', es:'Rótulo y vinil completo', en:'Full vinyl wrap', price:2500 },
         { id:'led', es:'Iluminación LED', en:'LED lighting', price:800 },
         { id:'awning', es:'Toldo', en:'Awning', price:1200 },
-        { id:'floor', es:'Piso de aluminio diamante', en:'Diamond-plate floor', price:1500 }
+        { id:'floor', es:'Piso de aluminio diamante', en:'Diamond-plate floor', price:1500 },
+        { id:'ac', es:'Aire acondicionado', en:'Air conditioning', price:2200 },
+        { id:'speakers', es:'Sistema de sonido', en:'Sound system', price:600 }
       ]}
     ]
   };
@@ -1409,8 +1432,8 @@ applyLang(currentLang);
     grid.innerHTML = QB_DATA.sizes.map(s=>{
       const sel = state.size===s.id ? ' sel':'';
       const desc = L()==='es'?s.es:s.en;
-      const pop = s.popular ? '<span class="qs-pop">Popular</span>':'';
-      const price = s.custom ? ((L()==='es'?'Desde ':'From ')+fmt(s.price)) : fmt(s.price);
+      const pop = s.popular ? '<span class="qs-pop">'+(L()==='es'?'Popular':'Popular')+'</span>':'';
+      const price = fmt(s.price);
       return '<button type="button" class="qb-size'+sel+'" data-id="'+s.id+'">'+pop+'<span class="qs-check">✓</span><div class="qs-name">'+s.name+'</div><div class="qs-desc">'+desc+'</div><div class="qs-price">'+price+'</div></button>';
     }).join('');
   }
@@ -1467,6 +1490,7 @@ applyLang(currentLang);
     document.querySelectorAll('#cotizador .qb-step-label').forEach(l=>{ const d=parseInt(l.dataset.step,10); l.classList.toggle('active',d===n); l.classList.toggle('done',d<n); });
     $('qbBack').hidden=n===1; $('qbNext').hidden=n===3; $('qbSend').hidden=n!==3;
     if(n===3){ renderSummary(); buildWhatsApp(); }
+    const main=document.querySelector('.qb-main'); if(main){const y=main.getBoundingClientRect().top+window.scrollY-80; window.scrollTo({top:y,behavior:'smooth'});}
   }
   function next(){
     if(state.step===1&&!state.size){ const g=$('qbSizeGrid'); if(g){g.classList.remove('qb-shake');void g.offsetWidth;g.classList.add('qb-shake');} return; }
