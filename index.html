@@ -1489,20 +1489,20 @@ applyLang(currentLang);
     if(phone) lines.push((L()==='es'?'WhatsApp: ':'WhatsApp: ')+phone);
     const a=$('qbSend'); if(a) a.href='https://wa.me/16452353186?text='+encodeURIComponent(lines.join('\n'));
   }
-  function setStep(n){
+  function setStep(n, scroll){
     state.step=n;
     document.querySelectorAll('#cotizador .qb-step').forEach(s=>{ s.hidden=(parseInt(s.dataset.step,10)!==n); });
     const fill=$('qbProgressFill'); if(fill) fill.style.width=(n*33.34)+'%';
     document.querySelectorAll('#cotizador .qb-step-label').forEach(l=>{ const d=parseInt(l.dataset.step,10); l.classList.toggle('active',d===n); l.classList.toggle('done',d<n); });
     $('qbBack').hidden=n===1; $('qbNext').hidden=n===3; $('qbSend').hidden=n!==3;
     if(n===3){ renderSummary(); buildWhatsApp(); }
-    const main=document.querySelector('.qb-main'); if(main){const y=main.getBoundingClientRect().top+window.scrollY-80; window.scrollTo({top:y,behavior:'smooth'});}
+    if(scroll){ const main=document.querySelector('.qb-main'); if(main){const y=main.getBoundingClientRect().top+window.scrollY-80; window.scrollTo({top:y,behavior:'smooth'});} }
   }
   function next(){
     if(state.step===1&&!state.size){ const g=$('qbSizeGrid'); if(g){g.classList.remove('qb-shake');void g.offsetWidth;g.classList.add('qb-shake');} return; }
-    if(state.step<3) setStep(state.step+1);
+    if(state.step<3) setStep(state.step+1, true);
   }
-  function back(){ if(state.step>1) setStep(state.step-1); }
+  function back(){ if(state.step>1) setStep(state.step-1, true); }
   function selectSize(id){
     state.size=id;
     const g=$('qbSizeGrid'); if(g) g.querySelectorAll('.qb-size').forEach(el=>el.classList.toggle('sel',el.dataset.id===id));
