@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54 54" width="54" height="54">
+  <!-- Tanque de Gas / Propane Tank 16" diameter — Scale: 40px=1ft -->
+  <circle cx="27" cy="27" r="26" fill="#ef4444" fill-opacity="0.15" stroke="#ef4444" stroke-width="2"/>
+  <circle cx="27" cy="27" r="10" fill="none" stroke="#ef4444" stroke-width="1"/>
+  <text x="27" y="24" text-anchor="middle" font-family="Arial" font-size="7" font-weight="700" fill="#991b1b">GAS</text>
+  <text x="27" y="34" text-anchor="middle" font-family="Arial" font-size="6" fill="#991b1b">16"∅</text>
+</svg>

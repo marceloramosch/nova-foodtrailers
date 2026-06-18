@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 80" width="160" height="80">
+  <!-- Fregadero Triple / 3-Compartment Sink 48"×24" (4'×2') — Scale: 40px=1ft -->
+  <rect x="0" y="0" width="160" height="80" rx="4" fill="#3b82f6" fill-opacity="0.2" stroke="#3b82f6" stroke-width="2"/>
+  <rect x="8" y="8" width="44" height="54" rx="4" fill="#3b82f6" fill-opacity="0.15" stroke="#3b82f6" stroke-width="1"/>
+  <rect x="58" y="8" width="44" height="54" rx="4" fill="#3b82f6" fill-opacity="0.15" stroke="#3b82f6" stroke-width="1"/>
+  <rect x="108" y="8" width="44" height="54" rx="4" fill="#3b82f6" fill-opacity="0.15" stroke="#3b82f6" stroke-width="1"/>
+  <circle cx="30" cy="66" r="3" fill="#3b82f6" fill-opacity="0.5"/>
+  <circle cx="80" cy="66" r="3" fill="#3b82f6" fill-opacity="0.5"/>
+  <circle cx="130" cy="66" r="3" fill="#3b82f6" fill-opacity="0.5"/>
+  <text x="80" y="42" text-anchor="middle" font-family="Arial" font-size="9" font-weight="700" fill="#1e40af">FREGADERO 3-COMP</text>
+  <text x="80" y="76" text-anchor="middle" font-family="Arial" font-size="8" fill="#1e40af">48" × 24"</text>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Horno / Oven 30"×30" (2.5'×2.5') — Scale: 40px=1ft -->
+  <rect x="0" y="0" width="100" height="100" rx="4" fill="#f97316" fill-opacity="0.2" stroke="#f97316" stroke-width="2"/>
+  <rect x="10" y="10" width="80" height="60" rx="6" fill="#f97316" fill-opacity="0.1" stroke="#f97316" stroke-width="1"/>
+  <rect x="40" y="72" width="20" height="6" rx="2" fill="#f97316" fill-opacity="0.4"/>
+  <text x="50" y="44" text-anchor="middle" font-family="Arial" font-size="10" font-weight="700" fill="#c2410c">HORNO</text>
+  <text x="50" y="58" text-anchor="middle" font-family="Arial" font-size="8" fill="#c2410c">30"×30"</text>
+</svg>

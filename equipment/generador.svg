@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60" width="80" height="60">
+  <!-- Generador / Generator 24"×18" (2'×1.5') — Scale: 40px=1ft -->
+  <rect x="0" y="0" width="80" height="60" rx="4" fill="#eab308" fill-opacity="0.2" stroke="#eab308" stroke-width="2"/>
+  <text x="40" y="28" text-anchor="middle" font-family="Arial" font-size="9" font-weight="700" fill="#a16207">GENERADOR</text>
+  <text x="40" y="42" text-anchor="middle" font-family="Arial" font-size="7" fill="#a16207">24"×18"</text>
+  <line x1="60" y1="6" x2="70" y2="6" stroke="#a16207" stroke-width="2"/>
+  <line x1="65" y1="3" x2="65" y2="9" stroke="#a16207" stroke-width="2"/>
+</svg>

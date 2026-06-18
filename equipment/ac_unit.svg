@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <!-- A/C Unit 24"×24" (2'×2') — Scale: 40px=1ft -->
+  <rect x="0" y="0" width="80" height="80" rx="4" fill="#0ea5e9" fill-opacity="0.2" stroke="#0ea5e9" stroke-width="2"/>
+  <circle cx="40" cy="36" r="18" fill="none" stroke="#0ea5e9" stroke-width="1.5"/>
+  <circle cx="40" cy="36" r="8" fill="none" stroke="#0ea5e9" stroke-width="0.8"/>
+  <text x="40" y="40" text-anchor="middle" font-family="Arial" font-size="8" font-weight="700" fill="#0369a1">A/C</text>
+  <text x="40" y="72" text-anchor="middle" font-family="Arial" font-size="7" fill="#0369a1">24"×24"</text>
+</svg>

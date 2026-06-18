@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 90" width="120" height="90">
+  <!-- Estufa / Range 36"×27" (3'×2.25') — Scale: 40px=1ft -->
+  <rect x="0" y="0" width="120" height="90" rx="4" fill="#f97316" fill-opacity="0.2" stroke="#f97316" stroke-width="2"/>
+  <circle cx="30" cy="28" r="12" fill="none" stroke="#f97316" stroke-width="1.5"/>
+  <circle cx="30" cy="28" r="6" fill="none" stroke="#f97316" stroke-width="0.5"/>
+  <circle cx="60" cy="28" r="12" fill="none" stroke="#f97316" stroke-width="1.5"/>
+  <circle cx="60" cy="28" r="6" fill="none" stroke="#f97316" stroke-width="0.5"/>
+  <circle cx="90" cy="28" r="12" fill="none" stroke="#f97316" stroke-width="1.5"/>
+  <circle cx="90" cy="28" r="6" fill="none" stroke="#f97316" stroke-width="0.5"/>
+  <circle cx="30" cy="60" r="12" fill="none" stroke="#f97316" stroke-width="1.5"/>
+  <circle cx="30" cy="60" r="6" fill="none" stroke="#f97316" stroke-width="0.5"/>
+  <circle cx="60" cy="60" r="12" fill="none" stroke="#f97316" stroke-width="1.5"/>
+  <circle cx="60" cy="60" r="6" fill="none" stroke="#f97316" stroke-width="0.5"/>
+  <circle cx="90" cy="60" r="12" fill="none" stroke="#f97316" stroke-width="1.5"/>
+  <circle cx="90" cy="60" r="6" fill="none" stroke="#f97316" stroke-width="0.5"/>
+  <text x="60" y="48" text-anchor="middle" font-family="Arial" font-size="8" font-weight="700" fill="#c2410c">ESTUFA 6Q</text>
+  <text x="60" y="86" text-anchor="middle" font-family="Arial" font-size="7" fill="#c2410c">36" × 27"</text>
+</svg>

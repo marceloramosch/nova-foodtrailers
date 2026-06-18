@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 70" width="160" height="70">
+  <!-- Plancha / Flat Top Griddle 48"×21" (4'×1.75') — Scale: 40px=1ft -->
+  <rect x="0" y="0" width="160" height="70" rx="4" fill="#f59e0b" fill-opacity="0.25" stroke="#f59e0b" stroke-width="2"/>
+  <line x1="40" y1="0" x2="40" y2="70" stroke="#f59e0b" stroke-width="0.5" stroke-dasharray="3,3"/>
+  <line x1="80" y1="0" x2="80" y2="70" stroke="#f59e0b" stroke-width="0.5" stroke-dasharray="3,3"/>
+  <line x1="120" y1="0" x2="120" y2="70" stroke="#f59e0b" stroke-width="0.5" stroke-dasharray="3,3"/>
+  <text x="80" y="32" text-anchor="middle" font-family="Arial" font-size="10" font-weight="700" fill="#92400e">PLANCHA</text>
+  <text x="80" y="46" text-anchor="middle" font-family="Arial" font-size="8" fill="#92400e">48" × 21"</text>
+</svg>

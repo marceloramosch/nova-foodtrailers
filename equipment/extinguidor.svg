@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 27" width="27" height="27">
+  <!-- Extinguidor / Fire Extinguisher 8"×8" — Scale: 40px=1ft -->
+  <circle cx="13.5" cy="13.5" r="12" fill="#ef4444" fill-opacity="0.3" stroke="#ef4444" stroke-width="2"/>
+  <text x="13.5" y="11" text-anchor="middle" font-family="Arial" font-size="5" font-weight="700" fill="#991b1b">EXT</text>
+  <text x="13.5" y="19" text-anchor="middle" font-family="Arial" font-size="5" fill="#991b1b">🔥</text>
+</svg>

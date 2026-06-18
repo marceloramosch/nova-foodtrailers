@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 80" width="160" height="80">
+  <!-- Mesa de Preparación / Prep Table 48"×24" (4'×2') — Scale: 40px=1ft -->
+  <rect x="0" y="0" width="160" height="80" rx="4" fill="#8b5cf6" fill-opacity="0.15" stroke="#8b5cf6" stroke-width="2"/>
+  <line x1="40" y1="0" x2="40" y2="80" stroke="#8b5cf6" stroke-width="0.3" stroke-dasharray="4,4"/>
+  <line x1="80" y1="0" x2="80" y2="80" stroke="#8b5cf6" stroke-width="0.3" stroke-dasharray="4,4"/>
+  <line x1="120" y1="0" x2="120" y2="80" stroke="#8b5cf6" stroke-width="0.3" stroke-dasharray="4,4"/>
+  <text x="80" y="38" text-anchor="middle" font-family="Arial" font-size="10" font-weight="700" fill="#6d28d9">MESA PREP</text>
+  <text x="80" y="52" text-anchor="middle" font-family="Arial" font-size="8" fill="#6d28d9">48" × 24"</text>
+</svg>

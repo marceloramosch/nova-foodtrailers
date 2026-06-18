@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 14" width="160" height="14">
+  <!-- Ventana de Servicio / Service Window 48"×4" (wall element) — Scale: 40px=1ft -->
+  <rect x="0" y="0" width="160" height="14" rx="2" fill="#22c55e" fill-opacity="0.3" stroke="#22c55e" stroke-width="2"/>
+  <text x="80" y="11" text-anchor="middle" font-family="Arial" font-size="8" font-weight="700" fill="#166534">VENTANA SERVICIO 48"</text>
+</svg>
