@@ -19,7 +19,7 @@ BOX_W = FT * S                    # 1000
 INT_H = H * S                     # 350
 BOX_H = W + INT_H + W             # 378
 
-MARGIN_L = 60
+MARGIN_L = 200
 MARGIN_T = 48
 
 # ── positions ─────────────────────────────────────────────────
@@ -31,7 +31,7 @@ L_TOP  = R_BOT + GAP              # 576
 L_BOT  = L_TOP + BOX_H            # 954
 L_FLOOR = L_TOP + W + INT_H       # 940
 
-CANVAS_W = 1140
+CANVAS_W = MARGIN_L + BOX_W + 210
 CANVAS_H = L_BOT + 110
 
 # ── wheel / axle positions (fraction of trailer length from hitch end) ─────
@@ -110,12 +110,10 @@ def axle_assembly(cx, floor_y, side="right"):
         L(f'<circle cx="{hcx}" cy="{hcy}" r="4" fill="#555" stroke="#333" stroke-width="0.8"/>')
 
 def hitch_tongue_right(x_end, floor_y):
-    """Pan American style hitch — right side.
-    Compact tongue ~1.2ft (60px) matching Pan American blueprint proportions."""
+    """Hitch — right side. 3.5ft tongue (175px)."""
     ty = floor_y + W // 2
 
-    # Main horizontal tongue bar
-    tongue_len = 60
+    tongue_len = 175
     L(f'<line x1="{x_end}" y1="{ty}" x2="{x_end + tongue_len}" y2="{ty}" stroke="#444" stroke-width="5"/>')
 
     # Coupler post (vertical)
@@ -136,10 +134,10 @@ def hitch_tongue_right(x_end, floor_y):
     L(f'<circle cx="{jx}" cy="{ty+56}" r="7" fill="#8c929b" stroke="#5a5f66" stroke-width="1.5"/>')
 
 def hitch_tongue_left(x_start, floor_y):
-    """Pan American style hitch — left side (mirrored)."""
+    """Hitch — left side (mirrored). 3.5ft tongue (175px)."""
     ty = floor_y + W // 2
 
-    tongue_len = 60
+    tongue_len = 175
     L(f'<line x1="{x_start - tongue_len}" y1="{ty}" x2="{x_start}" y2="{ty}" stroke="#444" stroke-width="5"/>')
 
     cp_x = x_start - tongue_len - 1
