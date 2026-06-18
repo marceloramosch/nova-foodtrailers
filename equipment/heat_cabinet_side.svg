@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 95 285" width="95" height="285">
+  <!-- Heat Cabinet (Main Street CHP-1836U) — SIDE VIEW -->
+  <!-- 22.7"W × 66.4"H | Scale: 50px = 1ft -->
+  <!-- Caster wheels -->
+  <circle cx="15" cy="278" r="6" fill="#DDDDDD" stroke="#999999" stroke-width="1"/>
+  <circle cx="80" cy="278" r="6" fill="#DDDDDD" stroke="#999999" stroke-width="1"/>
+  <!-- Main body -->
+  <rect x="2" y="10" width="91" height="262" rx="3" fill="#8B5CF6" fill-opacity="0.15" stroke="#7C3AED" stroke-width="2"/>
+  <!-- Clear door -->
+  <rect x="5" y="15" width="85" height="230" rx="2" fill="#8B5CF6" fill-opacity="0.05" stroke="#7C3AED" stroke-width="1.5"/>
+  <!-- Door frame -->
+  <rect x="5" y="15" width="85" height="230" rx="2" fill="none" stroke="#A78BFA" stroke-width="0.8" stroke-dasharray="0"/>
+  <!-- Shelves (visible through clear door) -->
+  <line x1="8" y1="55" x2="87" y2="55" stroke="#7C3AED" stroke-width="1" stroke-opacity="0.5"/>
+  <line x1="8" y1="95" x2="87" y2="95" stroke="#7C3AED" stroke-width="1" stroke-opacity="0.5"/>
+  <line x1="8" y1="135" x2="87" y2="135" stroke="#7C3AED" stroke-width="1" stroke-opacity="0.5"/>
+  <line x1="8" y1="175" x2="87" y2="175" stroke="#7C3AED" stroke-width="1" stroke-opacity="0.5"/>
+  <line x1="8" y1="215" x2="87" y2="215" stroke="#7C3AED" stroke-width="1" stroke-opacity="0.5"/>
+  <!-- Sheet pan indicators -->
+  <rect x="12" y="60" width="71" height="30" rx="1" fill="#DDD6FE" fill-opacity="0.3" stroke="#A78BFA" stroke-width="0.5"/>
+  <rect x="12" y="100" width="71" height="30" rx="1" fill="#DDD6FE" fill-opacity="0.3" stroke="#A78BFA" stroke-width="0.5"/>
+  <rect x="12" y="140" width="71" height="30" rx="1" fill="#DDD6FE" fill-opacity="0.3" stroke="#A78BFA" stroke-width="0.5"/>
+  <rect x="12" y="180" width="71" height="30" rx="1" fill="#DDD6FE" fill-opacity="0.3" stroke="#A78BFA" stroke-width="0.5"/>
+  <!-- Door handle -->
+  <rect x="80" y="100" width="8" height="55" rx="3" fill="#7C3AED" fill-opacity="0.3" stroke="#7C3AED" stroke-width="1.2"/>
+  <!-- Control panel (bottom) -->
+  <rect x="5" y="248" width="85" height="18" rx="2" fill="#F5F5F5" stroke="#999999" stroke-width="1"/>
+  <!-- Power indicator -->
+  <circle cx="20" cy="257" r="3" fill="#22C55E" stroke="#16A34A" stroke-width="0.8"/>
+  <!-- Thermostat knob -->
+  <circle cx="47.5" cy="257" r="4" fill="#DDDDDD" stroke="#999999" stroke-width="1"/>
+  <!-- Floor line -->
+  <line x1="0" y1="284" x2="95" y2="284" stroke="#999999" stroke-width="0.5" stroke-dasharray="3 2"/>
+  <!-- Labels -->
+  <text x="47.5" y="35" text-anchor="middle" font-family="Arial,sans-serif" font-size="7" font-weight="700" fill="#5B21B6">HEAT</text>
+  <text x="47.5" y="45" text-anchor="middle" font-family="Arial,sans-serif" font-size="7" font-weight="700" fill="#5B21B6">CABINET</text>
+  <!-- Dimensions -->
+  <text x="47.5" y="6" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.5" fill="#5B21B6">22.7"W × 66.4"H</text>
+</svg>

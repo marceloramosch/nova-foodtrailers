@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 103 70" width="103" height="70">
+  <!-- Gozney Arc XL Pizza Oven — SIDE VIEW -->
+  <!-- 24.8"D × 13.5"H | Scale: 50px = 1ft -->
+  <!-- Base/body -->
+  <rect x="1" y="30" width="101" height="26" rx="4" fill="#F97316" fill-opacity="0.15" stroke="#EA580C" stroke-width="2"/>
+  <!-- Dome arch -->
+  <path d="M 8,30 Q 8,4 51.5,4 Q 95,4 95,30" fill="#F97316" fill-opacity="0.1" stroke="#EA580C" stroke-width="2" fill-rule="evenodd"/>
+  <!-- Opening / mouth (left side) -->
+  <rect x="0" y="18" width="8" height="26" rx="2" fill="#F97316" fill-opacity="0.3" stroke="#EA580C" stroke-width="1.5"/>
+  <!-- Chimney vent (top) -->
+  <rect x="70" y="1" width="10" height="8" rx="2" fill="#C2410C" fill-opacity="0.3" stroke="#C2410C" stroke-width="1"/>
+  <!-- Countertop line -->
+  <line x1="0" y1="56" x2="103" y2="56" stroke="#9A3412" stroke-width="0.5" stroke-dasharray="3 2"/>
+  <!-- Labels -->
+  <text x="51.5" y="42" text-anchor="middle" font-family="Arial,sans-serif" font-size="7" font-weight="700" fill="#9A3412">GOZNEY ARC XL</text>
+  <text x="51.5" y="51" text-anchor="middle" font-family="Arial,sans-serif" font-size="6" fill="#9A3412">24.8"D × 13.5"H</text>
+  <!-- Height indicator -->
+  <text x="100" y="18" text-anchor="end" font-family="Arial,sans-serif" font-size="5" fill="#9A3412">13.5"</text>
+</svg>

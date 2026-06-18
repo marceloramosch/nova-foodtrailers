@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 65" width="144" height="65">
+  <!-- Freidora 40lb (Pitco SG14-S) — TOP VIEW -->
+  <!-- 34.5"D × 15.6"W | Scale: 50px = 1ft -->
+  <!-- Outer body -->
+  <rect x="1" y="1" width="142" height="63" rx="3" fill="#EF4444" fill-opacity="0.15" stroke="#DC2626" stroke-width="2"/>
+  <!-- Fry pot -->
+  <rect x="10" y="8" width="56" height="49" rx="6" fill="#EF4444" fill-opacity="0.12" stroke="#DC2626" stroke-width="1.2"/>
+  <!-- Oil surface -->
+  <rect x="15" y="13" width="46" height="39" rx="4" fill="#FCA5A5" fill-opacity="0.3" stroke="none"/>
+  <!-- Basket divider -->
+  <line x1="38" y1="13" x2="38" y2="52" stroke="#DC2626" stroke-width="0.8" stroke-dasharray="3 2"/>
+  <!-- Controls panel (right side) -->
+  <rect x="76" y="8" width="58" height="49" rx="3" fill="#F5F5F5" stroke="#999999" stroke-width="1"/>
+  <!-- Control knobs -->
+  <circle cx="90" cy="25" r="5" fill="#DDDDDD" stroke="#999999" stroke-width="1"/>
+  <circle cx="110" cy="25" r="5" fill="#DDDDDD" stroke="#999999" stroke-width="1"/>
+  <!-- Thermostat -->
+  <rect x="85" y="38" width="30" height="12" rx="2" fill="#EEEEEE" stroke="#999999" stroke-width="0.8"/>
+  <!-- Labels -->
+  <text x="38" y="34" text-anchor="middle" font-family="Arial,sans-serif" font-size="6.5" font-weight="700" fill="#991B1B">FREIDORA</text>
+  <text x="105" y="55" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.5" fill="#666666">CONTROLS</text>
+  <text x="72" y="62" text-anchor="middle" font-family="Arial,sans-serif" font-size="6" fill="#991B1B">15.6" × 34.5" | 40lb</text>
+</svg>
