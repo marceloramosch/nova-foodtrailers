@@ -110,78 +110,82 @@ def axle_assembly(cx, floor_y, side="right"):
         L(f'<circle cx="{hcx}" cy="{hcy}" r="4" fill="#555" stroke="#333" stroke-width="0.8"/>')
 
 def hitch_tongue_right(x_end, floor_y):
-    """Hitch — right side. 3.5ft heavy A-frame matching Pan American thickness."""
-    ty = floor_y + W // 2
-
+    """Hitch — right side. 3.5ft straight tongue bar (side view) like Pan American."""
+    bar_h = 16         # thick horizontal beam
     tongue_len = 175   # 3.5ft
-    spread = 90        # ~1.8ft vertical spread — big and structural
 
+    # The bar sits at floor level, centered on the floor thickness
+    bar_y = floor_y + (W - bar_h) // 2
     tip_x = x_end + tongue_len
 
-    # Heavy A-frame rails (thick like Pan American)
-    L(f'<line x1="{x_end}" y1="{ty - spread//2}" x2="{tip_x - 10}" y2="{ty}" stroke="#222" stroke-width="7"/>')
-    L(f'<line x1="{x_end}" y1="{ty + spread//2}" x2="{tip_x - 10}" y2="{ty}" stroke="#222" stroke-width="7"/>')
+    # Main horizontal tongue beam
+    L(f'<rect x="{x_end}" y="{bar_y}" width="{tongue_len}" height="{bar_h}" fill="#222" stroke="#111" stroke-width="2"/>')
 
-    # Cross braces (thick)
-    for frac in [0.28, 0.55]:
-        bx = x_end + int(tongue_len * frac)
-        ratio = 1.0 - frac
-        bh = int(spread * ratio * 0.5)
-        L(f'<line x1="{bx}" y1="{ty - bh}" x2="{bx}" y2="{ty + bh}" stroke="#333" stroke-width="4"/>')
+    # Coupler at tip — rectangular housing + ball hitch
+    cp_w, cp_h = 22, 24
+    cp_x = tip_x - 4
+    cp_y = bar_y + (bar_h - cp_h) // 2
+    L(f'<rect x="{cp_x}" y="{cp_y}" width="{cp_w}" height="{cp_h}" rx="2" fill="#333" stroke="#111" stroke-width="2.2"/>')
+    # Ball socket opening
+    bx = cp_x + cp_w
+    by = bar_y + bar_h // 2
+    L(f'<circle cx="{bx + 6}" cy="{by}" r="5" fill="#555" stroke="#222" stroke-width="2"/>')
+    L(f'<circle cx="{bx + 6}" cy="{by}" r="2" fill="#333"/>')
 
-    # Center spine (heavy)
-    L(f'<line x1="{x_end + 25}" y1="{ty}" x2="{tip_x - 14}" y2="{ty}" stroke="#333" stroke-width="5"/>')
+    # Jack stand — about 1/3 from coupler end
+    jx = x_end + int(tongue_len * 0.4)
+    jack_top = bar_y + bar_h
+    jack_h = 70        # ~1.4ft tall
+    jack_w = 10
+    L(f'<rect x="{jx - jack_w//2}" y="{jack_top}" width="{jack_w}" height="{jack_h}" fill="#444" stroke="#222" stroke-width="1.8"/>')
+    # Foot pad
+    foot_y = jack_top + jack_h
+    L(f'<rect x="{jx - 10}" y="{foot_y}" width="20" height="5" rx="1" fill="#555" stroke="#222" stroke-width="1.4"/>')
+    # Crank handle at top of jack
+    L(f'<line x1="{jx - 10}" y1="{jack_top + 8}" x2="{jx + 10}" y2="{jack_top + 8}" stroke="#333" stroke-width="3"/>')
+    L(f'<circle cx="{jx + 10}" cy="{jack_top + 8}" r="3" fill="#555" stroke="#333" stroke-width="1"/>')
 
-    # Coupler housing (chunky)
-    L(f'<rect x="{tip_x - 14}" y="{ty - 10}" width="18" height="20" rx="2" fill="#444" stroke="#222" stroke-width="2"/>')
-    # Ball hitch hook
-    L(f'<path d="M{tip_x + 4},{ty+1} q12,0 12,-9 q0,-8 -10,-8" fill="none" stroke="#222" stroke-width="4"/>')
-
-    # Safety chains
-    L(f'<path d="M{x_end + 15},{ty + spread//2 - 3} q{tongue_len*0.35},22 {tongue_len*0.55},10" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="3,2.5"/>')
-    L(f'<path d="M{x_end + 15},{ty + spread//2} q{tongue_len*0.25},28 {tongue_len*0.4},16" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="3,2.5"/>')
-
-    # Jack stand (heavy)
-    jx = x_end + 45
-    jack_top = ty + spread // 2 + 4
-    jack_bot = jack_top + 42
-    L(f'<rect x="{jx - 4}" y="{jack_top}" width="8" height="{jack_bot - jack_top}" rx="1" fill="#555" stroke="#222" stroke-width="1.2"/>')
-    L(f'<circle cx="{jx}" cy="{jack_bot + 7}" r="8" fill="#777" stroke="#444" stroke-width="2"/>')
-    # Crank handle
-    L(f'<line x1="{jx - 8}" y1="{jack_top + 6}" x2="{jx + 8}" y2="{jack_top + 6}" stroke="#444" stroke-width="2.5"/>')
+    # Safety chains hanging from tongue (two short chains)
+    ch_x1 = x_end + int(tongue_len * 0.6)
+    ch_x2 = x_end + int(tongue_len * 0.7)
+    for cx in [ch_x1, ch_x2]:
+        cy = bar_y + bar_h
+        L(f'<path d="M{cx},{cy} q-4,12 0,22 q4,8 -2,14" fill="none" stroke="#444" stroke-width="2" stroke-dasharray="3,2"/>')
 
 def hitch_tongue_left(x_start, floor_y):
-    """Hitch — left side (mirrored). 3.5ft heavy A-frame."""
-    ty = floor_y + W // 2
-
+    """Hitch — left side (mirrored). 3.5ft straight tongue bar."""
+    bar_h = 16
     tongue_len = 175
-    spread = 90
 
+    bar_y = floor_y + (W - bar_h) // 2
     tip_x = x_start - tongue_len
 
-    L(f'<line x1="{x_start}" y1="{ty - spread//2}" x2="{tip_x + 10}" y2="{ty}" stroke="#222" stroke-width="7"/>')
-    L(f'<line x1="{x_start}" y1="{ty + spread//2}" x2="{tip_x + 10}" y2="{ty}" stroke="#222" stroke-width="7"/>')
+    L(f'<rect x="{tip_x}" y="{bar_y}" width="{tongue_len}" height="{bar_h}" fill="#222" stroke="#111" stroke-width="2"/>')
 
-    for frac in [0.28, 0.55]:
-        bx = x_start - int(tongue_len * frac)
-        ratio = 1.0 - frac
-        bh = int(spread * ratio * 0.5)
-        L(f'<line x1="{bx}" y1="{ty - bh}" x2="{bx}" y2="{ty + bh}" stroke="#333" stroke-width="4"/>')
+    cp_w, cp_h = 22, 24
+    cp_x = tip_x - cp_w + 4
+    cp_y = bar_y + (bar_h - cp_h) // 2
+    L(f'<rect x="{cp_x}" y="{cp_y}" width="{cp_w}" height="{cp_h}" rx="2" fill="#333" stroke="#111" stroke-width="2.2"/>')
+    bx = cp_x
+    by = bar_y + bar_h // 2
+    L(f'<circle cx="{bx - 6}" cy="{by}" r="5" fill="#555" stroke="#222" stroke-width="2"/>')
+    L(f'<circle cx="{bx - 6}" cy="{by}" r="2" fill="#333"/>')
 
-    L(f'<line x1="{x_start - 25}" y1="{ty}" x2="{tip_x + 14}" y2="{ty}" stroke="#333" stroke-width="5"/>')
+    jx = x_start - int(tongue_len * 0.4)
+    jack_top = bar_y + bar_h
+    jack_h = 70
+    jack_w = 10
+    L(f'<rect x="{jx - jack_w//2}" y="{jack_top}" width="{jack_w}" height="{jack_h}" fill="#444" stroke="#222" stroke-width="1.8"/>')
+    foot_y = jack_top + jack_h
+    L(f'<rect x="{jx - 10}" y="{foot_y}" width="20" height="5" rx="1" fill="#555" stroke="#222" stroke-width="1.4"/>')
+    L(f'<line x1="{jx - 10}" y1="{jack_top + 8}" x2="{jx + 10}" y2="{jack_top + 8}" stroke="#333" stroke-width="3"/>')
+    L(f'<circle cx="{jx - 10}" cy="{jack_top + 8}" r="3" fill="#555" stroke="#333" stroke-width="1"/>')
 
-    L(f'<rect x="{tip_x - 4}" y="{ty - 10}" width="18" height="20" rx="2" fill="#444" stroke="#222" stroke-width="2"/>')
-    L(f'<path d="M{tip_x - 4},{ty+1} q-12,0 -12,-9 q0,-8 10,-8" fill="none" stroke="#222" stroke-width="4"/>')
-
-    L(f'<path d="M{x_start - 15},{ty + spread//2 - 3} q-{int(tongue_len*0.35)},22 -{int(tongue_len*0.55)},10" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="3,2.5"/>')
-    L(f'<path d="M{x_start - 15},{ty + spread//2} q-{int(tongue_len*0.25)},28 -{int(tongue_len*0.4)},16" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="3,2.5"/>')
-
-    jx = x_start - 45
-    jack_top = ty + spread // 2 + 4
-    jack_bot = jack_top + 42
-    L(f'<rect x="{jx - 4}" y="{jack_top}" width="8" height="{jack_bot - jack_top}" rx="1" fill="#555" stroke="#222" stroke-width="1.2"/>')
-    L(f'<circle cx="{jx}" cy="{jack_bot + 7}" r="8" fill="#777" stroke="#444" stroke-width="2"/>')
-    L(f'<line x1="{jx - 8}" y1="{jack_top + 6}" x2="{jx + 8}" y2="{jack_top + 6}" stroke="#444" stroke-width="2.5"/>')
+    ch_x1 = x_start - int(tongue_len * 0.6)
+    ch_x2 = x_start - int(tongue_len * 0.7)
+    for cx in [ch_x1, ch_x2]:
+        cy = bar_y + bar_h
+        L(f'<path d="M{cx},{cy} q4,12 0,22 q-4,8 2,14" fill="none" stroke="#444" stroke-width="2" stroke-dasharray="3,2"/>')
 
 def bumper_plumbing(x, floor_y, side="left"):
     """Bumper and plumbing stub on the rear wall side."""
