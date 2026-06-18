@@ -1313,6 +1313,9 @@ footer{
 </a>
 
 <script>
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+window.scrollTo(0,0);
+
 // ===== THEME =====
 const themeBtn = document.getElementById('themeBtn');
 const html = document.documentElement;
