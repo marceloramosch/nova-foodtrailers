@@ -110,47 +110,77 @@ def axle_assembly(cx, floor_y, side="right"):
         L(f'<circle cx="{hcx}" cy="{hcy}" r="4" fill="#555" stroke="#333" stroke-width="0.8"/>')
 
 def hitch_tongue_right(x_end, floor_y):
-    """Hitch — right side. 3.5ft tongue (175px)."""
+    """Hitch — right side. 3.5ft A-frame tongue, wide at trailer, narrow at coupler."""
     ty = floor_y + W // 2
 
-    tongue_len = 175
-    L(f'<line x1="{x_end}" y1="{ty}" x2="{x_end + tongue_len}" y2="{ty}" stroke="#444" stroke-width="5"/>')
+    tongue_len = 175   # 3.5ft
+    spread = 36        # wide at trailer connection
 
-    # Coupler post (vertical)
-    cp_x = x_end + tongue_len - 6
-    L(f'<rect x="{cp_x}" y="{ty-10}" width="7" height="20" rx="1" fill="url(#metal)" stroke="#333" stroke-width="1.2"/>')
+    # A-frame rails
+    tip_x = x_end + tongue_len
+    L(f'<line x1="{x_end}" y1="{ty - spread//2}" x2="{tip_x - 8}" y2="{ty}" stroke="#444" stroke-width="4"/>')
+    L(f'<line x1="{x_end}" y1="{ty + spread//2}" x2="{tip_x - 8}" y2="{ty}" stroke="#444" stroke-width="4"/>')
 
-    # Ball coupler hook
-    hx = cp_x + 7
-    L(f'<path d="M{hx},{ty} q12,0 12,-8 q0,-7 -9,-7" fill="none" stroke="#2f2f2f" stroke-width="3.2"/>')
+    # Cross braces
+    for frac in [0.3, 0.6]:
+        bx = x_end + int(tongue_len * frac)
+        ratio = 1.0 - frac
+        bh = int(spread * ratio * 0.5)
+        L(f'<line x1="{bx}" y1="{ty - bh}" x2="{bx}" y2="{ty + bh}" stroke="#555" stroke-width="2"/>')
 
-    # Safety chains (two curved dashed lines from tongue to ground)
-    ch_x = x_end + 20
-    L(f'<path d="M{cp_x},{ty+6} q-10,16 -{tongue_len//2-5},12" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="2.5,2"/>')
+    # Center spine
+    L(f'<line x1="{x_end + 30}" y1="{ty}" x2="{tip_x - 12}" y2="{ty}" stroke="#555" stroke-width="2.5"/>')
+
+    # Coupler housing
+    L(f'<rect x="{tip_x - 10}" y="{ty - 8}" width="14" height="16" rx="2" fill="url(#metal)" stroke="#333" stroke-width="1.6"/>')
+    # Ball socket
+    L(f'<path d="M{tip_x + 4},{ty} q10,0 10,-7 q0,-6 -8,-6" fill="none" stroke="#2f2f2f" stroke-width="3"/>')
+
+    # Safety chains
+    ch1_y = ty + spread // 4
+    L(f'<path d="M{x_end + 10},{ty + spread//2 - 2} q{tongue_len//3},20 {tongue_len//2},8" fill="none" stroke="#999" stroke-width="1.3" stroke-dasharray="3,2"/>')
+    L(f'<path d="M{x_end + 10},{ty + spread//2 - 4} q{tongue_len//4},25 {tongue_len//3},14" fill="none" stroke="#999" stroke-width="1.3" stroke-dasharray="3,2"/>')
 
     # Jack stand
-    jx = x_end + 24
-    L(f'<rect x="{jx-2}" y="{ty+6}" width="5" height="46" rx="1" fill="url(#metal)" stroke="#2a2a2a" stroke-width="0.8"/>')
-    L(f'<circle cx="{jx}" cy="{ty+56}" r="7" fill="#8c929b" stroke="#5a5f66" stroke-width="1.5"/>')
+    jx = x_end + 40
+    jack_top = ty + spread // 2 + 2
+    jack_bot = jack_top + 40
+    L(f'<rect x="{jx - 3}" y="{jack_top}" width="6" height="{jack_bot - jack_top}" rx="1" fill="url(#metal)" stroke="#2a2a2a" stroke-width="0.9"/>')
+    L(f'<circle cx="{jx}" cy="{jack_bot + 6}" r="7" fill="#8c929b" stroke="#5a5f66" stroke-width="1.5"/>')
+    # Crank
+    L(f'<line x1="{jx - 6}" y1="{jack_top + 5}" x2="{jx + 6}" y2="{jack_top + 5}" stroke="#666" stroke-width="2"/>')
 
 def hitch_tongue_left(x_start, floor_y):
-    """Hitch — left side (mirrored). 3.5ft tongue (175px)."""
+    """Hitch — left side (mirrored). 3.5ft A-frame tongue."""
     ty = floor_y + W // 2
 
     tongue_len = 175
-    L(f'<line x1="{x_start - tongue_len}" y1="{ty}" x2="{x_start}" y2="{ty}" stroke="#444" stroke-width="5"/>')
+    spread = 36
 
-    cp_x = x_start - tongue_len - 1
-    L(f'<rect x="{cp_x}" y="{ty-10}" width="7" height="20" rx="1" fill="url(#metal)" stroke="#333" stroke-width="1.2"/>')
+    tip_x = x_start - tongue_len
+    L(f'<line x1="{x_start}" y1="{ty - spread//2}" x2="{tip_x + 8}" y2="{ty}" stroke="#444" stroke-width="4"/>')
+    L(f'<line x1="{x_start}" y1="{ty + spread//2}" x2="{tip_x + 8}" y2="{ty}" stroke="#444" stroke-width="4"/>')
 
-    hx = cp_x
-    L(f'<path d="M{hx},{ty} q-12,0 -12,-8 q0,-7 9,-7" fill="none" stroke="#2f2f2f" stroke-width="3.2"/>')
+    for frac in [0.3, 0.6]:
+        bx = x_start - int(tongue_len * frac)
+        ratio = 1.0 - frac
+        bh = int(spread * ratio * 0.5)
+        L(f'<line x1="{bx}" y1="{ty - bh}" x2="{bx}" y2="{ty + bh}" stroke="#555" stroke-width="2"/>')
 
-    L(f'<path d="M{cp_x+7},{ty+6} q10,16 {tongue_len//2-5},12" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="2.5,2"/>')
+    L(f'<line x1="{x_start - 30}" y1="{ty}" x2="{tip_x + 12}" y2="{ty}" stroke="#555" stroke-width="2.5"/>')
 
-    jx = x_start - 24
-    L(f'<rect x="{jx-2}" y="{ty+6}" width="5" height="46" rx="1" fill="url(#metal)" stroke="#2a2a2a" stroke-width="0.8"/>')
-    L(f'<circle cx="{jx}" cy="{ty+56}" r="7" fill="#8c929b" stroke="#5a5f66" stroke-width="1.5"/>')
+    L(f'<rect x="{tip_x - 4}" y="{ty - 8}" width="14" height="16" rx="2" fill="url(#metal)" stroke="#333" stroke-width="1.6"/>')
+    L(f'<path d="M{tip_x - 4},{ty} q-10,0 -10,-7 q0,-6 8,-6" fill="none" stroke="#2f2f2f" stroke-width="3"/>')
+
+    L(f'<path d="M{x_start - 10},{ty + spread//2 - 2} q-{tongue_len//3},20 -{tongue_len//2},8" fill="none" stroke="#999" stroke-width="1.3" stroke-dasharray="3,2"/>')
+    L(f'<path d="M{x_start - 10},{ty + spread//2 - 4} q-{tongue_len//4},25 -{tongue_len//3},14" fill="none" stroke="#999" stroke-width="1.3" stroke-dasharray="3,2"/>')
+
+    jx = x_start - 40
+    jack_top = ty + spread // 2 + 2
+    jack_bot = jack_top + 40
+    L(f'<rect x="{jx - 3}" y="{jack_top}" width="6" height="{jack_bot - jack_top}" rx="1" fill="url(#metal)" stroke="#2a2a2a" stroke-width="0.9"/>')
+    L(f'<circle cx="{jx}" cy="{jack_bot + 6}" r="7" fill="#8c929b" stroke="#5a5f66" stroke-width="1.5"/>')
+    L(f'<line x1="{jx - 6}" y1="{jack_top + 5}" x2="{jx + 6}" y2="{jack_top + 5}" stroke="#666" stroke-width="2"/>')
 
 def bumper_plumbing(x, floor_y, side="left"):
     """Bumper and plumbing stub on the rear wall side."""
