@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 520" width="700" height="520" font-family="'Segoe UI',Arial,sans-serif">
+  <defs>
+    <pattern id="grid" width="25" height="25" patternUnits="userSpaceOnUse">
+      <path d="M 25 0 L 0 0 0 25" fill="none" stroke="#e8ecf2" stroke-width="0.4"/>
+    </pattern>
+    <marker id="a1" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5 Z" fill="#DC2626"/>
+    </marker>
+    <marker id="a2" markerWidth="7" markerHeight="5" refX="0" refY="2.5" orient="auto">
+      <path d="M7,0 L0,2.5 L7,5 Z" fill="#DC2626"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="700" height="520" fill="#f8fafc"/>
+  <rect width="700" height="520" fill="url(#grid)"/>
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="700" height="40" fill="#1a1a2e"/>
+  <text x="20" y="26" font-size="15" font-weight="700" fill="#FFFFFF">FREIDORA 40LB — PITCO SG14-S</text>
+  <text x="680" y="26" text-anchor="end" font-size="10" fill="#94A3B8">Scale: 1 sq = 1 in</text>
+
+  <!-- ====== TOP VIEW ====== -->
+  <text x="190" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1a2e">TOP VIEW</text>
+
+  <g transform="translate(50, 85)">
+    <!-- Outer body 15.6" x 34.5" → proportional -->
+    <rect x="0" y="0" width="156" height="345" rx="5" fill="#FEF2F2" stroke="#DC2626" stroke-width="2.5"/>
+
+    <!-- Fry pot -->
+    <rect x="10" y="10" width="136" height="180" rx="8" fill="#FECACA" fill-opacity="0.3" stroke="#DC2626" stroke-width="1.5"/>
+    <!-- Oil surface -->
+    <rect x="18" y="18" width="120" height="164" rx="5" fill="#FCA5A5" fill-opacity="0.25" stroke="none"/>
+    <!-- Basket divider -->
+    <line x1="78" y1="18" x2="78" y2="182" stroke="#DC2626" stroke-width="1" stroke-dasharray="5 3"/>
+    <text x="45" y="100" text-anchor="middle" font-size="9" fill="#991B1B">BASKET 1</text>
+    <text x="112" y="100" text-anchor="middle" font-size="9" fill="#991B1B">BASKET 2</text>
+
+    <!-- Controls panel -->
+    <rect x="10" y="200" width="136" height="135" rx="5" fill="#F9FAFB" stroke="#9CA3AF" stroke-width="1.2"/>
+    <text x="78" y="225" text-anchor="middle" font-size="10" font-weight="600" fill="#6B7280">CONTROL PANEL</text>
+    <!-- Thermostat knobs -->
+    <circle cx="45" cy="260" r="14" fill="#E5E7EB" stroke="#9CA3AF" stroke-width="1.5"/>
+    <text x="45" y="264" text-anchor="middle" font-size="7" fill="#6B7280">TEMP</text>
+    <circle cx="111" cy="260" r="14" fill="#E5E7EB" stroke="#9CA3AF" stroke-width="1.5"/>
+    <text x="111" y="264" text-anchor="middle" font-size="7" fill="#6B7280">TIMER</text>
+    <!-- Pilot light -->
+    <circle cx="78" cy="310" r="6" fill="#22C55E" fill-opacity="0.5" stroke="#16A34A" stroke-width="1"/>
+    <text x="78" y="325" text-anchor="middle" font-size="7" fill="#6B7280">PILOT</text>
+
+    <!-- Dimension: width -->
+    <line x1="0" y1="368" x2="156" y2="368" stroke="#DC2626" stroke-width="1.2" marker-start="url(#a2)" marker-end="url(#a1)"/>
+    <text x="78" y="385" text-anchor="middle" font-size="11" font-weight="600" fill="#DC2626">15.6"</text>
+
+    <!-- Dimension: depth -->
+    <line x1="178" y1="0" x2="178" y2="345" stroke="#DC2626" stroke-width="1.2" marker-start="url(#a2)" marker-end="url(#a1)"/>
+    <text x="196" y="176" text-anchor="middle" font-size="11" font-weight="600" fill="#DC2626" transform="rotate(90,196,176)">34.5"</text>
+  </g>
+
+  <!-- ====== SIDE VIEW ====== -->
+  <text x="490" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1a2e">SIDE VIEW</text>
+
+  <g transform="translate(380, 85)">
+    <!-- Legs -->
+    <rect x="10" y="360" width="14" height="80" rx="2" fill="#D1D5DB" stroke="#9CA3AF" stroke-width="1.2"/>
+    <rect x="126" y="360" width="14" height="80" rx="2" fill="#D1D5DB" stroke="#9CA3AF" stroke-width="1.2"/>
+    <!-- Cross brace -->
+    <rect x="10" y="400" width="130" height="6" rx="1" fill="#E5E7EB" stroke="#9CA3AF" stroke-width="0.8"/>
+    <!-- Foot pads -->
+    <rect x="5" y="438" width="24" height="5" rx="2" fill="#9CA3AF" stroke="#6B7280" stroke-width="0.8"/>
+    <rect x="121" y="438" width="24" height="5" rx="2" fill="#9CA3AF" stroke="#6B7280" stroke-width="0.8"/>
+
+    <!-- Main body -->
+    <rect x="2" y="80" width="146" height="280" rx="5" fill="#FEF2F2" stroke="#DC2626" stroke-width="2.5"/>
+
+    <!-- Fry pot area -->
+    <rect x="10" y="85" width="130" height="140" rx="4" fill="#FECACA" fill-opacity="0.3" stroke="#DC2626" stroke-width="1.2"/>
+    <!-- Oil level -->
+    <rect x="15" y="140" width="120" height="80" rx="3" fill="#FCA5A5" fill-opacity="0.3" stroke="none"/>
+    <text x="75" y="185" text-anchor="middle" font-size="9" fill="#991B1B">OIL LEVEL</text>
+
+    <!-- Basket handles -->
+    <rect x="35" y="60" width="30" height="28" rx="4" fill="none" stroke="#DC2626" stroke-width="1.8"/>
+    <rect x="85" y="60" width="30" height="28" rx="4" fill="none" stroke="#DC2626" stroke-width="1.8"/>
+
+    <!-- Control panel -->
+    <rect x="10" y="235" width="130" height="60" rx="4" fill="#F9FAFB" stroke="#9CA3AF" stroke-width="1.2"/>
+    <circle cx="40" cy="265" r="10" fill="#E5E7EB" stroke="#9CA3AF" stroke-width="1"/>
+    <circle cx="110" cy="265" r="10" fill="#E5E7EB" stroke="#9CA3AF" stroke-width="1"/>
+    <text x="75" y="250" text-anchor="middle" font-size="8" fill="#6B7280">CONTROLS</text>
+
+    <!-- Gas valve -->
+    <rect x="50" y="310" width="50" height="30" rx="4" fill="#F3F4F6" stroke="#9CA3AF" stroke-width="1"/>
+    <text x="75" y="329" text-anchor="middle" font-size="7" fill="#6B7280">GAS VALVE</text>
+
+    <!-- Floor line -->
+    <line x1="-10" y1="443" x2="170" y2="443" stroke="#94A3B8" stroke-width="0.8" stroke-dasharray="4 3"/>
+
+    <!-- Dimension: width -->
+    <line x1="2" y1="458" x2="148" y2="458" stroke="#DC2626" stroke-width="1.2" marker-start="url(#a2)" marker-end="url(#a1)"/>
+    <text x="75" y="474" text-anchor="middle" font-size="11" font-weight="600" fill="#DC2626">15.6"</text>
+
+    <!-- Dimension: height -->
+    <line x1="168" y1="60" x2="168" y2="443" stroke="#DC2626" stroke-width="1.2" marker-start="url(#a2)" marker-end="url(#a1)"/>
+    <text x="186" y="255" text-anchor="middle" font-size="11" font-weight="600" fill="#DC2626" transform="rotate(90,186,255)">46.1"</text>
+  </g>
+
+  <!-- ====== SPECS BOX ====== -->
+  <rect x="20" y="468" width="660" height="40" rx="6" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="35" y="486" font-size="10" font-weight="700" fill="#1a1a2e">SPECS:</text>
+  <text x="90" y="486" font-size="10" fill="#374151">Type: Gas Floor Fryer</text>
+  <text x="230" y="486" font-size="10" fill="#374151">BTU: 110,000</text>
+  <text x="340" y="486" font-size="10" fill="#374151">Oil Cap: 40-50 lbs</text>
+  <text x="490" y="486" font-size="10" fill="#374151">Gas: Natural / LP</text>
+  <text x="35" y="502" font-size="10" fill="#374151">Dimensions: 15.6"W × 34.5"D × 46.1"H</text>
+  <text x="320" y="502" font-size="10" fill="#374151">Model: Pitco SG14-S</text>
+  <text x="560" y="502" font-size="9" fill="#0D2244" font-weight="700">NOVA FOOD TRAILERS</text>
+</svg>

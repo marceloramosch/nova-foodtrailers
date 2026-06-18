@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 580" width="700" height="580" font-family="'Segoe UI',Arial,sans-serif">
+  <defs>
+    <pattern id="grid" width="25" height="25" patternUnits="userSpaceOnUse">
+      <path d="M 25 0 L 0 0 0 25" fill="none" stroke="#e8ecf2" stroke-width="0.4"/>
+    </pattern>
+    <marker id="a1" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5 Z" fill="#DC2626"/>
+    </marker>
+    <marker id="a2" markerWidth="7" markerHeight="5" refX="0" refY="2.5" orient="auto">
+      <path d="M7,0 L0,2.5 L7,5 Z" fill="#DC2626"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="700" height="580" fill="#f8fafc"/>
+  <rect width="700" height="580" fill="url(#grid)"/>
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="700" height="40" fill="#1a1a2e"/>
+  <text x="20" y="26" font-size="15" font-weight="700" fill="#FFFFFF">HEAT CABINET — MAIN STREET CHP-1836U</text>
+  <text x="680" y="26" text-anchor="end" font-size="10" fill="#94A3B8">Scale: 1 sq = 1 in</text>
+
+  <!-- ====== TOP VIEW ====== -->
+  <text x="170" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1a2e">TOP VIEW</text>
+
+  <g transform="translate(50, 85)">
+    <!-- Outer body 22.7" x 31.8" -->
+    <rect x="0" y="0" width="227" height="318" rx="5" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2.5"/>
+    <!-- Top surface -->
+    <rect x="8" y="8" width="211" height="302" rx="3" fill="#EDE9FE" fill-opacity="0.3" stroke="#7C3AED" stroke-width="0.8"/>
+
+    <!-- Vent slots -->
+    <rect x="50" y="40" width="127" height="8" rx="2" fill="#7C3AED" fill-opacity="0.15" stroke="#7C3AED" stroke-width="0.5"/>
+    <rect x="50" y="60" width="127" height="8" rx="2" fill="#7C3AED" fill-opacity="0.15" stroke="#7C3AED" stroke-width="0.5"/>
+    <rect x="50" y="80" width="127" height="8" rx="2" fill="#7C3AED" fill-opacity="0.15" stroke="#7C3AED" stroke-width="0.5"/>
+    <rect x="50" y="100" width="127" height="8" rx="2" fill="#7C3AED" fill-opacity="0.15" stroke="#7C3AED" stroke-width="0.5"/>
+    <rect x="50" y="120" width="127" height="8" rx="2" fill="#7C3AED" fill-opacity="0.15" stroke="#7C3AED" stroke-width="0.5"/>
+    <rect x="50" y="140" width="127" height="8" rx="2" fill="#7C3AED" fill-opacity="0.15" stroke="#7C3AED" stroke-width="0.5"/>
+    <text x="113.5" y="175" text-anchor="middle" font-size="9" fill="#5B21B6">VENTILATION</text>
+
+    <!-- Door handle indicator -->
+    <rect x="12" y="90" width="25" height="60" rx="5" fill="#7C3AED" fill-opacity="0.15" stroke="#7C3AED" stroke-width="1.2"/>
+    <text x="24" y="124" text-anchor="middle" font-size="6" fill="#5B21B6" transform="rotate(-90,24,124)">HANDLE</text>
+
+    <!-- Interior dimensions -->
+    <rect x="30" y="30" width="170" height="258" rx="2" fill="none" stroke="#A78BFA" stroke-width="0.8" stroke-dasharray="5 3"/>
+    <text x="115" y="260" text-anchor="middle" font-size="8" fill="#A78BFA">INTERIOR 18.2" × 27.1"</text>
+
+    <!-- Pan capacity -->
+    <text x="113.5" y="215" text-anchor="middle" font-size="10" font-weight="600" fill="#5B21B6">36 FULL-SIZE</text>
+    <text x="113.5" y="230" text-anchor="middle" font-size="10" font-weight="600" fill="#5B21B6">SHEET PANS</text>
+
+    <!-- Dimension: width -->
+    <line x1="0" y1="340" x2="227" y2="340" stroke="#DC2626" stroke-width="1.2" marker-start="url(#a2)" marker-end="url(#a1)"/>
+    <text x="113.5" y="358" text-anchor="middle" font-size="11" font-weight="600" fill="#DC2626">22.7"</text>
+
+    <!-- Dimension: depth -->
+    <line x1="248" y1="0" x2="248" y2="318" stroke="#DC2626" stroke-width="1.2" marker-start="url(#a2)" marker-end="url(#a1)"/>
+    <text x="266" y="163" text-anchor="middle" font-size="11" font-weight="600" fill="#DC2626" transform="rotate(90,266,163)">31.8"</text>
+  </g>
+
+  <!-- ====== SIDE VIEW ====== -->
+  <text x="510" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1a2e">SIDE VIEW</text>
+
+  <g transform="translate(380, 85)">
+    <!-- Caster wheels -->
+    <circle cx="30" cy="475" r="10" fill="#E5E7EB" stroke="#9CA3AF" stroke-width="1.5"/>
+    <circle cx="30" cy="475" r="4" fill="#9CA3AF" stroke="#6B7280" stroke-width="0.8"/>
+    <circle cx="177" cy="475" r="10" fill="#E5E7EB" stroke="#9CA3AF" stroke-width="1.5"/>
+    <circle cx="177" cy="475" r="4" fill="#9CA3AF" stroke="#6B7280" stroke-width="0.8"/>
+
+    <!-- Wheel posts -->
+    <rect x="24" y="455" width="12" height="15" rx="2" fill="#D1D5DB" stroke="#9CA3AF" stroke-width="1"/>
+    <rect x="171" y="455" width="12" height="15" rx="2" fill="#D1D5DB" stroke="#9CA3AF" stroke-width="1"/>
+
+    <!-- Main body -->
+    <rect x="3" y="5" width="201" height="450" rx="5" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2.5"/>
+
+    <!-- Clear door -->
+    <rect x="10" y="10" width="187" height="395" rx="3" fill="#EDE9FE" fill-opacity="0.1" stroke="#A78BFA" stroke-width="1.5"/>
+
+    <!-- Shelves -->
+    <line x1="14" y1="75" x2="193" y2="75" stroke="#7C3AED" stroke-width="1.2" stroke-opacity="0.6"/>
+    <line x1="14" y1="140" x2="193" y2="140" stroke="#7C3AED" stroke-width="1.2" stroke-opacity="0.6"/>
+    <line x1="14" y1="205" x2="193" y2="205" stroke="#7C3AED" stroke-width="1.2" stroke-opacity="0.6"/>
+    <line x1="14" y1="270" x2="193" y2="270" stroke="#7C3AED" stroke-width="1.2" stroke-opacity="0.6"/>
+    <line x1="14" y1="335" x2="193" y2="335" stroke="#7C3AED" stroke-width="1.2" stroke-opacity="0.6"/>
+
+    <!-- Sheet pans on shelves -->
+    <rect x="20" y="80" width="165" height="52" rx="2" fill="#DDD6FE" fill-opacity="0.25" stroke="#A78BFA" stroke-width="0.6"/>
+    <rect x="20" y="145" width="165" height="52" rx="2" fill="#DDD6FE" fill-opacity="0.25" stroke="#A78BFA" stroke-width="0.6"/>
+    <rect x="20" y="210" width="165" height="52" rx="2" fill="#DDD6FE" fill-opacity="0.25" stroke="#A78BFA" stroke-width="0.6"/>
+    <rect x="20" y="275" width="165" height="52" rx="2" fill="#DDD6FE" fill-opacity="0.25" stroke="#A78BFA" stroke-width="0.6"/>
+    <rect x="20" y="340" width="165" height="52" rx="2" fill="#DDD6FE" fill-opacity="0.25" stroke="#A78BFA" stroke-width="0.6"/>
+
+    <!-- Shelf labels -->
+    <text x="103" y="110" text-anchor="middle" font-size="8" fill="#7C3AED">SHEET PAN</text>
+    <text x="103" y="175" text-anchor="middle" font-size="8" fill="#7C3AED">SHEET PAN</text>
+    <text x="103" y="240" text-anchor="middle" font-size="8" fill="#7C3AED">SHEET PAN</text>
+
+    <!-- Door handle -->
+    <rect x="185" y="160" width="14" height="90" rx="4" fill="#7C3AED" fill-opacity="0.25" stroke="#7C3AED" stroke-width="1.5"/>
+
+    <!-- Control panel -->
+    <rect x="10" y="410" width="187" height="35" rx="3" fill="#F9FAFB" stroke="#9CA3AF" stroke-width="1.2"/>
+    <!-- Power light -->
+    <circle cx="35" cy="427" r="5" fill="#22C55E" fill-opacity="0.5" stroke="#16A34A" stroke-width="1"/>
+    <text x="35" y="442" text-anchor="middle" font-size="6" fill="#6B7280">PWR</text>
+    <!-- Thermostat -->
+    <circle cx="103" cy="427" r="8" fill="#E5E7EB" stroke="#9CA3AF" stroke-width="1"/>
+    <text x="103" y="442" text-anchor="middle" font-size="6" fill="#6B7280">TEMP</text>
+    <!-- Display -->
+    <rect x="140" y="420" width="45" height="15" rx="2" fill="#1a1a2e" stroke="#333333" stroke-width="0.8"/>
+    <text x="162" y="431" text-anchor="middle" font-size="8" fill="#22C55E">140°F</text>
+
+    <!-- Floor line -->
+    <line x1="-10" y1="485" x2="220" y2="485" stroke="#94A3B8" stroke-width="0.8" stroke-dasharray="4 3"/>
+
+    <!-- Dimension: width -->
+    <line x1="3" y1="498" x2="204" y2="498" stroke="#DC2626" stroke-width="1.2" marker-start="url(#a2)" marker-end="url(#a1)"/>
+    <text x="103" y="514" text-anchor="middle" font-size="11" font-weight="600" fill="#DC2626">22.7"</text>
+
+    <!-- Dimension: height -->
+    <line x1="222" y1="5" x2="222" y2="485" stroke="#DC2626" stroke-width="1.2" marker-start="url(#a2)" marker-end="url(#a1)"/>
+    <text x="240" y="248" text-anchor="middle" font-size="11" font-weight="600" fill="#DC2626" transform="rotate(90,240,248)">66.4"</text>
+  </g>
+
+  <!-- ====== SPECS BOX ====== -->
+  <rect x="20" y="530" width="660" height="40" rx="6" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="35" y="548" font-size="10" font-weight="700" fill="#1a1a2e">SPECS:</text>
+  <text x="90" y="548" font-size="10" fill="#374151">Type: Heated Holding Cabinet</text>
+  <text x="280" y="548" font-size="10" fill="#374151">Power: 120V / 1440W</text>
+  <text x="440" y="548" font-size="10" fill="#374151">Capacity: 36 Full Pans</text>
+  <text x="35" y="564" font-size="10" fill="#374151">Dimensions: 22.7"W × 31.8"D × 66.4"H</text>
+  <text x="320" y="564" font-size="10" fill="#374151">Door: Clear (Non-Insulated)</text>
+  <text x="560" y="564" font-size="9" fill="#0D2244" font-weight="700">NOVA FOOD TRAILERS</text>
+</svg>
