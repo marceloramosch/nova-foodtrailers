@@ -1,0 +1,305 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" width="1200" height="850" font-family="'Segoe UI',Arial,sans-serif">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e8ecf2" stroke-width="0.3"/>
+    </pattern>
+    <marker id="a1" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5 Z" fill="#DC2626"/>
+    </marker>
+    <marker id="a2" markerWidth="7" markerHeight="5" refX="0" refY="2.5" orient="auto">
+      <path d="M7,0 L0,2.5 L7,5 Z" fill="#DC2626"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="850" fill="#f8fafc"/>
+  <rect width="1200" height="850" fill="url(#grid)"/>
+
+  <!-- TITLE BAR -->
+  <rect x="0" y="0" width="1200" height="48" fill="#0D2244"/>
+  <rect x="14" y="10" width="28" height="28" rx="4" fill="none" stroke="#C8D8F0" stroke-width="1.5"/>
+  <rect x="19" y="15" width="8" height="8" rx="1" fill="#2D6BC4"/>
+  <rect x="29" y="15" width="8" height="8" rx="1" fill="#C8D8F0" fill-opacity="0.4"/>
+  <rect x="19" y="25" width="8" height="8" rx="1" fill="#C8D8F0" fill-opacity="0.4"/>
+  <rect x="29" y="25" width="8" height="8" rx="1" fill="#2D6BC4"/>
+  <text x="52" y="28" font-size="14" font-weight="800" fill="#FFF" letter-spacing="3">NOVA</text>
+  <text x="52" y="40" font-size="6.5" fill="#94A3B8" letter-spacing="2">FOOD TRAILERS</text>
+  <text x="140" y="30" font-size="16" font-weight="800" fill="#FFF" letter-spacing="1">SHAMIN FOOD TRUCK — BOX 15 FT</text>
+  <text x="1186" y="25" text-anchor="end" font-size="10" fill="#94A3B8">PAGE 2 OF 2</text>
+  <text x="1186" y="40" text-anchor="end" font-size="9" fill="#64748B">Top · Rear · Front Views</text>
+
+  <!-- ============================================================ -->
+  <!-- TOP VIEW (PLANTA) -->
+  <!-- ============================================================ -->
+  <text x="330" y="78" text-anchor="middle" font-size="14" font-weight="800" fill="#0D2244">TOP VIEW / PLANTA</text>
+
+  <g transform="translate(20, 90)">
+    <!-- Box outline 600 x 300 (15ft x 7.5ft at 40px/ft) -->
+    <rect x="0" y="0" width="600" height="300" rx="3" fill="#FFFDE7" fill-opacity="0.35" stroke="#333" stroke-width="2.5"/>
+    <rect x="6" y="6" width="588" height="288" rx="2" fill="none" stroke="#aaa" stroke-width="0.8"/>
+
+    <!-- Vent Hood (top-left, 8ft = 320px) -->
+    <rect x="12" y="12" width="320" height="60" rx="3" fill="#F3E8FF" stroke="#7C3AED" stroke-width="1.2"/>
+    <text x="172" y="47" text-anchor="middle" font-size="9" font-weight="700" fill="#5B21B6">VENT HOOD 8ft</text>
+
+    <!-- Cooking line under hood -->
+    <ellipse cx="60" cy="105" rx="28" ry="20" fill="none" stroke="#EA580C" stroke-width="1.5"/>
+    <text x="60" y="109" text-anchor="middle" font-size="7" fill="#EA580C">BURNER</text>
+    <ellipse cx="140" cy="105" rx="28" ry="20" fill="none" stroke="#EA580C" stroke-width="1.5"/>
+    <text x="140" y="109" text-anchor="middle" font-size="7" fill="#EA580C">BURNER</text>
+    <ellipse cx="220" cy="105" rx="28" ry="20" fill="none" stroke="#EA580C" stroke-width="1.5"/>
+    <text x="220" y="109" text-anchor="middle" font-size="7" fill="#EA580C">BURNER</text>
+
+    <!-- Counter line -->
+    <line x1="12" y1="138" x2="340" y2="138" stroke="#9CA3AF" stroke-width="1.5"/>
+
+    <!-- Cabinets under counter -->
+    <rect x="12" y="142" width="160" height="72" rx="2" fill="#F9FAFB" stroke="#9CA3AF" stroke-width="0.8"/>
+    <text x="92" y="182" text-anchor="middle" font-size="8" fill="#666">CABINET</text>
+    <rect x="178" y="142" width="160" height="72" rx="2" fill="#F9FAFB" stroke="#9CA3AF" stroke-width="0.8"/>
+    <text x="258" y="182" text-anchor="middle" font-size="8" fill="#666">CABINET</text>
+
+    <!-- Fridge -->
+    <rect x="350" y="12" width="80" height="120" rx="3" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.2"/>
+    <text x="390" y="75" text-anchor="middle" font-size="9" font-weight="600" fill="#1E40AF">FRIDGE</text>
+
+    <!-- 3-Comp Sink -->
+    <rect x="445" y="12" width="140" height="80" rx="3" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.2"/>
+    <rect x="451" y="18" width="38" height="50" rx="2" fill="#BAE6FD" stroke="#0284C7" stroke-width="0.6"/>
+    <rect x="493" y="18" width="38" height="50" rx="2" fill="#BAE6FD" stroke="#0284C7" stroke-width="0.6"/>
+    <rect x="535" y="18" width="38" height="50" rx="2" fill="#BAE6FD" stroke="#0284C7" stroke-width="0.6"/>
+    <text x="515" y="82" text-anchor="middle" font-size="7" font-weight="600" fill="#0369A1">3-COMP SINK</text>
+
+    <!-- Hand Wash Sink -->
+    <rect x="445" y="200" width="48" height="48" rx="12" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.2"/>
+    <text x="469" y="225" text-anchor="middle" font-size="7" font-weight="600" fill="#0369A1">HAND</text>
+    <text x="469" y="236" text-anchor="middle" font-size="7" font-weight="600" fill="#0369A1">SINK</text>
+
+    <!-- Service windows (on bottom wall = right side) -->
+    <rect x="20" y="271" width="120" height="20" rx="2" fill="none" stroke="#333" stroke-width="1.8"/>
+    <text x="80" y="285" text-anchor="middle" font-size="7" fill="#333">WINDOW 1</text>
+    <rect x="155" y="271" width="120" height="20" rx="2" fill="none" stroke="#333" stroke-width="1.8"/>
+    <text x="215" y="285" text-anchor="middle" font-size="7" fill="#333">WINDOW 2</text>
+
+    <!-- Work table (right side) -->
+    <rect x="350" y="145" width="80" height="140" rx="3" fill="#F9FAFB" stroke="#9CA3AF" stroke-width="0.8"/>
+    <text x="390" y="218" text-anchor="middle" font-size="8" fill="#666">TABLE</text>
+    <text x="390" y="230" text-anchor="middle" font-size="7" fill="#666">6'×21.5"</text>
+
+    <!-- Fire extinguisher -->
+    <rect x="560" y="12" width="24" height="28" rx="6" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.5"/>
+    <text x="572" y="30" text-anchor="middle" font-size="10" font-weight="800" fill="#DC2626">E</text>
+
+    <!-- A/C unit -->
+    <rect x="555" y="52" width="32" height="40" rx="3" fill="#E5E7EB" stroke="#6B7280" stroke-width="1"/>
+    <text x="571" y="75" text-anchor="middle" font-size="7" font-weight="600" fill="#374151">A/C</text>
+
+    <!-- Rear door indicator -->
+    <rect x="518" y="260" width="70" height="30" rx="2" fill="none" stroke="#333" stroke-width="1.8" stroke-dasharray="6,3"/>
+    <text x="553" y="280" text-anchor="middle" font-size="8" fill="#333">REAR DOOR</text>
+
+    <!-- Dimension bottom (width = 7'6") -->
+    <line x1="0" y1="320" x2="600" y2="320" stroke="#DC2626" stroke-width="1.2" marker-start="url(#a2)" marker-end="url(#a1)"/>
+    <text x="300" y="336" text-anchor="middle" font-size="12" font-weight="700" fill="#DC2626">15' 0"</text>
+
+    <!-- Dimension right (depth = 7'6") -->
+    <line x1="620" y1="0" x2="620" y2="300" stroke="#DC2626" stroke-width="1.2" marker-start="url(#a2)" marker-end="url(#a1)"/>
+    <text x="638" y="154" text-anchor="middle" font-size="11" font-weight="700" fill="#DC2626" transform="rotate(90,638,154)">7' 6"</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- REAR VIEW (TRASERA) -->
+  <!-- ============================================================ -->
+  <text x="105" y="462" text-anchor="middle" font-size="13" font-weight="800" fill="#0D2244">REAR VIEW</text>
+
+  <g transform="translate(20, 475)">
+    <rect x="0" y="0" width="300" height="220" rx="3" fill="#FFFDE7" fill-opacity="0.35" stroke="#333" stroke-width="2.5"/>
+
+    <!-- Rear wall detail -->
+    <rect x="6" y="6" width="288" height="208" rx="2" fill="none" stroke="#aaa" stroke-width="0.8"/>
+
+    <!-- Rear door -->
+    <rect x="75" y="20" width="150" height="180" rx="3" fill="none" stroke="#333" stroke-width="2"/>
+    <circle cx="215" cy="110" r="5" fill="#9CA3AF"/>
+    <text x="150" y="110" text-anchor="middle" font-size="10" fill="#555">REAR DOOR</text>
+    <text x="150" y="125" text-anchor="middle" font-size="8" fill="#555">36" × 72"</text>
+
+    <!-- Steps indicator -->
+    <rect x="100" y="202" width="100" height="10" rx="1" fill="#E5E7EB" stroke="#9CA3AF" stroke-width="0.6"/>
+    <text x="150" y="210" text-anchor="middle" font-size="6" fill="#666">STEP</text>
+
+    <!-- Tail lights -->
+    <rect x="15" y="180" width="18" height="14" rx="3" fill="#FEE2E2" stroke="#DC2626" stroke-width="1"/>
+    <rect x="267" y="180" width="18" height="14" rx="3" fill="#FEE2E2" stroke="#DC2626" stroke-width="1"/>
+    <text x="24" y="209" text-anchor="middle" font-size="6" fill="#DC2626">TAIL</text>
+    <text x="276" y="209" text-anchor="middle" font-size="6" fill="#DC2626">TAIL</text>
+
+    <!-- Dimension -->
+    <line x1="0" y1="235" x2="300" y2="235" stroke="#DC2626" stroke-width="1.2" marker-start="url(#a2)" marker-end="url(#a1)"/>
+    <text x="150" y="251" text-anchor="middle" font-size="11" font-weight="700" fill="#DC2626">7' 6"</text>
+
+    <!-- Height -->
+    <line x1="318" y1="0" x2="318" y2="220" stroke="#DC2626" stroke-width="1.2" marker-start="url(#a2)" marker-end="url(#a1)"/>
+    <text x="335" y="114" text-anchor="middle" font-size="10" font-weight="700" fill="#DC2626" transform="rotate(90,335,114)">6' 8"</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- FRONT VIEW (FRENTE DE CAJA) -->
+  <!-- ============================================================ -->
+  <text x="485" y="462" text-anchor="middle" font-size="13" font-weight="800" fill="#0D2244">FRONT VIEW</text>
+
+  <g transform="translate(365, 475)">
+    <rect x="0" y="0" width="300" height="220" rx="3" fill="#FFFDE7" fill-opacity="0.35" stroke="#333" stroke-width="2.5"/>
+    <rect x="6" y="6" width="288" height="208" rx="2" fill="none" stroke="#aaa" stroke-width="0.8"/>
+
+    <!-- Tongue / hitch area -->
+    <line x1="130" y1="220" x2="150" y2="255" stroke="#333" stroke-width="2.5"/>
+    <line x1="170" y1="220" x2="150" y2="255" stroke="#333" stroke-width="2.5"/>
+    <circle cx="150" cy="258" r="6" fill="none" stroke="#333" stroke-width="2"/>
+    <text x="150" y="275" text-anchor="middle" font-size="8" font-weight="600" fill="#333">COUPLER</text>
+    <text x="150" y="286" text-anchor="middle" font-size="7" fill="#555">2-5/16"</text>
+
+    <!-- Front wall panels -->
+    <rect x="25" y="20" width="250" height="30" rx="2" fill="#E5E7EB" stroke="#9CA3AF" stroke-width="0.8"/>
+    <text x="150" y="40" text-anchor="middle" font-size="9" fill="#555">UPPER PANEL</text>
+
+    <!-- A/C vent on front -->
+    <rect x="115" y="60" width="70" height="35" rx="3" fill="#E5E7EB" stroke="#6B7280" stroke-width="1.2"/>
+    <text x="150" y="82" text-anchor="middle" font-size="9" font-weight="600" fill="#374151">A/C</text>
+
+    <!-- Main front area -->
+    <rect x="25" y="105" width="250" height="90" rx="2" fill="none" stroke="#aaa" stroke-width="0.6"/>
+    <text x="150" y="155" text-anchor="middle" font-size="10" fill="#888">FRONT WALL</text>
+
+    <!-- Stabilizer jacks -->
+    <rect x="15" y="195" width="14" height="18" rx="1" fill="#9CA3AF" stroke="#6B7280" stroke-width="0.8"/>
+    <rect x="271" y="195" width="14" height="18" rx="1" fill="#9CA3AF" stroke="#6B7280" stroke-width="0.8"/>
+    <text x="22" y="222" text-anchor="middle" font-size="5" fill="#555">JACK</text>
+    <text x="278" y="222" text-anchor="middle" font-size="5" fill="#555">JACK</text>
+
+    <!-- Dimension bottom -->
+    <line x1="0" y1="235" x2="300" y2="235" stroke="#DC2626" stroke-width="1.2" marker-start="url(#a2)" marker-end="url(#a1)"/>
+    <text x="150" y="251" text-anchor="middle" font-size="11" font-weight="700" fill="#DC2626">7' 6"</text>
+
+    <!-- Height -->
+    <line x1="318" y1="0" x2="318" y2="220" stroke="#DC2626" stroke-width="1.2" marker-start="url(#a2)" marker-end="url(#a1)"/>
+    <text x="335" y="114" text-anchor="middle" font-size="10" font-weight="700" fill="#DC2626" transform="rotate(90,335,114)">6' 8"</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- SPECS PANELS (right column) -->
+  <!-- ============================================================ -->
+
+  <!-- BOX SPECIFICATIONS -->
+  <rect x="700" y="62" width="480" height="195" rx="8" fill="#FFF" stroke="#D1D5DB" stroke-width="1.5"/>
+  <rect x="700" y="62" width="480" height="28" rx="8" fill="#0D2244"/>
+  <rect x="700" y="82" width="480" height="8" fill="#0D2244"/>
+  <text x="940" y="82" text-anchor="middle" font-size="12" font-weight="800" fill="#FFF" letter-spacing="2">BOX SPECIFICATIONS</text>
+
+  <text x="718" y="112" font-size="11" fill="#555">Exterior Length</text>
+  <text x="1162" y="112" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">15' 0" (4.57m)</text>
+  <line x1="718" y1="118" x2="1162" y2="118" stroke="#E5E7EB" stroke-width="0.5"/>
+  <text x="718" y="134" font-size="11" fill="#555">Exterior Width</text>
+  <text x="1162" y="134" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">7' 6" (2.29m)</text>
+  <line x1="718" y1="140" x2="1162" y2="140" stroke="#E5E7EB" stroke-width="0.5"/>
+  <text x="718" y="156" font-size="11" fill="#555">Interior Height</text>
+  <text x="1162" y="156" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">6' 8" (2.03m)</text>
+  <line x1="718" y1="162" x2="1162" y2="162" stroke="#E5E7EB" stroke-width="0.5"/>
+  <text x="718" y="178" font-size="11" fill="#555">Frame</text>
+  <text x="1162" y="178" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">Steel tube frame — welded</text>
+  <line x1="718" y1="184" x2="1162" y2="184" stroke="#E5E7EB" stroke-width="0.5"/>
+  <text x="718" y="200" font-size="11" fill="#555">Exterior Skin</text>
+  <text x="1162" y="200" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">Aluminum sheet — .040"</text>
+  <line x1="718" y1="206" x2="1162" y2="206" stroke="#E5E7EB" stroke-width="0.5"/>
+  <text x="718" y="222" font-size="11" fill="#555">Rear Door</text>
+  <text x="1162" y="222" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">36" × 72" — Cam-lock</text>
+  <line x1="718" y1="228" x2="1162" y2="228" stroke="#E5E7EB" stroke-width="0.5"/>
+  <text x="718" y="244" font-size="11" fill="#555">Service Windows</text>
+  <text x="1162" y="244" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">2 — Concession style, sliding glass</text>
+
+  <!-- ELECTRICAL -->
+  <rect x="700" y="272" width="480" height="175" rx="8" fill="#FFF" stroke="#D1D5DB" stroke-width="1.5"/>
+  <rect x="700" y="272" width="480" height="28" rx="8" fill="#F59E0B"/>
+  <rect x="700" y="292" width="480" height="8" fill="#F59E0B"/>
+  <text x="940" y="292" text-anchor="middle" font-size="12" font-weight="800" fill="#FFF" letter-spacing="2">ELECTRICAL</text>
+
+  <text x="718" y="322" font-size="11" fill="#555">Shore Power</text>
+  <text x="1162" y="322" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">50A / 120-240V — NEMA 14-50</text>
+  <line x1="718" y1="328" x2="1162" y2="328" stroke="#E5E7EB" stroke-width="0.5"/>
+  <text x="718" y="344" font-size="11" fill="#555">Panel</text>
+  <text x="1162" y="344" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">100A main breaker, 12-space</text>
+  <line x1="718" y1="350" x2="1162" y2="350" stroke="#E5E7EB" stroke-width="0.5"/>
+  <text x="718" y="366" font-size="11" fill="#555">Lighting</text>
+  <text x="1162" y="366" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">LED recessed — 6 fixtures</text>
+  <line x1="718" y1="372" x2="1162" y2="372" stroke="#E5E7EB" stroke-width="0.5"/>
+  <text x="718" y="388" font-size="11" fill="#555">Exterior Lights</text>
+  <text x="1162" y="388" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">LED strip — under service window</text>
+  <line x1="718" y1="394" x2="1162" y2="394" stroke="#E5E7EB" stroke-width="0.5"/>
+  <text x="718" y="410" font-size="11" fill="#555">Receptacles</text>
+  <text x="1162" y="410" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">4 × 120V duplex, 1 × 240V (A/C)</text>
+  <line x1="718" y1="416" x2="1162" y2="416" stroke="#E5E7EB" stroke-width="0.5"/>
+  <text x="718" y="432" font-size="11" fill="#555">GFCI Protection</text>
+  <text x="1162" y="432" text-anchor="end" font-size="11" font-weight="700" fill="#2D6BC4">All receptacles GFCI — NEC compliant</text>
+
+  <!-- PLUMBING -->
+  <rect x="700" y="460" width="480" height="155" rx="8" fill="#FFF" stroke="#D1D5DB" stroke-width="1.5"/>
+  <rect x="700" y="460" width="480" height="28" rx="8" fill="#0284C7"/>
+  <rect x="700" y="480" width="480" height="8" fill="#0284C7"/>
+  <text x="940" y="480" text-anchor="middle" font-size="12" font-weight="800" fill="#FFF" letter-spacing="2">PLUMBING</text>
+
+  <text x="718" y="510" font-size="11" fill="#555">Fresh Water Tank</text>
+  <text x="1162" y="510" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">30 gal — FDA-approved poly</text>
+  <line x1="718" y1="516" x2="1162" y2="516" stroke="#E5E7EB" stroke-width="0.5"/>
+  <text x="718" y="532" font-size="11" fill="#555">Waste Water Tank</text>
+  <text x="1162" y="532" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">50 gal — Mounted below floor</text>
+  <line x1="718" y1="538" x2="1162" y2="538" stroke="#E5E7EB" stroke-width="0.5"/>
+  <text x="718" y="554" font-size="11" fill="#555">Water Pump</text>
+  <text x="1162" y="554" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">12V demand pump — 3.5 GPM</text>
+  <line x1="718" y1="560" x2="1162" y2="560" stroke="#E5E7EB" stroke-width="0.5"/>
+  <text x="718" y="576" font-size="11" fill="#555">Water Heater</text>
+  <text x="1162" y="576" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">6 gal — LP gas, 120°F min</text>
+  <line x1="718" y1="582" x2="1162" y2="582" stroke="#E5E7EB" stroke-width="0.5"/>
+  <text x="718" y="598" font-size="11" fill="#555">Grease Trap</text>
+  <text x="1162" y="598" text-anchor="end" font-size="11" font-weight="700" fill="#0D2244">Under 3-comp sink — removable</text>
+
+  <!-- LEGEND -->
+  <rect x="700" y="630" width="480" height="170" rx="8" fill="#FFF" stroke="#D1D5DB" stroke-width="1.5"/>
+  <rect x="700" y="630" width="480" height="28" rx="8" fill="#374151"/>
+  <rect x="700" y="650" width="480" height="8" fill="#374151"/>
+  <text x="940" y="650" text-anchor="middle" font-size="12" font-weight="800" fill="#FFF" letter-spacing="2">LEGEND</text>
+
+  <!-- Legend items - row 1 -->
+  <rect x="720" y="670" width="18" height="14" rx="2" fill="#F3E8FF" stroke="#7C3AED" stroke-width="1"/>
+  <text x="744" y="681" font-size="10" fill="#333">Vent Hood / Exhaust</text>
+
+  <rect x="900" y="670" width="18" height="14" rx="2" fill="#E0F2FE" stroke="#0284C7" stroke-width="1"/>
+  <text x="924" y="681" font-size="10" fill="#333">Sink / Plumbing</text>
+
+  <!-- Legend items - row 2 -->
+  <rect x="720" y="694" width="18" height="14" rx="2" fill="#DBEAFE" stroke="#2563EB" stroke-width="1"/>
+  <text x="744" y="705" font-size="10" fill="#333">Refrigeration</text>
+
+  <rect x="900" y="694" width="18" height="14" rx="2" fill="#FEE2E2" stroke="#DC2626" stroke-width="1"/>
+  <text x="924" y="705" font-size="10" fill="#333">Fire Safety</text>
+
+  <!-- Legend items - row 3 -->
+  <rect x="720" y="718" width="18" height="14" rx="2" fill="#F9FAFB" stroke="#9CA3AF" stroke-width="1"/>
+  <text x="744" y="729" font-size="10" fill="#333">Storage / Cabinets</text>
+
+  <rect x="900" y="718" width="18" height="14" rx="2" fill="#E5E7EB" stroke="#6B7280" stroke-width="1"/>
+  <text x="924" y="729" font-size="10" fill="#333">HVAC / Mechanical</text>
+
+  <!-- Legend items - row 4 -->
+  <ellipse cx="729" cy="749" rx="9" ry="7" fill="none" stroke="#EA580C" stroke-width="1.2"/>
+  <text x="744" y="753" font-size="10" fill="#333">Cooking Equipment</text>
+
+  <line x1="900" y1="749" x2="918" y2="749" stroke="#DC2626" stroke-width="1.2" marker-start="url(#a2)" marker-end="url(#a1)"/>
+  <text x="924" y="753" font-size="10" fill="#333">Dimension Line</text>
+
+  <!-- Scale note -->
+  <text x="940" y="785" text-anchor="middle" font-size="10" font-weight="600" fill="#64748B">Scale: 40px = 1 ft  |  All dimensions nominal  |  NSF/ANSI certified equipment</text>
+
+  <!-- FOOTER -->
+  <rect x="0" y="820" width="1200" height="30" fill="#0D2244"/>
+  <text x="20" y="839" font-size="10" fill="#94A3B8">Client: Shamin Food Truck · Box 15' × 7'6" × 6'8" · All equipment NSF/ANSI certified</text>
+  <text x="1180" y="839" text-anchor="end" font-size="11" font-weight="800" fill="#FFF" letter-spacing="2">NOVA FOOD TRAILERS</text>
+</svg>
