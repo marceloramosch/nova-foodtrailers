@@ -1,0 +1,215 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 980" width="620" height="980" font-family="'Segoe UI',Arial,sans-serif">
+  <!-- Background -->
+  <rect width="620" height="980" fill="#fff"/>
+
+  <!-- Header bar -->
+  <rect x="0" y="0" width="620" height="50" fill="#0D2244"/>
+  <!-- Nova logo -->
+  <rect x="16" y="12" width="26" height="26" rx="4" fill="none" stroke="#C8D8F0" stroke-width="1.5"/>
+  <rect x="21" y="17" width="7" height="7" rx="1" fill="#2D6BC4"/>
+  <rect x="30" y="17" width="7" height="7" rx="1" fill="#C8D8F0" fill-opacity="0.5"/>
+  <rect x="21" y="26" width="7" height="7" rx="1" fill="#C8D8F0" fill-opacity="0.5"/>
+  <rect x="30" y="26" width="7" height="7" rx="1" fill="#2D6BC4"/>
+  <text x="52" y="30" font-size="16" font-weight="800" fill="#FFFFFF" letter-spacing="3">NOVA</text>
+  <text x="52" y="42" font-size="7" fill="#94A3B8" letter-spacing="2.5">FOOD TRAILERS</text>
+  <text x="604" y="28" text-anchor="end" font-size="11" fill="#94A3B8">SPEC SHEET</text>
+  <text x="604" y="42" text-anchor="end" font-size="9" fill="#64748B">Rev. 1 — June 2026</text>
+
+  <!-- Table structure -->
+  <g transform="translate(20, 64)">
+    <!-- Table header -->
+    <rect x="0" y="0" width="580" height="34" fill="#0D2244"/>
+    <text x="145" y="22" text-anchor="middle" font-size="14" font-weight="800" fill="#FFFFFF" letter-spacing="2">SPECS</text>
+    <line x1="290" y1="0" x2="290" y2="34" stroke="#1a3a7a" stroke-width="1"/>
+    <text x="435" y="22" text-anchor="middle" font-size="14" font-weight="800" fill="#FFFFFF" letter-spacing="2">FOLIO #</text>
+
+    <!-- Row helper: y, label, value, optional highlight -->
+    <!-- ROW 1 -->
+    <rect x="0" y="34" width="580" height="30" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="34" x2="290" y2="64" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="54" font-size="12" font-weight="700" fill="#0D2244">CUSTOMER</text>
+    <text x="302" y="54" font-size="12" font-weight="600" fill="#374151">SHAMIN FOOD TRUCK</text>
+
+    <!-- ROW 2 -->
+    <rect x="0" y="64" width="580" height="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="64" x2="290" y2="94" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="84" font-size="12" font-weight="700" fill="#0D2244">OFFICE</text>
+    <text x="302" y="84" font-size="12" fill="#374151">HOUSTON</text>
+
+    <!-- ROW 3 -->
+    <rect x="0" y="94" width="580" height="30" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="94" x2="290" y2="124" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="114" font-size="12" font-weight="700" fill="#0D2244">DESTINATION</text>
+    <text x="302" y="114" font-size="12" fill="#374151">—</text>
+
+    <!-- ROW 4 -->
+    <rect x="0" y="124" width="580" height="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="124" x2="290" y2="154" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="144" font-size="12" font-weight="700" fill="#0D2244">SIZE</text>
+    <text x="302" y="144" font-size="12" font-weight="700" fill="#0D2244">15 × 7.5 × 6.8</text>
+
+    <!-- ROW 5 -->
+    <rect x="0" y="154" width="580" height="30" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="154" x2="290" y2="184" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="174" font-size="12" font-weight="700" fill="#0D2244">MODEL</text>
+    <text x="302" y="174" font-size="12" fill="#374151">2025 Standard</text>
+
+    <!-- ROW 6 -->
+    <rect x="0" y="184" width="580" height="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="184" x2="290" y2="214" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="204" font-size="12" font-weight="700" fill="#0D2244">FLOOR</text>
+    <text x="302" y="204" font-size="12" fill="#374151">Diamond Plate Aluminum</text>
+
+    <!-- ROW 7 -->
+    <rect x="0" y="214" width="580" height="30" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="214" x2="290" y2="244" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="234" font-size="12" font-weight="700" fill="#0D2244">AXLES</text>
+    <text x="302" y="234" font-size="12" fill="#374151">Single — 3,500 lb</text>
+
+    <!-- ROW 8 -->
+    <rect x="0" y="244" width="580" height="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="244" x2="290" y2="274" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="264" font-size="12" font-weight="700" fill="#0D2244">COLOR</text>
+    <text x="302" y="264" font-size="12" fill="#374151">—</text>
+
+    <!-- ROW 9 -->
+    <rect x="0" y="274" width="580" height="30" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="274" x2="290" y2="304" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="294" font-size="12" font-weight="700" fill="#0D2244">A / C</text>
+    <text x="302" y="294" font-size="12" fill="#374151">1 Ton</text>
+
+    <!-- ROW 10 -->
+    <rect x="0" y="304" width="580" height="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="304" x2="290" y2="334" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="324" font-size="12" font-weight="700" fill="#0D2244">LOUVER</text>
+    <text x="302" y="324" font-size="12" fill="#374151">Back</text>
+
+    <!-- ROW 11 -->
+    <rect x="0" y="334" width="580" height="30" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="334" x2="290" y2="364" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="354" font-size="12" font-weight="700" fill="#0D2244">PLUMBING</text>
+    <text x="302" y="354" font-size="12" fill="#374151">Pex</text>
+
+    <!-- ROW 12 -->
+    <rect x="0" y="364" width="580" height="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="364" x2="290" y2="394" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="384" font-size="12" font-weight="700" fill="#0D2244">CLEAN WATER TANK</text>
+    <text x="302" y="384" font-size="12" fill="#374151">30 Gal — Inox / Plastic</text>
+
+    <!-- ROW 13 -->
+    <rect x="0" y="394" width="580" height="30" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="394" x2="290" y2="424" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="414" font-size="12" font-weight="700" fill="#0D2244">WASTE WATER TANK</text>
+    <text x="302" y="414" font-size="12" fill="#374151">40 Gal — Inox / Plastic</text>
+
+    <!-- ROW 14 -->
+    <rect x="0" y="424" width="580" height="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="424" x2="290" y2="454" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="444" font-size="12" font-weight="700" fill="#0D2244">TANK CARRIER</text>
+    <text x="302" y="444" font-size="12" fill="#374151">Cage / Base</text>
+
+    <!-- ROW 15 -->
+    <rect x="0" y="454" width="580" height="30" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="454" x2="290" y2="484" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="474" font-size="12" font-weight="700" fill="#0D2244">GENERATOR</text>
+    <text x="302" y="474" font-size="12" fill="#374151">Cage / Base</text>
+
+    <!-- ROW 16 -->
+    <rect x="0" y="484" width="580" height="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="484" x2="290" y2="514" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="504" font-size="12" font-weight="700" fill="#0D2244">WINDOW SIZE</text>
+    <text x="302" y="504" font-size="12" fill="#374151">4' × 3' (1)</text>
+
+    <!-- ROW 17 -->
+    <rect x="0" y="514" width="580" height="30" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="514" x2="290" y2="544" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="534" font-size="12" font-weight="700" fill="#0D2244">WINDOW TYPE</text>
+    <text x="302" y="534" font-size="12" fill="#374151">Slide — opt.</text>
+
+    <!-- ROW 18 -->
+    <rect x="0" y="544" width="580" height="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="544" x2="290" y2="574" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="564" font-size="12" font-weight="700" fill="#0D2244">WHEELS</text>
+    <text x="302" y="564" font-size="12" fill="#374151">ST225/75R15</text>
+
+    <!-- ROW 19 -->
+    <rect x="0" y="574" width="580" height="30" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="574" x2="290" y2="604" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="594" font-size="12" font-weight="700" fill="#0D2244">VENT HOOD</text>
+    <text x="302" y="594" font-size="12" fill="#374151">Type I NSF — Premium</text>
+
+    <!-- ROW 20 -->
+    <rect x="0" y="604" width="580" height="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="604" x2="290" y2="634" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="624" font-size="12" font-weight="700" fill="#0D2244">VENT HOOD SIZE</text>
+    <text x="302" y="624" font-size="12" fill="#374151">8ft</text>
+
+    <!-- ROW 21 -->
+    <rect x="0" y="634" width="580" height="30" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="634" x2="290" y2="664" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="654" font-size="12" font-weight="700" fill="#0D2244">WATER PUMP</text>
+    <text x="302" y="654" font-size="12" fill="#374151">70 Psi 1/2 hp 110v</text>
+
+    <!-- ROW 22 -->
+    <rect x="0" y="664" width="580" height="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="664" x2="290" y2="694" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="684" font-size="12" font-weight="700" fill="#0D2244">SINK | HANDWASH | SPLASHGUARD</text>
+    <text x="302" y="684" font-size="12" fill="#374151">Stainless Steel | Commercial NSF</text>
+
+    <!-- ROW 23 -->
+    <rect x="0" y="694" width="580" height="30" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="694" x2="290" y2="724" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="714" font-size="12" font-weight="700" fill="#0D2244">GAS OUTLETS</text>
+    <text x="302" y="714" font-size="12" fill="#374151">YES</text>
+
+    <!-- ROW 24 -->
+    <rect x="0" y="724" width="580" height="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="724" x2="290" y2="754" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="744" font-size="12" font-weight="700" fill="#0D2244">TOP AND BOTTOM FACINGS</text>
+    <text x="302" y="744" font-size="12" fill="#374151">Alum smooth</text>
+
+    <!-- ROW 25 -->
+    <rect x="0" y="754" width="580" height="30" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="754" x2="290" y2="784" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="774" font-size="12" font-weight="700" fill="#0D2244">INSULATED WALLS</text>
+    <text x="302" y="774" font-size="12" fill="#374151">Polyurethane 2" — R-13 — FRP interior</text>
+
+    <!-- ROW 26 -->
+    <rect x="0" y="784" width="580" height="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="784" x2="290" y2="814" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="804" font-size="12" font-weight="700" fill="#0D2244">WATER HEATER</text>
+    <text x="302" y="804" font-size="12" fill="#374151">Electric 4 Gal Instalado</text>
+
+    <!-- ROW 27 -->
+    <rect x="0" y="814" width="580" height="30" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="814" x2="290" y2="844" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="834" font-size="12" font-weight="700" fill="#0D2244">SINK FAUCET</text>
+    <text x="302" y="834" font-size="12" fill="#374151">Spring</text>
+
+    <!-- ROW 28 -->
+    <rect x="0" y="844" width="580" height="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="844" x2="290" y2="874" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="864" font-size="12" font-weight="700" fill="#0D2244">ELECTRICAL MAIN PLUG</text>
+    <text x="302" y="864" font-size="12" fill="#374151">L14-30 — 30A</text>
+
+    <!-- ROW 29 -->
+    <rect x="0" y="874" width="580" height="30" fill="#F8FAFC" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="874" x2="290" y2="904" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="894" font-size="12" font-weight="700" fill="#0D2244">ELECTRIC OUTLETS / VOLTAGE</text>
+    <text x="302" y="894" font-size="12" fill="#374151">0 / 110V | 0 / 220V</text>
+
+    <!-- ROW 30 -->
+    <rect x="0" y="904" width="580" height="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="0.5"/>
+    <line x1="290" y1="904" x2="290" y2="934" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="12" y="924" font-size="12" font-weight="700" fill="#0D2244">EXTERIOR LIGHT</text>
+    <text x="302" y="924" font-size="12" fill="#374151">Reflector</text>
+
+    <!-- Outer border -->
+    <rect x="0" y="0" width="580" height="934" fill="none" stroke="#0D2244" stroke-width="2" rx="2"/>
+  </g>
+
+  <!-- FOOTER -->
+  <rect x="0" y="950" width="620" height="30" fill="#0D2244"/>
+  <text x="16" y="969" font-size="9" fill="#94A3B8">Client: Shamin Food Truck · 15' × 7'6" × 6'8" · Houston, TX</text>
+  <text x="604" y="969" text-anchor="end" font-size="10" font-weight="800" fill="#FFFFFF" letter-spacing="2">NOVA FOOD TRAILERS</text>
+</svg>
