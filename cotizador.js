@@ -1,4 +1,15 @@
-(function () {
+(async function () {
+  // Espera a que la nube sincronice los datos (modo local resuelve al instante)
+  await (window.__novaReady || Promise.resolve());
+
+  // Guarda en localStorage y, si la nube está activa, también la sube
+  function syncSet(key, value) {
+    localStorage.setItem(key, value);
+    if (window.NovaCloud && window.NovaCloud.enabled) {
+      window.NovaCloud.push(key, value);
+    }
+  }
+
   const catalogEl = document.getElementById("catalog");
   const lineItemsEl = document.getElementById("lineItems");
   const sizePresetEl = document.getElementById("fSizePreset");
@@ -75,7 +86,7 @@
         const val = parseFloat(priceInput.value) || 0;
         savedPrices[key] = val;
         item.price = val;
-        localStorage.setItem(PRICES_KEY, JSON.stringify(savedPrices));
+        syncSet(PRICES_KEY, JSON.stringify(savedPrices));
       });
 
       const addBtn = document.createElement("button");
@@ -256,7 +267,7 @@
 
   // ===== CRM: clientes =====
   function persistClients() {
-    localStorage.setItem(CLIENTS_KEY, JSON.stringify(clients));
+    syncSet(CLIENTS_KEY, JSON.stringify(clients));
   }
 
   function renderClientSelect() {
@@ -376,7 +387,7 @@
 
   // ===== Cotizaciones guardadas =====
   function persistQuotes() {
-    localStorage.setItem(QUOTES_KEY, JSON.stringify(quotes));
+    syncSet(QUOTES_KEY, JSON.stringify(quotes));
   }
 
   function renderQuotesTable() {
