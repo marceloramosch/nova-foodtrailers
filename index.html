@@ -305,13 +305,8 @@ footer{
 .scroll-cta:hover::before{animation:none;opacity:0;}
 
 /* ===== REVEAL ON SCROLL ===== */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease;}
 .reveal.in{opacity:1;transform:none;}
-.reveal:nth-child(2){transition-delay:.08s;}
-.reveal:nth-child(3){transition-delay:.16s;}
-.reveal:nth-child(4){transition-delay:.24s;}
-.reveal:nth-child(5){transition-delay:.32s;}
-.reveal:nth-child(6){transition-delay:.40s;}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;}.hero-float,.scroll-cta::before,.hero-btns .btn-primary::after{animation:none !important;}#stats::after{animation:none !important;}.hero-tag{animation:none !important;}.hero-title span{animation:none !important;-webkit-text-fill-color:var(--silver);}}
 
 /* ===== MOBILE OPTIMIZATION ===== */
@@ -505,10 +500,10 @@ footer{
 .gallery-item{
   position:relative;border-radius:14px;overflow:hidden;
   aspect-ratio:3/4;background:var(--bg3);
-  transition:transform .35s cubic-bezier(.2,.7,.2,1);will-change:transform;
+  transition:transform .35s cubic-bezier(.2,.7,.2,1);
 }
 .gallery-item:hover{transform:translateY(-5px);}
-.gallery-item img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform .5s ease;will-change:transform;}
+.gallery-item img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform .5s ease;}
 .gallery-item:hover img{transform:scale(1.05);}
 .gallery-overlay{
   position:absolute;inset:0;z-index:2;
@@ -1627,11 +1622,13 @@ window.addEventListener('scroll', () => {
 // ===== REVEAL ON SCROLL =====
 (function(){
   if(!('IntersectionObserver' in window)) return;
-  const els=document.querySelectorAll('.section-title,.finance-card,.why-card,.featured-testimonial,.testimonial-card,.ship-item,.job-card,.map-card,.gallery-item');
-  if(!els.length) return;
-  els.forEach(el=>el.classList.add('reveal'));
-  const io=new IntersectionObserver((entries)=>{ entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }); },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
-  els.forEach(el=>io.observe(el));
+  var containers=document.querySelectorAll('.finance-grid,.why-grid,.testimonial-grid,.featured-testimonial,.shipping-features,.map-card,.gallery-grid,.job-cards,.empleos-text,.contact-grid');
+  var titles=document.querySelectorAll('#proceso .section-title,#envios .section-title,#financiamiento .section-title,#galeria .section-title,#testimonios .section-title,#empleos .section-title,#contacto .section-title');
+  var all=[].concat(Array.from(containers),Array.from(titles));
+  if(!all.length) return;
+  all.forEach(function(el){el.classList.add('reveal');});
+  var io=new IntersectionObserver(function(entries){entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:0.08,rootMargin:'0px 0px -30px 0px'});
+  all.forEach(function(el){io.observe(el);});
 })();
 </script>
 </body>
