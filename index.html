@@ -305,9 +305,26 @@ footer{
 .scroll-cta:hover::before{animation:none;opacity:0;}
 
 /* ===== REVEAL ON SCROLL ===== */
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease;}
+/* Single blocks (titles, featured, map, contact) fade up as one unit */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);}
 .reveal.in{opacity:1;transform:none;}
-@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;}.hero-float,.scroll-cta::before,.hero-btns .btn-primary::after{animation:none !important;}#stats::after{animation:none !important;}.hero-tag{animation:none !important;}.hero-title span{animation:none !important;-webkit-text-fill-color:var(--silver);}}
+/* Grids: container stays in place; children cascade in for a fluid stagger */
+.reveal-stagger{opacity:1;transform:none;}
+.reveal-stagger>*{opacity:0;transform:translateY(26px);transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .55s cubic-bezier(.16,1,.3,1);}
+.reveal-stagger.in>*{opacity:1;transform:none;}
+.reveal-stagger.in>*:nth-child(1){transition-delay:.0s;}
+.reveal-stagger.in>*:nth-child(2){transition-delay:.07s;}
+.reveal-stagger.in>*:nth-child(3){transition-delay:.14s;}
+.reveal-stagger.in>*:nth-child(4){transition-delay:.21s;}
+.reveal-stagger.in>*:nth-child(5){transition-delay:.28s;}
+.reveal-stagger.in>*:nth-child(6){transition-delay:.35s;}
+.reveal-stagger.in>*:nth-child(n+7){transition-delay:.42s;}
+@media(prefers-reduced-motion:reduce){
+  .reveal,.reveal-stagger>*{opacity:1 !important;transform:none !important;transition:none !important;}
+  .hero-float,.scroll-cta::before,.hero-btns .btn-primary::after{animation:none !important;}
+  #stats::after{animation:none !important;}.hero-tag{animation:none !important;}
+  .hero-title span{animation:none !important;-webkit-text-fill-color:var(--silver);}
+}
 
 /* ===== MOBILE OPTIMIZATION ===== */
 @media(max-width:780px){
@@ -680,32 +697,32 @@ footer{
       <p class="section-sub center" data-es="Somos tu socio desde el día uno. Te acompañamos en cada paso para que tu negocio de comida sea un éxito." data-en="We're your partner from day one. We walk with you every step so your food business succeeds.">Somos tu socio desde el día uno. Te acompañamos en cada paso para que tu negocio de comida sea un éxito.</p>
     </div>
     <div class="why-grid">
-      <div class="why-card reveal">
+      <div class="why-card">
         <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
         <h3 data-es="Fabricación a tu medida" data-en="Custom-built for you">Fabricación a tu medida</h3>
         <p data-es="Cada trailer se diseña y fabrica según tus necesidades exactas. Tú eliges el tamaño, equipo y acabados." data-en="Every trailer is designed and built to your exact needs. You choose the size, equipment and finishes.">Cada trailer se diseña y fabrica según tus necesidades exactas. Tú eliges el tamaño, equipo y acabados.</p>
       </div>
-      <div class="why-card reveal">
+      <div class="why-card">
         <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         <h3 data-es="Te asesoramos de inicio a fin" data-en="We guide you start to finish">Te asesoramos de inicio a fin</h3>
         <p data-es="Te ayudamos a elegir el equipo correcto, los permisos que necesitas y cómo arrancar tu operación con éxito." data-en="We help you choose the right equipment, the permits you need and how to launch your operation successfully.">Te ayudamos a elegir el equipo correcto, los permisos que necesitas y cómo arrancar tu operación con éxito.</p>
       </div>
-      <div class="why-card reveal">
+      <div class="why-card">
         <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
         <h3 data-es="Marketing para tu negocio" data-en="Marketing for your business">Marketing para tu negocio</h3>
         <p data-es="Te ayudamos con redes sociales, contenido y estrategia para que tu trailer sea un imán de clientes desde el día uno." data-en="We help with social media, content and strategy so your trailer is a customer magnet from day one.">Te ayudamos con redes sociales, contenido y estrategia para que tu trailer sea un imán de clientes desde el día uno.</p>
       </div>
-      <div class="why-card reveal">
+      <div class="why-card">
         <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
         <h3 data-es="Tu propia website" data-en="Your own website">Tu propia website</h3>
         <p data-es="Te creamos una página web profesional para tu negocio de comida — menú, ubicación, pedidos online y más." data-en="We create a professional website for your food business — menu, location, online orders and more.">Te creamos una página web profesional para tu negocio de comida — menú, ubicación, pedidos online y más.</p>
       </div>
-      <div class="why-card reveal">
+      <div class="why-card">
         <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
         <h3 data-es="Branding profesional" data-en="Professional branding">Branding profesional</h3>
         <p data-es="Logo, diseño de marca, vinil completo para tu trailer. Que tu imagen hable por ti antes de que sirvas el primer plato." data-en="Logo, brand design, full vinyl wrap for your trailer. Let your image speak before you serve the first plate.">Logo, diseño de marca, vinil completo para tu trailer. Que tu imagen hable por ti antes de que sirvas el primer plato.</p>
       </div>
-      <div class="why-card reveal">
+      <div class="why-card">
         <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
         <h3 data-es="Crecemos contigo" data-en="We grow with you">Crecemos contigo</h3>
         <p data-es="Tu éxito es nuestro éxito. Te apoyamos a escalar: segundo trailer, nuevas ubicaciones, franquicias. Estamos contigo." data-en="Your success is our success. We help you scale: second trailer, new locations, franchises. We're with you.">Tu éxito es nuestro éxito. Te apoyamos a escalar: segundo trailer, nuevas ubicaciones, franquicias. Estamos contigo.</p>
@@ -988,21 +1005,21 @@ footer{
       <p class="section-sub center" data-es="No dejes que el capital te detenga. Trabajamos con financieras para que arranques lo antes posible." data-en="Don't let capital hold you back. We work with lenders so you can get started ASAP.">No dejes que el capital te detenga. Trabajamos con financieras para que arranques lo antes posible.</p>
     </div>
     <div class="finance-grid">
-      <div class="finance-card reveal">
+      <div class="finance-card">
         <div class="finance-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#2D6BC4" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         </div>
         <h3 data-es="Aprobación en 24 hrs" data-en="Approved in 24 hrs">Aprobación en 24 hrs</h3>
         <p data-es="Trabajamos con financieras especializadas en food trucks. Respuesta rápida y sin complicaciones." data-en="We work with lenders specialized in food trucks. Fast response, no hassle.">Trabajamos con financieras especializadas en food trucks. Respuesta rápida y sin complicaciones.</p>
       </div>
-      <div class="finance-card reveal">
+      <div class="finance-card">
         <div class="finance-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#2D6BC4" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         </div>
         <h3 data-es="Desde $450/mes" data-en="From $450/mo">Desde $450/mes</h3>
         <p data-es="Pagos accesibles que se ajustan a tu flujo de caja. Tu trailer se paga solo trabajando." data-en="Affordable payments that fit your cash flow. Your trailer pays for itself.">Pagos accesibles que se ajustan a tu flujo de caja. Tu trailer se paga solo trabajando.</p>
       </div>
-      <div class="finance-card reveal">
+      <div class="finance-card">
         <div class="finance-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#2D6BC4" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </div>
@@ -1621,13 +1638,17 @@ window.addEventListener('scroll', () => {
 
 // ===== REVEAL ON SCROLL =====
 (function(){
-  if(!('IntersectionObserver' in window)) return;
-  var containers=document.querySelectorAll('.finance-grid,.why-grid,.testimonial-grid,.featured-testimonial,.shipping-features,.map-card,.gallery-grid,.job-cards,.empleos-text,.contact-grid');
-  var titles=document.querySelectorAll('#proceso .section-title,#envios .section-title,#financiamiento .section-title,#galeria .section-title,#testimonios .section-title,#empleos .section-title,#contacto .section-title');
-  var all=[].concat(Array.from(containers),Array.from(titles));
+  // Grids/card-groups get a staggered cascade of their children
+  var staggerEls=document.querySelectorAll('.finance-grid,.why-grid,.testimonial-grid,.gallery-grid,.job-cards,.shipping-features');
+  // Single blocks + section titles fade up as one unit
+  var blockEls=document.querySelectorAll('.featured-testimonial,.map-card,.empleos-text,.contact-grid,#proceso .section-title,#envios .section-title,#financiamiento .section-title,#galeria .section-title,#testimonios .section-title,#empleos .section-title,#contacto .section-title');
+  staggerEls.forEach(function(el){el.classList.add('reveal-stagger');});
+  blockEls.forEach(function(el){el.classList.add('reveal');});
+  var all=[].concat(Array.from(staggerEls),Array.from(blockEls));
   if(!all.length) return;
-  all.forEach(function(el){el.classList.add('reveal');});
-  var io=new IntersectionObserver(function(entries){entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:0.08,rootMargin:'0px 0px -30px 0px'});
+  // Safety net: if IntersectionObserver is missing, show everything
+  if(!('IntersectionObserver' in window)){all.forEach(function(el){el.classList.add('in');});return;}
+  var io=new IntersectionObserver(function(entries){entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:0,rootMargin:'0px 0px -12% 0px'});
   all.forEach(function(el){io.observe(el);});
 })();
 </script>
