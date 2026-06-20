@@ -461,8 +461,8 @@ footer{
 .qb-item:active{transform:scale(.98);}
 .qb-item.sel{border-color:var(--blue);background:var(--bg3);}
 .qb-item-l{display:flex;align-items:center;gap:10px;min-width:0;}
-.qb-tick{width:21px;height:21px;border-radius:6px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;background:transparent;transition:background .18s ease,border-color .18s ease,transform .18s ease;}
-.qb-item.sel .qb-tick{background:var(--blue);border-color:var(--blue);transform:scale(1.05);}
+.qb-tick{width:21px;height:21px;border-radius:6px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:transparent;font-size:12px;font-weight:700;background:transparent;transition:background .18s ease,border-color .18s ease,transform .18s ease,color .18s ease;}
+.qb-item.sel .qb-tick{background:var(--blue);border-color:var(--blue);transform:scale(1.05);color:#fff;}
 .qb-item-name{font-size:13px;font-weight:600;color:var(--text);line-height:1.25;}
 .qb-item-price{font-size:12.5px;font-weight:800;color:var(--blue);white-space:nowrap;}
 .qb-nav{display:flex;gap:12px;margin-top:28px;}
@@ -754,8 +754,8 @@ footer{
           <div class="qb-size-grid" id="qbSizeGrid"></div>
         </div>
         <div class="qb-step" data-step="2" hidden>
-          <h3 class="qb-step-title" data-es="Agrega tu equipo" data-en="Add your equipment">Agrega tu equipo</h3>
-          <p class="qb-step-hint" data-es="Toca para agregar o quitar. El precio se actualiza automáticamente." data-en="Tap to add or remove. The price updates automatically.">Toca para agregar o quitar. El precio se actualiza automáticamente.</p>
+          <h3 class="qb-step-title" data-es="Agrega equipo extra" data-en="Add extra equipment">Agrega equipo extra</h3>
+          <p class="qb-step-hint" data-es="Tu trailer ya incluye: campana, A/C, sinks, líneas de gas, bomba de agua y mesa de servicio. Aquí puedes agregar equipo de cocina y extras." data-en="Your trailer already includes: hood, A/C, sinks, gas lines, water pump and service table. Here you can add kitchen equipment and extras.">Tu trailer ya incluye: campana, A/C, sinks, líneas de gas, bomba de agua y mesa de servicio. Aquí puedes agregar equipo de cocina y extras.</p>
           <div id="qbEquip"></div>
         </div>
         <div class="qb-step" data-step="3" hidden>
@@ -1289,17 +1289,17 @@ footer{
             <label data-es="Tamaño de interés" data-en="Size of interest">Tamaño de interés</label>
             <select name="size">
               <option value="" data-es="-- Seleccionar tamaño --" data-en="-- Select size --">-- Seleccionar tamaño --</option>
-              <option>8' × 10' ($14,000)</option>
-              <option>8' × 12' ($16,000)</option>
-              <option>8' × 14' ($18,500)</option>
-              <option>8' × 16' ($21,000)</option>
-              <option>8' × 18' ($24,000)</option>
-              <option>8' × 20' ($27,500)</option>
-              <option>8' × 22' ($30,000)</option>
-              <option>8' × 24' ($33,000)</option>
-              <option>8' × 26' ($36,000)</option>
-              <option>8' × 28' ($39,000)</option>
-              <option>8' × 30' ($44,000)</option>
+              <option>8' × 10' ($18,500)</option>
+              <option>8' × 12' ($19,500)</option>
+              <option>8' × 14' ($20,500)</option>
+              <option>8' × 16' ($21,500)</option>
+              <option>8' × 18' ($22,500)</option>
+              <option>8' × 20' ($23,500)</option>
+              <option>8' × 22' ($24,500)</option>
+              <option>8' × 24' ($25,500)</option>
+              <option>8' × 26' ($26,500)</option>
+              <option>8' × 28' ($27,500)</option>
+              <option>8' × 30' ($28,500)</option>
               <option data-es="Personalizado / No sé todavía" data-en="Custom / Not sure yet">Personalizado / No sé todavía</option>
             </select>
           </div>
@@ -1470,53 +1470,42 @@ applyLang(currentLang);
   const QB_DATA = {
     bufferPct: 0.10,
     sizes: [
-      { id:'8x10', name:"8' × 10'", es:'Mini · carrito o puesto', en:'Mini · cart or stand', price:14000 },
-      { id:'8x12', name:"8' × 12'", es:'Micro negocio · ideal 1 persona', en:'Micro business · ideal for 1', price:16500 },
-      { id:'8x14', name:"8' × 14'", es:'Compacto · para arrancar', en:'Compact · to get started', price:18500 },
-      { id:'8x16', name:"8' × 16'", es:'Especialidad: tacos, café, BBQ', en:'Specialty: tacos, coffee, BBQ', price:21000 },
-      { id:'8x18', name:"8' × 18'", es:'Versátil · cocina cómoda', en:'Versatile · comfortable kitchen', price:24500 },
-      { id:'8x20', name:"8' × 20'", es:'El más vendido', en:'Best seller', price:27500, popular:true }
+      { id:'8x10', name:"8' × 10'", es:'Mini · carrito o puesto', en:'Mini · cart or stand', price:18500 },
+      { id:'8x12', name:"8' × 12'", es:'Micro negocio · ideal 1 persona', en:'Micro business · ideal for 1', price:19500 },
+      { id:'8x14', name:"8' × 14'", es:'Compacto · para arrancar', en:'Compact · to get started', price:20500 },
+      { id:'8x16', name:"8' × 16'", es:'Especialidad: tacos, café, BBQ', en:'Specialty: tacos, coffee, BBQ', price:21500 },
+      { id:'8x18', name:"8' × 18'", es:'Versátil · cocina cómoda', en:'Versatile · comfortable kitchen', price:22500 },
+      { id:'8x20', name:"8' × 20'", es:'El más vendido', en:'Best seller', price:23500, popular:true }
     ],
     sizesXL: [
-      { id:'8x22', name:"8' × 22'", es:'Cocina amplia + almacén', en:'Spacious kitchen + storage', price:30000 },
-      { id:'8x24', name:"8' × 24'", es:'Negocio establecido', en:'Established business', price:33000 },
-      { id:'8x26', name:"8' × 26'", es:'Alto volumen · premium', en:'High volume · premium', price:36000 },
-      { id:'8x28', name:"8' × 28'", es:'Operación grande · doble eje', en:'Large operation · tandem axle', price:39000 },
-      { id:'8x30', name:"8' × 30'", es:'Máximo tamaño · full kitchen', en:'Maximum size · full kitchen', price:42000 }
+      { id:'8x22', name:"8' × 22'", es:'Cocina amplia + almacén', en:'Spacious kitchen + storage', price:24500 },
+      { id:'8x24', name:"8' × 24'", es:'Negocio establecido', en:'Established business', price:25500 },
+      { id:'8x26', name:"8' × 26'", es:'Alto volumen · premium', en:'High volume · premium', price:26500 },
+      { id:'8x28', name:"8' × 28'", es:'Operación grande · doble eje', en:'Large operation · tandem axle', price:27500 },
+      { id:'8x30', name:"8' × 30'", es:'Máximo tamaño · full kitchen', en:'Maximum size · full kitchen', price:28500 }
     ],
+    included: ['hood','ac','sink3','handsink','tanks','gaslines','waterp','servtable'],
     groups: [
-      { es:'Cocina', en:'Cooking', items:[
+      { es:'Equipo de cocina', en:'Kitchen equipment', items:[
         { id:'flattop', es:'Plancha / flat-top', en:'Flat-top grill', price:1800 },
         { id:'fryer', es:'Freidora doble', en:'Double fryer', price:1400 },
         { id:'range', es:'Estufa 4 quemadores', en:'4-burner range', price:1600 },
-        { id:'hood', es:'Campana + extracción', en:'Hood + ventilation', price:3200 },
         { id:'charbroil', es:'Parrilla de carbón', en:'Charbroiler', price:1500 },
         { id:'pizzaoven', es:'Horno de pizza (Gozney)', en:'Pizza oven (Gozney)', price:2800 },
         { id:'steam', es:'Mesa de vapor / baño maría', en:'Steam table / bain-marie', price:1100 }
       ]},
-      { es:'Refrigeración y temperatura', en:'Refrigeration & temp', items:[
+      { es:'Refrigeración', en:'Refrigeration', items:[
         { id:'fridge', es:'Refrigerador comercial', en:'Commercial fridge', price:2200 },
         { id:'freezer', es:'Congelador', en:'Freezer', price:1900 },
         { id:'prepcooler', es:'Mesa fría de preparación', en:'Prep cooler table', price:2400 },
         { id:'heatcab', es:'Gabinete caliente (heat cabinet)', en:'Heated holding cabinet', price:1800 }
-      ]},
-      { es:'Servicio', en:'Service', items:[
-        { id:'window2', es:'Ventana de servicio extra', en:'Extra service window', price:900 },
-        { id:'counter', es:'Barra de servicio', en:'Service counter', price:700 },
-        { id:'sink3', es:'Lavabo de 3 tarjas', en:'3-compartment sink', price:1200 },
-        { id:'handsink', es:'Lavamanos', en:'Hand wash sink', price:500 }
-      ]},
-      { es:'Energía y agua', en:'Power & water', items:[
-        { id:'gen', es:'Generador', en:'Generator', price:3500 },
-        { id:'tanks', es:'Tanques de agua (limpia + gris)', en:'Water tanks (fresh + grey)', price:1100 },
-        { id:'heater', es:'Calentador de agua', en:'Water heater', price:600 }
       ]},
       { es:'Imagen y extras', en:'Branding & extras', items:[
         { id:'wrap', es:'Rótulo y vinil completo', en:'Full vinyl wrap', price:2500 },
         { id:'led', es:'Iluminación LED', en:'LED lighting', price:800 },
         { id:'awning', es:'Toldo', en:'Awning', price:1200 },
         { id:'floor', es:'Piso de aluminio diamante', en:'Diamond-plate floor', price:1500 },
-        { id:'ac', es:'Aire acondicionado', en:'Air conditioning', price:2200 },
+        { id:'gen', es:'Generador', en:'Generator', price:3500 },
         { id:'speakers', es:'Sistema de sonido', en:'Sound system', price:600 }
       ]}
     ]
@@ -1547,7 +1536,7 @@ applyLang(currentLang);
     const grid=$('qbSizeGrid'); if(!grid) return;
     let h = QB_DATA.sizes.map(sizeCard).join('');
     if(!state.xlOpen){
-      h+='<button type="button" class="qb-size qb-size-more" data-id="_xl"><div class="qs-name">22\'+</div><div class="qs-desc">'+(L()==='es'?'Ver tamaños grandes':'See larger sizes')+'</div><div class="qs-price">'+(L()==='es'?'Desde ':'From ')+fmt(30000)+'</div></button>';
+      h+='<button type="button" class="qb-size qb-size-more" data-id="_xl"><div class="qs-name">22\'+</div><div class="qs-desc">'+(L()==='es'?'Ver tamaños grandes':'See larger sizes')+'</div><div class="qs-price">'+(L()==='es'?'Desde ':'From ')+fmt(24500)+'</div></button>';
     } else {
       h+=QB_DATA.sizesXL.map(sizeCard).join('');
     }
@@ -1578,7 +1567,10 @@ applyLang(currentLang);
     const box=$('qbSummary'); if(!box) return;
     if(!state.size){ box.innerHTML='<p class="qb-sum-empty">'+(L()==='es'?'Selecciona un tamaño para ver tu cotización.':'Select a size to see your quote.')+'</p>'; return; }
     const sz=sizeById(state.size);
+    const incl = QB_DATA.included || [];
+    const inclLabels = {hood:{es:'Campana + extracción',en:'Hood + ventilation'},ac:{es:'Aire acondicionado',en:'A/C'},sink3:{es:'Lavabo de 3 tarjas',en:'3-compartment sink'},handsink:{es:'Lavamanos',en:'Hand wash sink'},tanks:{es:'Tanques de agua',en:'Water tanks'},gaslines:{es:'Líneas de gas',en:'Gas lines'},waterp:{es:'Bomba de agua',en:'Water pump'},servtable:{es:'Mesa de servicio',en:'Service table'}};
     let h='<div class="qb-sum-line qb-sum-base"><span>'+(L()==='es'?'Base ':'Base ')+sz.name+'</span><span>'+fmt(sz.price)+'</span></div>';
+    incl.forEach(id=>{const lb=inclLabels[id]; if(lb){h+='<div class="qb-sum-line"><span>'+(L()==='es'?lb.es:lb.en)+'</span><span style="color:#25D366;font-weight:700;">'+(L()==='es'?'Incluido':'Included')+'</span></div>';}});
     state.equip.forEach(id=>{ const it=itemById(id); if(it){ const n=L()==='es'?it.es:it.en; h+='<div class="qb-sum-line"><span>'+n+'</span><span>+'+fmt(it.price)+'</span></div>'; } });
     const sub=subtotal();
     h+='<div class="qb-sum-total"><span class="lbl">'+(L()==='es'?'Estimado':'Estimate')+'</span><span class="val">'+fmt(sub)+' – '+fmt(highEstimate(sub))+'</span></div>';
@@ -1592,7 +1584,8 @@ applyLang(currentLang);
     lines.push(L()==='es'?'¡Hola Nova! Me interesa cotizar un food trailer:':'Hi Nova! I\'d like to quote a food trailer:');
     lines.push('');
     lines.push((L()==='es'?'Tamaño: ':'Size: ')+(sz?sz.name:'-'));
-    if(state.equip.size){ lines.push(L()==='es'?'Equipo:':'Equipment:'); state.equip.forEach(id=>{ const it=itemById(id); if(it) lines.push(' • '+(L()==='es'?it.es:it.en)+' ('+fmt(it.price)+')'); }); }
+    lines.push(L()==='es'?'Incluye: Campana, A/C, Sinks, Líneas de gas, Bomba de agua, Mesa de servicio':'Includes: Hood, A/C, Sinks, Gas lines, Water pump, Service table');
+    if(state.equip.size){ lines.push(L()==='es'?'Equipo extra:':'Extra equipment:'); state.equip.forEach(id=>{ const it=itemById(id); if(it) lines.push(' • '+(L()==='es'?it.es:it.en)+' ('+fmt(it.price)+')'); }); }
     lines.push('');
     lines.push((L()==='es'?'Estimado: ':'Estimate: ')+fmt(sub)+' – '+fmt(highEstimate(sub))+' USD');
     if(name) lines.push((L()==='es'?'Nombre: ':'Name: ')+name);
