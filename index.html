@@ -338,11 +338,6 @@ footer{
   .mobile-menu{top:60px;padding:14px 18px;gap:4px;}
   .mobile-menu a{padding:14px 16px;font-size:15px;border-radius:10px;}
 
-  /* -- Disable expensive animations on mobile for smooth scroll -- */
-  #stats::after{animation:none;}
-  .scroll-cta::before{animation:none;display:none;}
-  .hero-btns .btn-primary::after{animation:none;display:none;}
-
   /* -- Hero -- */
   #home{padding:80px 24px 70px;}
   .hero-tag{font-size:10.5px;padding:6px 14px;letter-spacing:1.5px;margin-bottom:20px;}
@@ -539,7 +534,6 @@ footer{
 .hero-float.f2{width:200px;height:200px;background:radial-gradient(circle,rgba(200,216,240,.15),transparent 70%);bottom:15%;left:10%;animation:heroFloat 10s ease-in-out 2s infinite;}
 .hero-float.f3{width:150px;height:150px;background:radial-gradient(circle,rgba(45,107,196,.2),transparent 70%);top:50%;right:35%;animation:heroFloat 7s ease-in-out 4s infinite;}
 @keyframes heroFloat{0%,100%{opacity:.3;transform:translateY(20px) scale(.9);}50%{opacity:.9;transform:translateY(-20px) scale(1.1);}}
-@media(max-width:780px){.hero-float{display:none;}}
 
 /* ===== FINANCIAMIENTO ===== */
 #financiamiento{background:linear-gradient(135deg,var(--dark) 0%,#1a3a7a 100%);padding:80px 24px;position:relative;overflow:hidden;}
