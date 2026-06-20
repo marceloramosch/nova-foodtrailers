@@ -1363,16 +1363,20 @@ function applyTheme(t) {
 }
 
 function toggleTheme() {
+  localStorage.setItem('nft-theme-manual','1');
   applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
 }
 
-// auto-detect on first visit
-const savedTheme = localStorage.getItem('nft-theme') ||
+var savedTheme = localStorage.getItem('nft-theme') ||
   (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 applyTheme(savedTheme);
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+  if (!localStorage.getItem('nft-theme-manual')) applyTheme(e.matches ? 'dark' : 'light');
+});
 
 // ===== LANGUAGE =====
-let currentLang = localStorage.getItem('nft-lang') || 'es';
+let currentLang = localStorage.getItem('nft-lang') ||
+  (navigator.language && navigator.language.startsWith('es') ? 'es' : 'en');
 
 function applyLang(lang) {
   currentLang = lang;
