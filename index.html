@@ -46,12 +46,12 @@
 /* ===== RESET ===== */
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:70px;}
-body{font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;}
+body{font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
 @media(max-width:780px){html{scroll-padding-top:62px;}}
 a{color:inherit;text-decoration:none;}
 img{max-width:100%;display:block;}
 button{cursor:pointer;font-family:inherit;}
-section{padding:80px 24px;}
+section{padding:80px 24px;content-visibility:auto;contain-intrinsic-size:auto 600px;}
 
 /* ===== UTILS ===== */
 .container{max-width:1180px;margin:0 auto;}
@@ -84,7 +84,6 @@ nav{
   border-bottom:1px solid var(--border);
   padding:0 24px;
   display:flex;align-items:center;gap:20px;height:68px;
-  transition:background .35s ease,border-color .35s ease;
 }
 [data-theme="dark"] nav{background:#080f1f;border-bottom-color:rgba(200,216,240,.06);}
 nav.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.12);}
@@ -117,10 +116,7 @@ nav.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.12);}
   padding: 110px 24px 90px;
   position:relative;
   overflow:hidden;
-}
-#home::before{
-  content:'';position:absolute;inset:0;
-  background: radial-gradient(ellipse at 70% 50%, rgba(45,107,196,.35) 0%, transparent 65%);
+  content-visibility:visible;contain-intrinsic-size:none;
 }
 .hero-wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center;position:relative;}
 @media(max-width:780px){.hero-wrap{grid-template-columns:1fr;text-align:center;gap:40px;}}
@@ -133,8 +129,8 @@ nav.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.12);}
 @media(max-width:780px){.hero-sub{margin:0 auto 32px;}}
 .hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
 .hero-btns .btn-primary{position:relative;overflow:visible;}
-.hero-btns .btn-primary::after{content:'';position:absolute;inset:-4px;border-radius:inherit;background:rgba(45,107,196,.35);opacity:0;filter:blur(12px);animation:heroBtnGlow 3s ease-in-out infinite;z-index:-1;will-change:opacity,transform;}
-@keyframes heroBtnGlow{0%,100%{opacity:0;transform:scale(.95);}50%{opacity:1;transform:scale(1.1);}}
+.hero-btns .btn-primary::after{content:'';position:absolute;inset:-6px;border-radius:inherit;background:rgba(45,107,196,.25);opacity:0;animation:heroBtnGlow 3s ease-in-out infinite;z-index:-1;}
+@keyframes heroBtnGlow{0%,100%{opacity:0;transform:scale(1);}50%{opacity:1;transform:scale(1.08);}}
 @media(max-width:780px){.hero-btns{justify-content:center;}}
 .hero-visual{position:relative;}
 .hero-photo{
@@ -159,6 +155,7 @@ nav.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.12);}
 #stats{
   background:var(--blue);
   padding:40px 24px;position:relative;overflow:hidden;
+  content-visibility:visible;contain-intrinsic-size:none;
 }
 #stats::after{content:'';position:absolute;top:0;left:0;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);animation:statsShimmer 6s ease-in-out infinite;will-change:transform;}
 @keyframes statsShimmer{0%{transform:translateX(-160%);}50%{transform:translateX(250%);}100%{transform:translateX(250%);}}
@@ -341,6 +338,11 @@ footer{
   .mobile-menu{top:60px;padding:14px 18px;gap:4px;}
   .mobile-menu a{padding:14px 16px;font-size:15px;border-radius:10px;}
 
+  /* -- Disable expensive animations on mobile for smooth scroll -- */
+  #stats::after{animation:none;}
+  .scroll-cta::before{animation:none;display:none;}
+  .hero-btns .btn-primary::after{animation:none;display:none;}
+
   /* -- Hero -- */
   #home{padding:80px 24px 70px;}
   .hero-tag{font-size:10.5px;padding:6px 14px;letter-spacing:1.5px;margin-bottom:20px;}
@@ -381,7 +383,8 @@ footer{
   .qb-nav .btn{border-radius:12px;padding:15px 20px;width:100%;justify-content:center;}
 
   /* -- Gallery -- */
-  .gallery-item{border-radius:14px;aspect-ratio:4/5;}
+  .gallery-item{border-radius:14px;aspect-ratio:4/5;transition:none;}
+  .gallery-item img{transition:none;}
 
   /* -- Footer -- */
   .footer-grid{gap:32px;}
@@ -407,9 +410,8 @@ footer{
   background:linear-gradient(135deg,var(--dark) 0%,#1a3a7a 100%);
   border-radius:18px;padding:36px;margin-top:48px;
   display:grid;grid-template-columns:220px 1fr;gap:34px;align-items:center;
-  box-shadow:0 16px 50px rgba(13,34,68,.30);position:relative;overflow:hidden;
+  box-shadow:0 16px 50px rgba(13,34,68,.30);
 }
-.featured-testimonial::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 12% 30%,rgba(45,107,196,.45) 0%,transparent 60%);pointer-events:none;}
 @media(max-width:640px){.featured-testimonial{grid-template-columns:1fr;text-align:center;padding:28px;gap:20px;}}
 .ft-side{position:relative;text-align:center;border-right:1px solid rgba(200,216,240,.18);padding-right:20px;}
 @media(max-width:640px){.ft-side{border-right:none;border-bottom:1px solid rgba(200,216,240,.18);padding-right:0;padding-bottom:18px;}}
@@ -532,11 +534,12 @@ footer{
 .gallery-cta{text-align:center;margin-top:32px;}
 
 /* ===== HERO ANIMATION ===== */
-.hero-float{position:absolute;border-radius:50%;pointer-events:none;will-change:transform,opacity;}
+.hero-float{position:absolute;border-radius:50%;pointer-events:none;}
 .hero-float.f1{width:300px;height:300px;background:radial-gradient(circle,rgba(45,107,196,.25),transparent 70%);top:10%;right:5%;animation:heroFloat 8s ease-in-out infinite;}
 .hero-float.f2{width:200px;height:200px;background:radial-gradient(circle,rgba(200,216,240,.15),transparent 70%);bottom:15%;left:10%;animation:heroFloat 10s ease-in-out 2s infinite;}
 .hero-float.f3{width:150px;height:150px;background:radial-gradient(circle,rgba(45,107,196,.2),transparent 70%);top:50%;right:35%;animation:heroFloat 7s ease-in-out 4s infinite;}
 @keyframes heroFloat{0%,100%{opacity:.3;transform:translateY(20px) scale(.9);}50%{opacity:.9;transform:translateY(-20px) scale(1.1);}}
+@media(max-width:780px){.hero-float{display:none;}}
 
 /* ===== FINANCIAMIENTO ===== */
 #financiamiento{background:linear-gradient(135deg,var(--dark) 0%,#1a3a7a 100%);padding:80px 24px;position:relative;overflow:hidden;}
@@ -811,42 +814,42 @@ footer{
     </div>
     <div class="gallery-grid">
       <div class="gallery-item">
-        <img src="assets/IMG_3209.JPG" alt="Red food trailer with LED lights at night">
+        <img src="assets/IMG_3209.JPG" alt="Red food trailer with LED lights at night" loading="lazy">
         <div class="gallery-overlay">
           <div class="gallery-label" data-es="Rojo · Luces LED" data-en="Red · LED Lights">Rojo · Luces LED</div>
           <div class="gallery-desc" data-es="Ventanas panorámicas, iluminación completa" data-en="Panoramic windows, full lighting">Ventanas panorámicas, iluminación completa</div>
         </div>
       </div>
       <div class="gallery-item">
-        <img src="assets/IMG_3208.JPG" alt="Yellow food trailer with AC">
+        <img src="assets/IMG_3208.JPG" alt="Yellow food trailer with AC" loading="lazy">
         <div class="gallery-overlay">
           <div class="gallery-label" data-es="Amarillo · A/C y porch" data-en="Yellow · A/C & porch">Amarillo · A/C y porch</div>
           <div class="gallery-desc" data-es="Ventana de servicio, escaleras traseras" data-en="Service window, rear stairs">Ventana de servicio, escaleras traseras</div>
         </div>
       </div>
       <div class="gallery-item">
-        <img src="assets/IMG_3210.JPG" alt="Red food trailer daytime">
+        <img src="assets/IMG_3210.JPG" alt="Red food trailer daytime" loading="lazy">
         <div class="gallery-overlay">
           <div class="gallery-label" data-es="Rojo · Ventanas de servicio" data-en="Red · Service Windows">Rojo · Ventanas de servicio</div>
           <div class="gallery-desc" data-es="Doble ventana, counter de acero" data-en="Double window, steel counter">Doble ventana, counter de acero</div>
         </div>
       </div>
       <div class="gallery-item">
-        <img src="assets/IMG_3211.JPG" alt="Dark gray premium food trailer">
+        <img src="assets/IMG_3211.JPG" alt="Dark gray premium food trailer" loading="lazy">
         <div class="gallery-overlay">
           <div class="gallery-label" data-es="Gris oscuro · Premium" data-en="Dark Gray · Premium">Gris oscuro · Premium</div>
           <div class="gallery-desc" data-es="Acabado elegante, paneles de acero inoxidable" data-en="Elegant finish, stainless steel panels">Acabado elegante, paneles de acero inoxidable</div>
         </div>
       </div>
       <div class="gallery-item">
-        <img src="assets/IMG_3212.JPG" alt="Red food trailer in factory with open windows">
+        <img src="assets/IMG_3212.JPG" alt="Red food trailer in factory with open windows" loading="lazy">
         <div class="gallery-overlay">
           <div class="gallery-label" data-es="Rojo · Ventanas abiertas" data-en="Red · Open Windows">Rojo · Ventanas abiertas</div>
           <div class="gallery-desc" data-es="Counter de servicio, campana, LEDs" data-en="Service counter, hood, LEDs">Counter de servicio, campana, LEDs</div>
         </div>
       </div>
       <div class="gallery-item">
-        <img src="assets/IMG_3213.JPG" alt="Green food trailer with awning open">
+        <img src="assets/IMG_3213.JPG" alt="Green food trailer with awning open" loading="lazy">
         <div class="gallery-overlay">
           <div class="gallery-label" data-es="Verde · Toldo desplegado" data-en="Green · Awning Open">Verde · Toldo desplegado</div>
           <div class="gallery-desc" data-es="Ventanas panorámicas, listo para operar" data-en="Panoramic windows, ready to operate">Ventanas panorámicas, listo para operar</div>
