@@ -163,6 +163,9 @@ nav.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.12);}
 @media(max-width:700px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
 .stat-num{font-size:clamp(30px,4vw,44px);font-weight:900;color:#fff;font-family:Georgia,serif;}
 .stat-label{font-size:12px;color:rgba(200,216,240,.85);letter-spacing:1px;font-weight:700;text-transform:uppercase;margin-top:4px;}
+.cert-badges{display:flex;justify-content:center;flex-wrap:wrap;gap:12px 20px;margin-top:24px;padding-top:20px;border-top:1px solid rgba(200,216,240,.15);}
+.cert-badge{display:flex;align-items:center;gap:6px;color:rgba(200,216,240,.9);font-size:13px;font-weight:600;letter-spacing:.5px;}
+.cert-badge svg{color:#25D366;flex-shrink:0;}
 
 .hero-photo .hero-placeholder{
   width:100%;min-height:340px;
@@ -683,9 +686,25 @@ footer{
       <div class="stat-label" data-es="Garantía incluida" data-en="Warranty included">Garantía incluida</div>
     </div>
   </div>
+  <div class="cert-badges">
+    <div class="cert-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      <span>NSF Certified</span>
+    </div>
+    <div class="cert-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="22" height="22"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h6"/></svg>
+      <span data-es="Health Department Ready" data-en="Health Department Ready">Health Department Ready</span>
+    </div>
+    <div class="cert-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="22" height="22"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+      <span data-es="VIN para financiamiento" data-en="VIN for financing">VIN para financiamiento</span>
+    </div>
+    <div class="cert-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="22" height="22"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      <span data-es="Número de serie incluido" data-en="Serial number included">Número de serie incluido</span>
+    </div>
+  </div>
 </section>
-
-<!-- ===== POR QUÉ NOVA ===== -->
 <section id="proceso">
   <div class="container">
     <div class="center">
@@ -910,6 +929,33 @@ footer{
             <p class="ship-desc" data-es="Soporte post-venta y garantía atendidos desde centros de servicio en Houston, Dallas, Austin y San Antonio." data-en="After-sales support and warranty handled from service centers in Houston, Dallas, Austin and San Antonio.">Soporte post-venta y garantía atendidos desde centros de servicio en Houston, Dallas, Austin y San Antonio.</p>
           </div>
         </div>
+        <div class="ship-item">
+          <div class="ship-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2D6BC4" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h6M7 16h8"/></svg>
+          </div>
+          <div>
+            <div class="ship-title" data-es="Número de serie y VIN incluido" data-en="Serial number & VIN included">Número de serie y VIN incluido</div>
+            <p class="ship-desc" data-es="Todas las unidades cuentan con número de serie. Proveemos el VIN desde el inicio para que puedas tramitar tu financiamiento antes de recibir el trailer." data-en="All units come with a serial number. We provide the VIN from the start so you can process your financing before receiving the trailer.">Todas las unidades cuentan con número de serie. Proveemos el VIN desde el inicio para que puedas tramitar tu financiamiento antes de recibir el trailer.</p>
+          </div>
+        </div>
+        <div class="ship-item">
+          <div class="ship-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2D6BC4" stroke-width="2" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+          </div>
+          <div>
+            <div class="ship-title" data-es="Certificación NSF y Health Department" data-en="NSF & Health Department certified">Certificación NSF y Health Department</div>
+            <p class="ship-desc" data-es="Nuestros trailers cumplen con estándares NSF y están listos para pasar la inspección del Health Department de tu condado." data-en="Our trailers meet NSF standards and are ready to pass your county's Health Department inspection.">Nuestros trailers cumplen con estándares NSF y están listos para pasar la inspección del Health Department de tu condado.</p>
+          </div>
+        </div>
+        <div class="ship-item">
+          <div class="ship-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2D6BC4" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+          </div>
+          <div>
+            <div class="ship-title" data-es="Inspecciones agendadas durante la construcción" data-en="Inspections scheduled during build">Inspecciones agendadas durante la construcción</div>
+            <p class="ship-desc" data-es="Durante el proceso de construcción ya agendamos tus citas de inspección y permisos para que cuando recibas tu trailer, arranques de inmediato." data-en="During the build process we already schedule your inspection appointments and permits so when you receive your trailer, you start right away.">Durante el proceso de construcción ya agendamos tus citas de inspección y permisos para que cuando recibas tu trailer, arranques de inmediato.</p>
+          </div>
+        </div>
       </div>
 
       <div class="map-card">
@@ -1007,7 +1053,7 @@ footer{
           <svg viewBox="0 0 24 24" fill="none" stroke="#2D6BC4" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         </div>
         <h3 data-es="Aprobación en 24 hrs" data-en="Approved in 24 hrs">Aprobación en 24 hrs</h3>
-        <p data-es="Trabajamos con financieras especializadas en food trucks. Respuesta rápida y sin complicaciones." data-en="We work with lenders specialized in food trucks. Fast response, no hassle.">Trabajamos con financieras especializadas en food trucks. Respuesta rápida y sin complicaciones.</p>
+        <p data-es="Te damos el número VIN desde el inicio para que apliques a financiamiento antes de recibir tu trailer. Respuesta rápida y sin complicaciones." data-en="We give you the VIN number from the start so you can apply for financing before receiving your trailer. Fast response, no hassle.">Te damos el número VIN desde el inicio para que apliques a financiamiento antes de recibir tu trailer. Respuesta rápida y sin complicaciones.</p>
       </div>
       <div class="finance-card">
         <div class="finance-icon">
