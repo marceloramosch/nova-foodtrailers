@@ -292,7 +292,7 @@
     const tbody = document.getElementById("clientsTable");
     tbody.innerHTML = "";
     if (clients.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#7c8aa6;">Sin clientes todavia</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#7c8aa6;">Sin clientes todavia</td></tr>';
       return;
     }
     clients.forEach((c) => {
@@ -301,13 +301,14 @@
       tr.innerHTML = `
         <td>${escapeHtml(c.name)}</td>
         <td>${escapeHtml(c.contacto || "")}</td>
+        <td>${escapeHtml(c.negocio || "")}</td>
         <td>${escapeHtml(c.ciudad || "")}</td>
         <td></td>
         <td>${escapeHtml(c.notas || "")}</td>
         <td>${quoteCount}</td>
         <td class="actions-cell"></td>
       `;
-      const statusTd = tr.children[3];
+      const statusTd = tr.children[4];
       const statusSelect = document.createElement("select");
       ["Lead", "Cotizado", "Aceptado", "Perdido"].forEach((s) => {
         const o = document.createElement("option");
@@ -322,7 +323,7 @@
       });
       statusTd.appendChild(statusSelect);
 
-      const actionsTd = tr.children[6];
+      const actionsTd = tr.children[7];
       const delBtn = document.createElement("button");
       delBtn.type = "button";
       delBtn.className = "btn-small";
@@ -350,6 +351,7 @@
       id: "c" + Date.now(),
       name,
       contacto: document.getElementById("cContacto").value.trim(),
+      negocio: document.getElementById("cNegocio").value.trim(),
       ciudad: document.getElementById("cCiudad").value.trim(),
       status: document.getElementById("cEstatus").value,
       notas: document.getElementById("cNotas").value.trim(),
@@ -357,6 +359,7 @@
     persistClients();
     document.getElementById("cNombre").value = "";
     document.getElementById("cContacto").value = "";
+    document.getElementById("cNegocio").value = "";
     document.getElementById("cCiudad").value = "";
     document.getElementById("cNotas").value = "";
     renderClientsTable();
