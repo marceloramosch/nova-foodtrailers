@@ -47,6 +47,15 @@
   let lineItems = [];
   let currentQuoteId = null;
 
+  // ===== Traduccion del contenido de equipos (ES -> EN) =====
+  const EQ_I18N = typeof EQUIPMENT_I18N !== "undefined" ? EQUIPMENT_I18N : {};
+  // Devuelve el texto del equipo/spec en el idioma de la cotizacion.
+  // El nombre canonico (espanol) se mantiene como clave de precio y como valor guardado.
+  function trEquip(name) {
+    if (fIdioma.value === "en" && EQ_I18N[name]) return EQ_I18N[name];
+    return name;
+  }
+
   // ===== Catalogo plano (para autocompletar / cotizacion rapida) =====
   const flatCatalog = [];
   COMPONENT_CATALOG.forEach((cat) => {
@@ -56,71 +65,84 @@
   });
 
   // ===== Catalogo de componentes (panel) =====
-  COMPONENT_CATALOG.forEach((cat) => {
-    const catDiv = document.createElement("div");
-    catDiv.className = "catalog-cat";
+  function renderCatalog() {
+    catalogEl.innerHTML = "";
+    COMPONENT_CATALOG.forEach((cat) => {
+      const catDiv = document.createElement("div");
+      catDiv.className = "catalog-cat";
 
-    const h3 = document.createElement("h3");
-    h3.textContent = cat.category;
-    catDiv.appendChild(h3);
+      const h3 = document.createElement("h3");
+      h3.textContent = trEquip(cat.category);
+      catDiv.appendChild(h3);
 
-    cat.items.forEach((item) => {
-      const key = `${cat.category}::${item.name}`;
-      const price = savedPrices[key] !== undefined ? savedPrices[key] : item.price;
-      item.price = price; // mantener catalogo en memoria sincronizado con precios guardados
+      cat.items.forEach((item) => {
+        const key = `${cat.category}::${item.name}`;
+        const price = savedPrices[key] !== undefined ? savedPrices[key] : item.price;
+        item.price = price; // mantener catalogo en memoria sincronizado con precios guardados
 
-      const row = document.createElement("div");
-      row.className = "catalog-item";
+        const row = document.createElement("div");
+        row.className = "catalog-item";
 
-      const name = document.createElement("span");
-      name.className = "name";
-      name.textContent = item.name;
+        const name = document.createElement("span");
+        name.className = "name";
+        name.textContent = trEquip(item.name);
 
-      const priceInput = document.createElement("input");
-      priceInput.type = "number";
-      priceInput.className = "price";
-      priceInput.min = "0";
-      priceInput.step = "10";
-      priceInput.value = price;
-      priceInput.addEventListener("change", () => {
-        const val = parseFloat(priceInput.value) || 0;
-        savedPrices[key] = val;
-        item.price = val;
-        syncSet(PRICES_KEY, JSON.stringify(savedPrices));
+        const priceInput = document.createElement("input");
+        priceInput.type = "number";
+        priceInput.className = "price";
+        priceInput.min = "0";
+        priceInput.step = "10";
+        priceInput.value = price;
+        priceInput.addEventListener("change", () => {
+          const val = parseFloat(priceInput.value) || 0;
+          savedPrices[key] = val;
+          item.price = val;
+          syncSet(PRICES_KEY, JSON.stringify(savedPrices));
+        });
+
+        const addBtn = document.createElement("button");
+        addBtn.type = "button";
+        addBtn.textContent = "+";
+        addBtn.title = "Agregar a la cotizacion";
+        addBtn.addEventListener("click", () => {
+          addLineItem(trEquip(item.name), parseFloat(priceInput.value) || 0);
+        });
+
+        row.appendChild(name);
+        row.appendChild(priceInput);
+        row.appendChild(addBtn);
+        catDiv.appendChild(row);
       });
 
-      const addBtn = document.createElement("button");
-      addBtn.type = "button";
-      addBtn.textContent = "+";
-      addBtn.title = "Agregar a la cotizacion";
-      addBtn.addEventListener("click", () => {
-        addLineItem(item.name, parseFloat(priceInput.value) || 0);
-      });
-
-      row.appendChild(name);
-      row.appendChild(priceInput);
-      row.appendChild(addBtn);
-      catDiv.appendChild(row);
+      catalogEl.appendChild(catDiv);
     });
+  }
 
-    catalogEl.appendChild(catDiv);
-  });
-
-  // Datalist para cotizacion rapida
-  flatCatalog.forEach((item) => {
-    const opt = document.createElement("option");
-    opt.value = item.name;
-    opt.label = `${item.name} - $${item.price}`;
-    catalogList.appendChild(opt);
-  });
+  // Datalist para cotizacion rapida (en el idioma seleccionado)
+  function renderDatalist() {
+    catalogList.innerHTML = "";
+    flatCatalog.forEach((item) => {
+      const opt = document.createElement("option");
+      opt.value = trEquip(item.name);
+      opt.label = `${trEquip(item.name)} - $${item.price}`;
+      catalogList.appendChild(opt);
+    });
+  }
 
   quickAddInput.addEventListener("input", () => {
+    const val = quickAddInput.value.toLowerCase();
     const match = flatCatalog.find(
-      (i) => i.name.toLowerCase() === quickAddInput.value.toLowerCase()
+      (i) => i.name.toLowerCase() === val || trEquip(i.name).toLowerCase() === val
     );
     if (match) {
       quickAddPrice.value = match.price;
     }
+  });
+
+  // Re-renderiza el catalogo y el autocompletado cuando cambia el idioma
+  fIdioma.addEventListener("change", () => {
+    renderCatalog();
+    renderDatalist();
   });
 
   document.getElementById("quickAddBtn").addEventListener("click", () => {
@@ -151,9 +173,9 @@
   sizePresetEl.addEventListener("change", () => {
     const size = TRAILER_SIZES.find((s) => s.id === sizePresetEl.value);
     if (!size) return;
-    addLineItem(`8' x ${size.length}' Food Trailer - Unidad base`, size.price);
-    size.specs.forEach((s) => addLineItem(s, 0));
-    size.equipment.back.forEach((i) => addLineItem(i.name, 0));
+    addLineItem(trEquip(`8' x ${size.length}' Food Trailer - Unidad base`), size.price);
+    size.specs.forEach((s) => addLineItem(trEquip(s), 0));
+    size.equipment.back.forEach((i) => addLineItem(trEquip(i.name), 0));
     sizePresetEl.value = "";
   });
 
@@ -482,6 +504,8 @@
     fClientSelect.value = q.clientId || "";
     specsEl.value = (q.notas || []).join("\n");
     lineItems = (q.lineItems || []).map((l) => ({ ...l }));
+    renderCatalog();
+    renderDatalist();
     renderLineItems();
     switchTab("quote");
     previewWrap.classList.remove("show");
@@ -756,6 +780,8 @@
     fClientSelect.value = "";
     specsEl.value = "";
     sizePresetEl.value = "";
+    renderCatalog();
+    renderDatalist();
     previewWrap.classList.remove("show");
     updateTotals();
   });
@@ -777,6 +803,8 @@
   // Fecha por defecto: hoy
   fFecha.value = new Date().toISOString().slice(0, 10);
 
+  renderCatalog();
+  renderDatalist();
   renderLineItems();
   renderClientSelect();
   renderClientsTable();
