@@ -588,9 +588,9 @@
       warrantyNoteTitle: "Garantia",
       warrantyNoteText: "Este trailer incluye la garantia indicada arriba, gestionada a traves de Nova Food Trailer, cubriendo defectos de fabricacion. La garantia no cubre mal uso, danos accidentales ni desgaste normal.",
       paymentScheduleTitle: "Calendario de pagos",
-      paymentScheduleText: "El deposito inicial es requerido para iniciar la construccion. El saldo restante se pagara en abonos acordados durante el periodo de construccion en Monclova. El pago completo debe realizarse antes de la entrega.",
+      paymentScheduleText: "El deposito inicial es requerido para iniciar la construccion. El saldo restante se pagara en abonos acordados durante el periodo de construccion. El pago completo debe realizarse antes de la entrega.",
       constructionTitle: "Construccion y entrega",
-      constructionText: (dest) => `La construccion se realiza en Monclova, Mexico. La entrega estimada es en ${dest} una vez completada la construccion y liquidado el pago.`,
+      constructionText: (dest) => `La entrega estimada es en ${dest} una vez completada la construccion y liquidado el pago.`,
       destinationFallback: "el destino acordado",
       signaturesTitle: "Aceptacion y firmas",
       signaturesText: "Al firmar a continuacion, ambas partes aceptan los terminos descritos en esta cotizacion.",
@@ -628,9 +628,9 @@
       warrantyNoteTitle: "Warranty",
       warrantyNoteText: "This trailer includes the warranty indicated above, handled through Nova Food Trailer, covering manufacturing defects. The warranty does not cover misuse, accidental damage or normal wear and tear.",
       paymentScheduleTitle: "Payment schedule",
-      paymentScheduleText: "The initial deposit is required to start construction. The remaining balance will be paid in installments agreed during the construction period in Monclova. Full payment must be made before delivery.",
+      paymentScheduleText: "The initial deposit is required to start construction. The remaining balance will be paid in installments agreed during the construction period. Full payment must be made before delivery.",
       constructionTitle: "Construction and delivery",
-      constructionText: (dest) => `Construction takes place in Monclova, Mexico. Estimated delivery is in ${dest} once construction is complete and payment is settled.`,
+      constructionText: (dest) => `Estimated delivery is in ${dest} once construction is complete and payment is settled.`,
       destinationFallback: "the agreed destination",
       signaturesTitle: "Acceptance and signatures",
       signaturesText: "By signing below, both parties accept the terms described in this quote.",
@@ -649,18 +649,41 @@
       ? new Date(fFecha.value + "T00:00:00").toLocaleDateString(t.locale, { year: "numeric", month: "long", day: "numeric" })
       : "";
 
-    const rows = lineItems
-      .filter((l) => l.desc.trim() !== "")
-      .map(
-        (l) => `
+    const filtered = lineItems.filter((l) => l.desc.trim() !== "");
+    const rows = [];
+    let i = 0;
+    while (i < filtered.length) {
+      const l = filtered[i];
+      if (l.desc.toLowerCase().includes("unidad base")) {
+        const included = [];
+        let j = i + 1;
+        while (j < filtered.length && (parseFloat(filtered[j].price) || 0) === 0) {
+          included.push(filtered[j].desc);
+          j++;
+        }
+        const subList = included.length
+          ? `<div class="inc-list">${included.map((d) => escapeHtml(d)).join(" &middot; ")}</div>`
+          : "";
+        rows.push(`
+        <tr>
+          <td>1</td>
+          <td>${escapeHtml(l.desc)}${subList}</td>
+          <td class="num">${formatMoney(l.price)}</td>
+          <td class="num">${formatMoney(l.price)}</td>
+        </tr>`);
+        i = j;
+      } else {
+        rows.push(`
         <tr>
           <td>1</td>
           <td>${escapeHtml(l.desc)}</td>
           <td class="num">${formatMoney(l.price)}</td>
           <td class="num">${formatMoney(l.price)}</td>
-        </tr>`
-      )
-      .join("");
+        </tr>`);
+        i++;
+      }
+    }
+    const rowsHtml = rows.join("");
 
     const specLines = specsEl.value
       .split("\n")
@@ -704,7 +727,7 @@
       <div class="doc-section">${t.components}</div>
       <table class="doc-product">
         <tr><th>${t.qty}</th><th>${t.description}</th><th class="num">${t.unitPrice}</th><th class="num">${t.total}</th></tr>
-        ${rows || `<tr><td colspan="4" style="text-align:center; color:#7c8aa6;">${t.noComponents}</td></tr>`}
+        ${rowsHtml || `<tr><td colspan="4" style="text-align:center; color:#7c8aa6;">${t.noComponents}</td></tr>`}
       </table>
 
       ${specLines ? `
