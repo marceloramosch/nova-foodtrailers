@@ -10,8 +10,45 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta property="og:title" content="Nova Food Trailers">
 <meta property="og:description" content="No solo te vendemos un trailer — te ayudamos a crecer en él. Calidad verificada, entrega asegurada a todo EE.UU., servicios digitales para tu negocio.">
-<meta property="og:image" content="assets/nova_logo.png">
+<meta property="og:image" content="https://novafoodtrailers.com/assets/nova_logo.png">
+<meta property="og:url" content="https://novafoodtrailers.com/">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://novafoodtrailers.com/">
 <link rel="icon" type="image/png" href="assets/nova_logo.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Nova Food Trailers",
+  "url": "https://novafoodtrailers.com",
+  "logo": "https://novafoodtrailers.com/assets/nova_logo.png",
+  "image": "https://novafoodtrailers.com/assets/nova_logo.png",
+  "telephone": "+1-645-235-3186",
+  "email": "marceloramosch@gmail.com",
+  "description": "Food trailers personalizados entregados en todo Estados Unidos. Calidad verificada, envío asegurado, financiamiento disponible.",
+  "address": { "@type": "PostalAddress", "addressRegion": "TX", "addressCountry": "US" },
+  "areaServed": "US",
+  "priceRange": "$18,500 - $28,500",
+  "sameAs": [
+    "https://tiktok.com/@novafoodtrailers",
+    "https://instagram.com/novafoodtrailers",
+    "https://facebook.com/novafoodtrailers"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "¿Cuánto cuesta un food trailer?", "acceptedAnswer": { "@type": "Answer", "text": "Los precios de unidad base van de $18,500 (8'x10') a $28,500 (8'x30') USD. El precio incluye campana, A/C, fregaderos, líneas de gas, bomba de agua, instalación eléctrica, LED, aislamiento y mesa de servicio. El equipo de cocina se cotiza según el menú." } },
+    { "@type": "Question", "name": "¿Cuánto tarda en llegar un food trailer?", "acceptedAnswer": { "@type": "Answer", "text": "De 8 a 12 semanas desde el depósito inicial, dependiendo del tamaño y equipamiento, con actualizaciones semanales en fotos y video." } },
+    { "@type": "Question", "name": "¿El trailer pasa la inspección del Health Department?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, las unidades se construyen con equipo de estándar NSF y configuradas para cumplir los requisitos del condado del comprador. Las citas de inspección se agendan durante la construcción." } },
+    { "@type": "Question", "name": "¿Hay financiamiento para food trailers?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, trabajamos con ClickLease y Equinox Funding, financieras especializadas en equipo comercial. El VIN se entrega desde el inicio para aplicar antes de recibir el trailer." } },
+    { "@type": "Question", "name": "¿Entregan food trailers en todo Estados Unidos?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, con envío asegurado a los 48 estados continentales y exportación a las Bahamas. Entregas ya realizadas en más de 15 estados." } }
+  ]
+}
+</script>
 <style>
 /* ===== TOKENS ===== */
 :root {
@@ -595,6 +632,48 @@ footer{
 .social-link:hover{background:var(--blue);transform:scale(1.1);}
 .social-link svg{width:18px;height:18px;display:block;color:rgba(200,216,240,.85);fill:currentColor;}
 .social-link:hover svg{color:#fff;}
+
+/* ===== PROTECCIÓN DE COMPRA ===== */
+#proteccion{background:var(--bg2);padding:80px 24px;}
+.protect-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-top:48px;max-width:1180px;margin-left:auto;margin-right:auto;}
+@media(max-width:1000px){.protect-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:640px){.protect-grid{grid-template-columns:1fr;gap:14px;}}
+.protect-card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;padding:26px 20px;text-align:center;
+  box-shadow:var(--shadow);transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s ease;
+}
+.protect-card:hover{transform:translateY(-5px);box-shadow:0 12px 40px rgba(45,107,196,.18);}
+.protect-num{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#1a3a7a);color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;}
+.protect-card h3{font-size:14.5px;font-weight:800;color:var(--text);margin-bottom:8px;}
+.protect-card p{font-size:12.5px;color:var(--text2);line-height:1.6;}
+
+/* ===== SOBRE MARCELO ===== */
+#sobre{background:var(--bg);padding:80px 24px;}
+.about-grid{display:grid;grid-template-columns:340px 1fr;gap:48px;align-items:center;max-width:1000px;margin:48px auto 0;}
+@media(max-width:820px){.about-grid{grid-template-columns:1fr;gap:28px;max-width:520px;}}
+.about-photo{position:relative;}
+.about-photo img{width:100%;border-radius:16px;box-shadow:0 16px 48px rgba(45,107,196,.22);display:block;}
+.about-placeholder{width:100%;aspect-ratio:4/5;border-radius:16px;background:linear-gradient(135deg,var(--dark),#1a3a7a);display:flex;align-items:center;justify-content:center;color:var(--silver);font-weight:800;font-size:40px;letter-spacing:2px;}
+.about-body h3{font-size:22px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.about-role{font-size:13px;color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:18px;}
+.about-body p{font-size:14.5px;color:var(--text2);line-height:1.75;margin-bottom:14px;}
+.about-stats{display:flex;gap:28px;margin-top:22px;flex-wrap:wrap;}
+.about-stat .n{font-size:24px;font-weight:800;color:var(--blue);}
+.about-stat .l{font-size:12px;color:var(--text2);}
+
+/* ===== FAQ ===== */
+#faq{background:var(--bg2);padding:80px 24px;}
+.faq-list{max-width:820px;margin:40px auto 0;display:flex;flex-direction:column;gap:12px;}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;}
+.faq-item summary{
+  list-style:none;cursor:pointer;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px;
+  font-size:15px;font-weight:700;color:var(--text);
+}
+.faq-item summary::-webkit-details-marker{display:none;}
+.faq-item summary::after{content:"+";font-size:22px;font-weight:400;color:var(--blue);transition:transform .25s ease;flex-shrink:0;}
+.faq-item[open] summary::after{transform:rotate(45deg);}
+.faq-item .faq-body{padding:0 22px 20px;font-size:14px;color:var(--text2);line-height:1.7;}
+.faq-item .faq-body a{color:var(--blue);font-weight:600;}
 </style>
 </head>
 <body>
@@ -616,6 +695,7 @@ footer{
     <a href="#envios" data-es="Envíos" data-en="Shipping">Envíos</a>
     <a href="#financiamiento" data-es="Financiamiento" data-en="Financing">Financiamiento</a>
     <a href="#testimonios" data-es="Clientes" data-en="Clients">Clientes</a>
+    <a href="#faq">FAQ</a>
     <a href="#contacto" data-es="Contacto" data-en="Contact">Contacto</a>
   </div>
 
@@ -635,6 +715,7 @@ footer{
   <a href="#envios" onclick="closeMenu()" data-es="Envíos" data-en="Shipping">Envíos</a>
   <a href="#financiamiento" onclick="closeMenu()" data-es="Financiamiento" data-en="Financing">Financiamiento</a>
   <a href="#testimonios" onclick="closeMenu()" data-es="Clientes" data-en="Clients">Clientes</a>
+  <a href="#faq" onclick="closeMenu()">FAQ</a>
   <a href="#contacto" onclick="closeMenu()" data-es="Contacto" data-en="Contact">Contacto</a>
 </div>
 
@@ -678,7 +759,7 @@ footer{
     </div>
     <div>
       <div class="stat-num">48</div>
-      <div class="stat-label" data-es="Estados cubiertos" data-en="States covered">Estados cubiertos</div>
+      <div class="stat-label" data-es="Estados con cobertura de envío" data-en="States with shipping coverage">Estados con cobertura de envío</div>
     </div>
     <div>
       <div class="stat-num">8'–30'</div>
@@ -897,7 +978,7 @@ footer{
   <div class="container">
     <div class="tag" data-es="Logística" data-en="Logistics">Logística</div>
     <h2 class="section-title" data-es="Tu trailer asegurado hasta su destino" data-en="Your trailer insured to its destination">Tu trailer asegurado hasta su destino</h2>
-    <p class="section-sub" data-es="Coordinamos el envío a todo Estados Unidos con seguro incluido. Más de 15 estados cubiertos — de Nueva York a California, de Chicago a Miami — y hasta las Bahamas." data-en="We coordinate shipping across the entire USA with insurance included. 15+ states covered — from New York to California, from Chicago to Miami — and all the way to the Bahamas.">Coordinamos el envío a todo Estados Unidos con seguro incluido. Más de 15 estados cubiertos — de Nueva York a California, de Chicago a Miami — y hasta las Bahamas.</p>
+    <p class="section-sub" data-es="Coordinamos el envío con seguro incluido a los 48 estados continentales. Entregas ya realizadas en más de 15 estados — de Nueva York a California, de Chicago a Miami — y hasta las Bahamas." data-en="We coordinate insured shipping to all 48 continental states. Deliveries already completed in 15+ states — from New York to California, from Chicago to Miami — and all the way to the Bahamas.">Coordinamos el envío con seguro incluido a los 48 estados continentales. Entregas ya realizadas en más de 15 estados — de Nueva York a California, de Chicago a Miami — y hasta las Bahamas.</p>
 
     <div class="shipping-grid">
       <div class="shipping-features">
@@ -925,7 +1006,7 @@ footer{
           </div>
           <div>
             <div class="ship-title" data-es="Garantía de 1 año" data-en="1-year warranty">Garantía de 1 año</div>
-            <p class="ship-desc" data-es="Todos los trailers incluyen 1 año de garantía contra defectos de fabricación, gestionada directamente por Nova." data-en="All trailers include a 1-year warranty against manufacturing defects, managed directly by Nova.">Todos los trailers incluyen 1 año de garantía contra defectos de fabricación, gestionada directamente por Nova.</p>
+            <p class="ship-desc" data-es="Todos los trailers incluyen 1 año de garantía del fabricante contra defectos. Nova gestiona cualquier reclamo por ti: tú nos escribes y nosotros lo resolvemos con el fabricante." data-en="All trailers include a 1-year manufacturer's warranty against defects. Nova handles any claim for you: you message us and we resolve it with the manufacturer.">Todos los trailers incluyen 1 año de garantía del fabricante contra defectos. Nova gestiona cualquier reclamo por ti: tú nos escribes y nosotros lo resolvemos con el fabricante.</p>
           </div>
         </div>
         <div class="ship-item">
@@ -1104,6 +1185,44 @@ footer{
   </div>
 </section>
 
+<!-- ===== PROTECCIÓN DE COMPRA ===== -->
+<section id="proteccion">
+  <div class="container">
+    <div class="center">
+      <div class="tag" data-es="Compra protegida" data-en="Protected purchase">Compra protegida</div>
+      <h2 class="section-title" data-es="¿Cómo protegemos tu dinero?" data-en="How do we protect your money?">¿Cómo protegemos tu dinero?</h2>
+      <p class="section-sub center" data-es="Sabemos que comprar a distancia da miedo. Por eso cada compra sigue el mismo proceso transparente, por escrito y verificable." data-en="We know buying remotely is scary. That's why every purchase follows the same transparent, written and verifiable process.">Sabemos que comprar a distancia da miedo. Por eso cada compra sigue el mismo proceso transparente, por escrito y verificable.</p>
+    </div>
+    <div class="protect-grid">
+      <div class="protect-card">
+        <div class="protect-num">1</div>
+        <h3 data-es="Contrato firmado primero" data-en="Signed contract first">Contrato firmado primero</h3>
+        <p data-es="Antes de cualquier pago firmas un contrato bilingüe con especificaciones, precio y fechas. Todo por escrito." data-en="Before any payment you sign a bilingual contract with specs, price and dates. Everything in writing.">Antes de cualquier pago firmas un contrato bilingüe con especificaciones, precio y fechas. Todo por escrito.</p>
+      </div>
+      <div class="protect-card">
+        <div class="protect-num">2</div>
+        <h3 data-es="Pagos por etapas" data-en="Staged payments">Pagos por etapas</h3>
+        <p data-es="Nunca pagas el 100% por adelantado. Depósito inicial y abonos conforme avanza la construcción, con recibo por cada pago." data-en="You never pay 100% upfront. Initial deposit and installments as construction progresses, with a receipt for every payment.">Nunca pagas el 100% por adelantado. Depósito inicial y abonos conforme avanza la construcción, con recibo por cada pago.</p>
+      </div>
+      <div class="protect-card">
+        <div class="protect-num">3</div>
+        <h3 data-es="Fotos y videos semanales" data-en="Weekly photos & videos">Fotos y videos semanales</h3>
+        <p data-es="Cada semana ves el avance real de TU trailer en fotos y video. Sabes exactamente en qué va tu dinero." data-en="Every week you see the real progress of YOUR trailer in photos and video. You know exactly where your money is going.">Cada semana ves el avance real de TU trailer en fotos y video. Sabes exactamente en qué va tu dinero.</p>
+      </div>
+      <div class="protect-card">
+        <div class="protect-num">4</div>
+        <h3 data-es="VIN verificable desde el inicio" data-en="Verifiable VIN from the start">VIN verificable desde el inicio</h3>
+        <p data-es="Te damos el VIN y número de serie de tu unidad desde el arranque — verificable e indispensable para tu financiamiento y registro." data-en="We give you your unit's VIN and serial number from the start — verifiable and required for your financing and registration.">Te damos el VIN y número de serie de tu unidad desde el arranque — verificable e indispensable para tu financiamiento y registro.</p>
+      </div>
+      <div class="protect-card">
+        <div class="protect-num">5</div>
+        <h3 data-es="Envío asegurado" data-en="Insured shipping">Envío asegurado</h3>
+        <p data-es="Tu trailer viaja con seguro de transporte hasta tu puerta. Si algo pasa en el camino, está cubierto." data-en="Your trailer travels with transport insurance to your door. If anything happens on the way, it's covered.">Tu trailer viaja con seguro de transporte hasta tu puerta. Si algo pasa en el camino, está cubierto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===== TESTIMONIALS ===== -->
 <section id="testimonios">
   <div class="container">
@@ -1210,6 +1329,91 @@ footer{
   </div>
 </section>
 
+<!-- ===== SOBRE MARCELO ===== -->
+<section id="sobre">
+  <div class="container">
+    <div class="center">
+      <div class="tag" data-es="Quién está detrás" data-en="Who's behind Nova">Quién está detrás</div>
+      <h2 class="section-title" data-es="Le compras a una persona, no a un logo" data-en="You buy from a person, not a logo">Le compras a una persona, no a un logo</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-photo">
+        <img src="assets/marcelo.jpg" alt="Marcelo Ramos Schiaffino — Nova Food Trailers" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" loading="lazy">
+        <div class="about-placeholder" style="display:none"><span>MARCELO</span></div>
+      </div>
+      <div class="about-body">
+        <h3>Marcelo Ramos Schiaffino</h3>
+        <div class="about-role" data-es="Fundador · Nova Food Trailers" data-en="Founder · Nova Food Trailers">Fundador · Nova Food Trailers</div>
+        <p data-es="Llevo años conectando a emprendedores de comida en Estados Unidos con fabricantes de food trailers que yo mismo verifico. Mi trabajo no es venderte una caja con ruedas: es asegurarme de que tu inversión se convierta en un negocio que funciona." data-en="I've spent years connecting food entrepreneurs across the United States with food trailer manufacturers that I personally vet. My job isn't to sell you a box on wheels: it's to make sure your investment becomes a working business.">Llevo años conectando a emprendedores de comida en Estados Unidos con fabricantes de food trailers que yo mismo verifico. Mi trabajo no es venderte una caja con ruedas: es asegurarme de que tu inversión se convierta en un negocio que funciona.</p>
+        <p data-es="Superviso personalmente la calidad de cada unidad antes de que se entregue, te acompaño con los permisos e inspecciones de tu condado, y sigo contestándote el WhatsApp mucho después de que recibiste tu trailer. Pregúntale a cualquiera de mis clientes." data-en="I personally oversee the quality of every unit before it's delivered, guide you through your county's permits and inspections, and keep answering your WhatsApp long after you've received your trailer. Ask any of my clients.">Superviso personalmente la calidad de cada unidad antes de que se entregue, te acompaño con los permisos e inspecciones de tu condado, y sigo contestándote el WhatsApp mucho después de que recibiste tu trailer. Pregúntale a cualquiera de mis clientes.</p>
+        <div class="about-stats">
+          <div class="about-stat"><div class="n">62+</div><div class="l" data-es="Ventas en la industria" data-en="Sales in the industry">Ventas en la industria</div></div>
+          <div class="about-stat"><div class="n">15+</div><div class="l" data-es="Estados con entregas" data-en="States delivered to">Estados con entregas</div></div>
+          <div class="about-stat"><div class="n">10</div><div class="l" data-es="Trailers en una sola orden" data-en="Trailers in a single order">Trailers en una sola orden</div></div>
+        </div>
+        <div style="margin-top:26px;">
+          <a href="https://wa.me/16452353186?text=Hola%20Marcelo%2C%20quiero%20platicar%20sobre%20un%20food%20trailer" target="_blank" class="btn btn-primary" data-es="Platica directo con Marcelo →" data-en="Talk directly with Marcelo →">Platica directo con Marcelo →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section id="faq">
+  <div class="container">
+    <div class="center">
+      <div class="tag" data-es="Preguntas frecuentes" data-en="FAQ">Preguntas frecuentes</div>
+      <h2 class="section-title" data-es="Las dudas que todos tienen antes de comprar" data-en="The questions everyone has before buying">Las dudas que todos tienen antes de comprar</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary data-es="¿Cómo sé que esto no es una estafa?" data-en="How do I know this isn't a scam?">¿Cómo sé que esto no es una estafa?</summary>
+        <div class="faq-body" data-es="Pregunta legítima — hay mucho fraude en esta industria. Por eso todo con Nova es verificable: contrato firmado antes de cualquier pago, VIN de tu unidad desde el inicio, fotos y videos semanales de TU trailer en construcción, recibos por cada pago, y clientes reales con los que puedes hablar antes de decidir. Pídenos referencias y te conectamos con compradores anteriores." data-en="Fair question — there's a lot of fraud in this industry. That's why everything with Nova is verifiable: a signed contract before any payment, your unit's VIN from the start, weekly photos and videos of YOUR trailer being built, receipts for every payment, and real clients you can talk to before deciding. Ask us for references and we'll connect you with previous buyers.">Pregunta legítima — hay mucho fraude en esta industria. Por eso todo con Nova es verificable: contrato firmado antes de cualquier pago, VIN de tu unidad desde el inicio, fotos y videos semanales de TU trailer en construcción, recibos por cada pago, y clientes reales con los que puedes hablar antes de decidir. Pídenos referencias y te conectamos con compradores anteriores.</div>
+      </details>
+      <details class="faq-item">
+        <summary data-es="¿Cuánto es el depósito y cómo se paga?" data-en="How much is the deposit and how do I pay?">¿Cuánto es el depósito y cómo se paga?</summary>
+        <div class="faq-body" data-es="Se firma contrato primero, luego un depósito inicial para arrancar la construcción y el resto en abonos acordados conforme avanza tu trailer. Nunca pagas el 100% por adelantado y recibes recibo por escrito de cada pago." data-en="The contract is signed first, then an initial deposit to start construction and the rest in agreed installments as your trailer progresses. You never pay 100% upfront and you get a written receipt for every payment.">Se firma contrato primero, luego un depósito inicial para arrancar la construcción y el resto en abonos acordados conforme avanza tu trailer. Nunca pagas el 100% por adelantado y recibes recibo por escrito de cada pago.</div>
+      </details>
+      <details class="faq-item">
+        <summary data-es="¿Cuánto tarda en llegar mi trailer?" data-en="How long until my trailer arrives?">¿Cuánto tarda en llegar mi trailer?</summary>
+        <div class="faq-body" data-es="De 8 a 12 semanas desde el depósito inicial, dependiendo del tamaño y equipamiento. Durante ese tiempo recibes actualizaciones semanales con fotos y video del avance." data-en="8 to 12 weeks from the initial deposit, depending on size and equipment. During that time you receive weekly updates with photos and video of the progress.">De 8 a 12 semanas desde el depósito inicial, dependiendo del tamaño y equipamiento. Durante ese tiempo recibes actualizaciones semanales con fotos y video del avance.</div>
+      </details>
+      <details class="faq-item">
+        <summary data-es="¿Qué incluye el precio base?" data-en="What does the base price include?">¿Qué incluye el precio base?</summary>
+        <div class="faq-body" data-es="El precio base incluye la unidad completa lista para equipar: campana de extracción, A/C, fregaderos (2 o 3 tarjas + lavamanos), líneas de gas, bomba y tanques de agua, instalación eléctrica, iluminación LED, aislamiento y mesa de servicio. El equipo de cocina (planchas, freidoras, refrigeración) se cotiza según tu menú — úsalo en el cotizador de arriba." data-en="The base price includes the complete unit ready to equip: exhaust hood, A/C, sinks (2 or 3 compartment + handwash), gas lines, water pump and tanks, electrical installation, LED lighting, insulation and service counter. Kitchen equipment (griddles, fryers, refrigeration) is quoted based on your menu — use the quote builder above.">El precio base incluye la unidad completa lista para equipar: campana de extracción, A/C, fregaderos (2 o 3 tarjas + lavamanos), líneas de gas, bomba y tanques de agua, instalación eléctrica, iluminación LED, aislamiento y mesa de servicio. El equipo de cocina (planchas, freidoras, refrigeración) se cotiza según tu menú — úsalo en el cotizador de arriba.</div>
+      </details>
+      <details class="faq-item">
+        <summary data-es="¿Mi trailer pasará la inspección del Health Department?" data-en="Will my trailer pass Health Department inspection?">¿Mi trailer pasará la inspección del Health Department?</summary>
+        <div class="faq-body" data-es="Sí — las unidades se construyen con equipo de estándar NSF y configuradas para cumplir los requisitos de tu condado. Además agendamos tus citas de inspección durante la construcción y te entregamos un checklist de requisitos para tu estado, para que arranques a operar de inmediato." data-en="Yes — units are built with NSF-standard equipment and configured to meet your county's requirements. We also schedule your inspection appointments during the build and give you a requirements checklist for your state so you can start operating right away.">Sí — las unidades se construyen con equipo de estándar NSF y configuradas para cumplir los requisitos de tu condado. Además agendamos tus citas de inspección durante la construcción y te entregamos un checklist de requisitos para tu estado, para que arranques a operar de inmediato.</div>
+      </details>
+      <details class="faq-item">
+        <summary data-es="¿Dan financiamiento? ¿Y si mi crédito no es bueno?" data-en="Do you offer financing? What if my credit isn't great?">¿Dan financiamiento? ¿Y si mi crédito no es bueno?</summary>
+        <div class="faq-body" data-es="Trabajamos con financieras especializadas en equipo comercial (ClickLease y Equinox Funding) que aprueban perfiles que los bancos rechazan. Te damos el VIN desde el inicio para que apliques antes de recibir el trailer. Aplica directo en la sección de financiamiento de esta página." data-en="We work with lenders specialized in commercial equipment (ClickLease and Equinox Funding) that approve profiles banks reject. We give you the VIN from the start so you can apply before receiving the trailer. Apply directly in the financing section of this page.">Trabajamos con financieras especializadas en equipo comercial (ClickLease y Equinox Funding) que aprueban perfiles que los bancos rechazan. Te damos el VIN desde el inicio para que apliques antes de recibir el trailer. Aplica directo en la sección de financiamiento de esta página.</div>
+      </details>
+      <details class="faq-item">
+        <summary data-es="¿Qué pasa si el trailer llega dañado?" data-en="What if the trailer arrives damaged?">¿Qué pasa si el trailer llega dañado?</summary>
+        <div class="faq-body" data-es="Todo envío viaja con seguro de transporte. A la entrega se documenta la condición de la unidad; cualquier daño en tránsito lo cubre el seguro y Nova gestiona el reclamo por ti." data-en="Every shipment travels with transport insurance. Upon delivery the unit's condition is documented; any transit damage is covered by insurance and Nova handles the claim for you.">Todo envío viaja con seguro de transporte. A la entrega se documenta la condición de la unidad; cualquier daño en tránsito lo cubre el seguro y Nova gestiona el reclamo por ti.</div>
+      </details>
+      <details class="faq-item">
+        <summary data-es="¿Cómo funciona la garantía?" data-en="How does the warranty work?">¿Cómo funciona la garantía?</summary>
+        <div class="faq-body" data-es="Tu trailer incluye 1 año de garantía del fabricante contra defectos de fabricación. La diferencia con Nova: tú no peleas con nadie — nos escribes por WhatsApp, y nosotros gestionamos el reclamo con el fabricante hasta resolverlo, con soporte desde nuestros centros de servicio en Texas." data-en="Your trailer includes a 1-year manufacturer's warranty against manufacturing defects. The Nova difference: you don't fight with anyone — you message us on WhatsApp and we manage the claim with the manufacturer until it's resolved, with support from our Texas service centers.">Tu trailer incluye 1 año de garantía del fabricante contra defectos de fabricación. La diferencia con Nova: tú no peleas con nadie — nos escribes por WhatsApp, y nosotros gestionamos el reclamo con el fabricante hasta resolverlo, con soporte desde nuestros centros de servicio en Texas.</div>
+      </details>
+      <details class="faq-item">
+        <summary data-es="¿Puedo ver un trailer antes de comprar?" data-en="Can I see a trailer before buying?">¿Puedo ver un trailer antes de comprar?</summary>
+        <div class="faq-body" data-es="Sí. Podemos coordinar una videollamada en vivo desde la línea de producción para que veas unidades en construcción, mostrarte trailers ya entregados de clientes cerca de tu ciudad, o agendar una visita. Escríbenos y lo organizamos." data-en="Yes. We can set up a live video call from the production line so you can see units being built, show you delivered trailers from clients near your city, or schedule a visit. Message us and we'll arrange it.">Sí. Podemos coordinar una videollamada en vivo desde la línea de producción para que veas unidades en construcción, mostrarte trailers ya entregados de clientes cerca de tu ciudad, o agendar una visita. Escríbenos y lo organizamos.</div>
+      </details>
+      <details class="faq-item">
+        <summary data-es="¿Entregan en mi estado?" data-en="Do you deliver to my state?">¿Entregan en mi estado?</summary>
+        <div class="faq-body" data-es="Entregamos en los 48 estados continentales de EE.UU. — y también hemos exportado a las Bahamas. El flete se cotiza según tu ubicación y siempre viaja asegurado." data-en="We deliver to all 48 continental US states — and we've also exported to the Bahamas. Freight is quoted based on your location and always travels insured.">Entregamos en los 48 estados continentales de EE.UU. — y también hemos exportado a las Bahamas. El flete se cotiza según tu ubicación y siempre viaja asegurado.</div>
+      </details>
+    </div>
+    <div style="text-align:center;margin-top:36px;">
+      <a href="https://wa.me/16452353186?text=Hola%2C%20tengo%20una%20pregunta%20sobre%20los%20food%20trailers" target="_blank" class="btn btn-primary" data-es="¿Otra duda? Pregúntanos directo →" data-en="Another question? Ask us directly →">¿Otra duda? Pregúntanos directo →</a>
+    </div>
+  </div>
+</section>
+
 <!-- ===== EMPLEOS ===== -->
 <section id="empleos">
   <div class="empleos-inner container">
@@ -1224,30 +1428,9 @@ footer{
       <div class="job-card">
         <div>
           <div class="job-title" data-es="Representante de Ventas" data-en="Sales Representative">Representante de Ventas</div>
-          <div class="job-location">Texas, EE.UU. — <span data-es="Comisión + base" data-en="Commission + base">Comisión + base</span></div>
+          <div class="job-location">Texas, EE.UU. — <span data-es="Por comisión" data-en="Commission-based">Por comisión</span></div>
         </div>
         <div class="job-type" data-es="Remoto/Campo" data-en="Remote/Field">Remoto/Campo</div>
-      </div>
-      <div class="job-card">
-        <div>
-          <div class="job-title" data-es="Coordinador de Proyectos" data-en="Project Coordinator">Coordinador de Proyectos</div>
-          <div class="job-location">Houston, TX — <span data-es="Tiempo completo" data-en="Full time">Tiempo completo</span></div>
-        </div>
-        <div class="job-type" data-es="Híbrido" data-en="Hybrid">Híbrido</div>
-      </div>
-      <div class="job-card">
-        <div>
-          <div class="job-title" data-es="Especialista en Control de Calidad" data-en="Quality Control Specialist">Especialista en Control de Calidad</div>
-          <div class="job-location">Texas, EE.UU. — <span data-es="Viajes frecuentes" data-en="Frequent travel">Viajes frecuentes</span></div>
-        </div>
-        <div class="job-type" data-es="Campo" data-en="Field">Campo</div>
-      </div>
-      <div class="job-card">
-        <div>
-          <div class="job-title" data-es="Asistente Administrativo" data-en="Administrative Assistant">Asistente Administrativo</div>
-          <div class="job-location">Houston, TX — <span data-es="Tiempo completo" data-en="Full time">Tiempo completo</span></div>
-        </div>
-        <div class="job-type" data-es="Presencial" data-en="On-site">Presencial</div>
       </div>
     </div>
   </div>
@@ -1377,6 +1560,9 @@ footer{
     </div>
     <div class="footer-col">
       <h4 data-es="Empresa" data-en="Company">Empresa</h4>
+      <a href="#sobre" data-es="Quién está detrás" data-en="Who's behind Nova">Quién está detrás</a>
+      <a href="#proteccion" data-es="Compra protegida" data-en="Protected purchase">Compra protegida</a>
+      <a href="#faq" data-es="Preguntas frecuentes" data-en="FAQ">Preguntas frecuentes</a>
       <a href="#contacto" data-es="Contacto" data-en="Contact">Contacto</a>
     </div>
     <div class="footer-col">
@@ -1654,6 +1840,16 @@ function submitForm(e) {
   e.preventDefault();
   const form = e.target;
   const data = Object.fromEntries(new FormData(form));
+  // Backup: email the lead so it's never lost even if WhatsApp doesn't open
+  fetch('https://formsubmit.co/ajax/marceloramosch@gmail.com', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      _subject: 'Nuevo lead — novafoodtrailers.com',
+      Nombre: data.name, Telefono: data.phone, Email: data.email || 'N/A',
+      Ciudad: data.city || 'N/A', Tamano: data.size || 'Por definir', Vende: data.message || 'N/A'
+    })
+  }).catch(function(){});
   // Build WhatsApp message with form data and open
   const isEn = currentLang === 'en';
   const msg = encodeURIComponent(isEn
@@ -1688,9 +1884,9 @@ window.addEventListener('scroll', () => {
 // ===== REVEAL ON SCROLL =====
 (function(){
   // Grids/card-groups get a staggered cascade of their children
-  var staggerEls=document.querySelectorAll('.finance-grid,.why-grid,.testimonial-grid,.gallery-grid,.job-cards,.shipping-features');
+  var staggerEls=document.querySelectorAll('.finance-grid,.why-grid,.testimonial-grid,.gallery-grid,.job-cards,.shipping-features,.protect-grid,.faq-list');
   // Single blocks + section titles fade up as one unit
-  var blockEls=document.querySelectorAll('.featured-testimonial,.map-card,.empleos-text,.contact-grid,#proceso .section-title,#envios .section-title,#financiamiento .section-title,#galeria .section-title,#testimonios .section-title,#empleos .section-title,#contacto .section-title');
+  var blockEls=document.querySelectorAll('.featured-testimonial,.map-card,.empleos-text,.contact-grid,.about-grid,#proceso .section-title,#envios .section-title,#financiamiento .section-title,#galeria .section-title,#testimonios .section-title,#empleos .section-title,#contacto .section-title,#proteccion .section-title,#sobre .section-title,#faq .section-title');
   staggerEls.forEach(function(el){el.classList.add('reveal-stagger');});
   blockEls.forEach(function(el){el.classList.add('reveal');});
   var all=[].concat(Array.from(staggerEls),Array.from(blockEls));
