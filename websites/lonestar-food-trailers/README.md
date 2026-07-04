@@ -33,8 +33,14 @@ Mientras tanto se muestra con un link de preview gratis.
 - **Financiamiento** propio (buy here, pay here) + bancos.
 - **Entrega a los 50 estados**, choferes con fianza, $2.00–$2.75/milla.
 - Todo listo para inspección del departamento de salud.
-- Reseñas: basadas en los temas reales de Google (5.0). **Pendiente:** reemplazar por el
-  texto y nombres exactos de las reseñas de Google.
+- Reseñas: 5.0 con 11 reseñas confirmado en Birdeye. Una es cita textual real (traducida):
+  "Steve es un perfeccionista... aquí todo se hace correctamente, sin atajos." Las otras dos
+  siguen siendo paráfrasis de los temas recurrentes (acompañamiento, disponibilidad) —
+  **pendiente** reemplazar por el texto exacto de más reseñas si se consigue acceso a Google Maps.
+- Correo: **stevebanda77@yahoo.com** (público, listado en el perfil de BBB de la empresa).
+- Horario: solo se pudo confirmar "abre lunes 9:00 a.m." — el resto de la semana no está
+  indexado en ninguna fuente pública encontrada. No se agregó horario al sitio para no inventar
+  datos; **pendiente** confirmar con el cliente.
 - 25 fotos + 1 video (MP4) en `assets/`.
 - Contacto: **4 canales** — Llamar (tel:, destacado como opción principal), WhatsApp,
   Mensaje de texto (sms:) y Correo — en la sección de Contacto, hero, tarjetas de precio,
@@ -42,14 +48,16 @@ Mientras tanto se muestra con un link de preview gratis.
 
 ## Pendientes / placeholders
 - [ ] Logo y nombre (hay espacio reservado — "Tu logo aquí").
-- [ ] Texto y nombres exactos de reseñas de Google.
-- [ ] **Correo de contacto** — usé `info@lonestarfoodtrailers.com` como placeholder (marcado
-  con subrayado punteado en el sitio); confirmar el real con el cliente.
+- [ ] Confirmar si `stevebanda77@yahoo.com` (correo personal) es el que quieren mostrar
+  públicamente, o si prefieren un correo de dominio propio (ej. info@lonestarfoodtrailers.com).
+- [ ] Reemplazar reseñas parafraseadas por texto exacto de más reseñas de Google/Birdeye.
+- [ ] Agregar horario de atención completo (solo se confirmó apertura lunes 9am).
 - [ ] Optimizar/redimensionar imágenes (hoy 2–5 MB c/u) antes de lanzar.
 - [ ] Convertir/recomprimir el video para web (el .MOV no se reproduce en todos los navegadores).
 - [ ] Hosting: repo propio + Cloudflare Pages (preview .pages.dev; dominio del cliente al vender).
-- [ ] Reintentar búsqueda de más detalles del listado de Google Maps (horarios, más reseñas)
-  cuando se libere el límite de búsquedas de la sesión.
+- [ ] El link de Google Maps que compartió el cliente está bloqueado por la política de red de
+  este entorno (403 a nivel de proxy, no es un límite temporal) — no se pudo leer directamente
+  en ninguna sesión. Los datos de arriba salen de Yelp/BBB/Birdeye vía búsqueda web.
 
 ## Dominio
 Este es un proyecto/negocio **aparte** de Nova Food Trailers. Va en su **propio dominio**
