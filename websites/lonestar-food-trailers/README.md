@@ -38,20 +38,27 @@ Mientras tanto se muestra con un link de preview gratis.
   siguen siendo paráfrasis de los temas recurrentes (acompañamiento, disponibilidad) —
   **pendiente** reemplazar por el texto exacto de más reseñas si se consigue acceso a Google Maps.
 - Correo: **stevebanda77@yahoo.com** (público, listado en el perfil de BBB de la empresa).
-- Horario: solo se pudo confirmar "abre lunes 9:00 a.m." — el resto de la semana no está
-  indexado en ninguna fuente pública encontrada. No se agregó horario al sitio para no inventar
-  datos; **pendiente** confirmar con el cliente.
+- Horario: **Lunes a sábado, 10:00 am – 7:00 pm** (confirmado directamente por el cliente).
 - 25 fotos + 1 video (MP4) en `assets/`.
 - Contacto: **4 canales** — Llamar (tel:, destacado como opción principal), WhatsApp,
   Mensaje de texto (sms:) y Correo — en la sección de Contacto, hero, tarjetas de precio,
-  menú móvil y footer. Sin formulario backend real (todo son enlaces tel:/sms:/wa.me/mailto:).
+  menú móvil, burbuja de chat flotante (mobile) y footer. Sin formulario backend real (todo
+  son enlaces tel:/sms:/wa.me/mailto:).
+- Redes sociales: **Facebook real** (facebook.com/61560769346352) en el footer. Instagram no
+  se agregó — el único que aparece en búsquedas es de otra sucursal (San Antonio), no de Dallas.
+- Galería agrupada por trailer (4 portadas — Big Daddie's Kitchen, verde, Divine Bites,
+  Sweets & Treat's), con foquitos de luz LED (estilo marquesina, foco de vidrio) animados
+  alrededor del marco del hero y de "Nosotros".
+- Páginas legales: `terms.html` y `privacidad.html` (Términos y Aviso de Privacidad, con
+  contenido real reflejando el modelo de negocio fabricante+vendedor).
+- SEO/social: favicon, meta Open Graph y theme-color agregados en el `<head>`.
 
 ## Pendientes / placeholders
 - [ ] Logo y nombre (hay espacio reservado — "Tu logo aquí").
 - [ ] Confirmar si `stevebanda77@yahoo.com` (correo personal) es el que quieren mostrar
   públicamente, o si prefieren un correo de dominio propio (ej. info@lonestarfoodtrailers.com).
 - [ ] Reemplazar reseñas parafraseadas por texto exacto de más reseñas de Google/Birdeye.
-- [ ] Agregar horario de atención completo (solo se confirmó apertura lunes 9am).
+- [ ] Instagram — agregar el link real cuando el cliente confirme cuál es (o si tienen uno).
 - [ ] Optimizar/redimensionar imágenes (hoy 2–5 MB c/u) antes de lanzar.
 - [ ] Convertir/recomprimir el video para web (el .MOV no se reproduce en todos los navegadores).
 - [ ] Hosting: repo propio + Cloudflare Pages (preview .pages.dev; dominio del cliente al vender).
