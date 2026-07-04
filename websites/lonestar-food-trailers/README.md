@@ -16,6 +16,15 @@ Es un **sitio de venta (pitch)**: se le presenta a Lone Star para vendérselos. 
 compren, se publica en **su** dominio (lonestarfoodtrailers.com, que es del cliente).
 Mientras tanto se muestra con un link de preview gratis.
 
+## Funcionalidad
+- **Bilingüe ES/EN** — toggle en el header (desktop y mobile), guarda preferencia en
+  `localStorage`. Diccionario completo en el `<script>` (`I18N`).
+- **Tema claro/oscuro** — toggle (ícono sol/luna) junto al selector de idioma. El marco
+  negro con tuercas (firma visual) se mantiene siempre oscuro en ambos temas a propósito.
+- **Animaciones** — fade/slide-in en el hero al cargar, y reveal-on-scroll (IntersectionObserver)
+  en el resto de las secciones, tarjetas y galería.
+- **Video más compacto** — ancho máximo reducido (560px) para que no domine la página.
+
 ## Contenido (datos reales del sitio actual + listados)
 - Dueños/socios: **Steve Banda** y **Ricardo Banda** (fabricante + vendedor).
 - Teléfono / WhatsApp: **(214) 994-0452**.
