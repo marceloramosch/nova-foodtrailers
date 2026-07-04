@@ -244,6 +244,30 @@
   .lb img{max-width:92vw;max-height:88vh;border-radius:4px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
   .lb .x{position:absolute;top:22px;right:26px;background:var(--yellow);color:#111;border:0;width:44px;height:44px;border-radius:8px;font-size:1.4rem;cursor:pointer;font-family:'Oswald'}
 
+  /* ---------- Pricing ---------- */
+  .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+  .price{position:relative;background:linear-gradient(180deg,#212327,#191b1e);border:1px solid var(--line);border-radius:12px;padding:32px 26px;display:flex;flex-direction:column}
+  .price.feat{border-color:var(--yellow);box-shadow:0 0 0 1px var(--yellow),0 20px 50px rgba(0,0,0,.35)}
+  .price .tag{position:absolute;top:-12px;left:26px;background:var(--yellow);color:#111;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:.72rem;font-weight:700;padding:5px 13px;border-radius:20px}
+  .price h3{font-size:1.25rem;color:#fff;letter-spacing:.4px;margin-bottom:4px}
+  .price .from{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.12em;color:var(--gray);font-size:.72rem}
+  .price .amt{font-family:'Anton',sans-serif;font-size:2.7rem;color:var(--yellow);line-height:1;margin:4px 0 20px}
+  .price ul{list-style:none;display:grid;gap:10px;margin-bottom:24px}
+  .price li{display:flex;gap:10px;font-size:.93rem;color:#c2c5ca}
+  .price li::before{content:"✓";color:var(--yellow);font-weight:800;flex:none}
+  .price .btn{margin-top:auto;justify-content:center}
+  .price-note{text-align:center;color:var(--gray);font-size:.86rem;margin-top:24px}
+  /* ---------- Finance + delivery ---------- */
+  .fd{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .fd .box{background:linear-gradient(180deg,#212327,#191b1e);border:1px solid var(--line);border-left:3px solid var(--yellow);border-radius:10px;padding:32px 30px}
+  .fd .box h3{font-size:1.35rem;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+  .fd .box h3 svg{width:28px;height:28px;fill:var(--yellow);flex:none}
+  .fd .box>p{color:#b7bac0;margin-bottom:16px}
+  .fd .box ul{list-style:none;display:grid;gap:10px}
+  .fd .box li{display:flex;gap:10px;font-size:.94rem;color:#c8cbd0}
+  .fd .box li::before{content:"✓";color:var(--yellow);font-weight:800;flex:none}
+  .fd .box li b{color:#fff}
+
   /* ---------- Responsive ---------- */
   @media(max-width:980px){
     nav.main,.nav-cta .btn{display:none}
@@ -253,6 +277,7 @@
     .cards{grid-template-columns:repeat(2,1fr)}
     .steps{grid-template-columns:repeat(2,1fr)}
     .reviews{grid-template-columns:1fr}
+    .pricing,.fd{grid-template-columns:1fr}
     .gallery{columns:2}
     footer .grid{grid-template-columns:1fr}
     nav.mobile{display:var(--m,none)}
@@ -276,9 +301,9 @@
 <div class="topbar"><div class="wrap">
   <span class="stars">★★★★★</span> <b>5.0 en Google</b>
   <span class="dot"></span>
-  <span>Fabricante&nbsp;+&nbsp;Vendedor en Dallas, TX</span>
+  <span>Financiamos · Entrega a los 50 estados</span>
   <span class="dot"></span>
-  <span>Del diseño al día de apertura</span>
+  <span>📱 <b>(214) 994-0452</b></span>
 </div></div>
 
 <!-- Header -->
@@ -290,10 +315,10 @@
     </div>
     <nav class="main">
       <a href="#nosotros">Nosotros</a>
+      <a href="#modelos">Modelos</a>
       <a href="#trabajos">Trabajos</a>
       <a href="#proceso">Proceso</a>
       <a href="#resenas">Reseñas</a>
-      <a href="#garantia">Garantía</a>
       <a href="#contacto">Contacto</a>
     </nav>
     <div class="nav-cta">
@@ -303,12 +328,12 @@
   </div>
   <nav class="mobile-menu" id="mmenu">
     <a href="#nosotros">Nosotros</a>
+    <a href="#modelos">Modelos y precios</a>
     <a href="#trabajos">Trabajos</a>
     <a href="#proceso">Proceso</a>
     <a href="#resenas">Reseñas</a>
-    <a href="#garantia">Garantía</a>
     <a href="#contacto">Contacto</a>
-    <a href="#contacto" class="btn btn-primary">Cotiza tu trailer</a>
+    <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20cotizar%20un%20food%20trailer" class="btn btn-primary">Cotiza por WhatsApp</a>
   </nav>
 </header>
 
@@ -320,8 +345,8 @@
       <h1>Food trailers <em>hechos a tu medida</em>, listos para vender.</h1>
       <p class="lead">Construimos, equipamos y te acompañamos en cada paso — del primer boceto a tu día de apertura. Con la atención al detalle y el servicio 5 estrellas que nos hicieron famosos en Texas.</p>
       <div class="hero-cta">
-        <a href="#contacto" class="btn btn-primary">Cotiza tu trailer</a>
-        <a href="#trabajos" class="btn btn-ghost">Ver nuestros trabajos</a>
+        <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20cotizar%20un%20food%20trailer" class="btn btn-primary">Cotiza por WhatsApp</a>
+        <a href="#modelos" class="btn btn-ghost">Ver modelos y precios</a>
       </div>
       <div class="hero-trust">
         <span class="chip"><span class="stars">★★★★★</span> 5.0 Google</span>
@@ -342,10 +367,10 @@
 
 <!-- Value strip -->
 <div class="strip"><div class="wrap">
-  <span><b>+100</b> trailers entregados</span>
+  <span><b>Desde $26,999</b> equipado y listo</span>
   <span><b>5★</b> servicio y postventa</span>
-  <span><b>4–6</b> semanas de fabricación</span>
-  <span><b>100%</b> equipado y listo para operar</span>
+  <span><b>Financiamos</b> propio y con bancos</span>
+  <span><b>50 estados</b> entrega a domicilio</span>
 </div></div>
 
 <!-- Value cards -->
@@ -403,6 +428,88 @@
       </div>
       <p>“No solo venden trailers: te acompañan en el camino y también después de la venta.” Ese es el estándar Banda — perfeccionistas, disponibles para mil preguntas y sin atajos.</p>
       <a href="#contacto" class="btn btn-primary">Habla directo con nosotros</a>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="section" id="modelos">
+  <div class="wrap">
+    <div class="head center">
+      <div class="eyebrow">Modelos y precios</div>
+      <h2>Trailers completos, listos para operar</h2>
+      <p>Precios de referencia — cada trailer se personaliza a tu concepto. Todos se entregan con lo necesario para pasar la inspección del departamento de salud.</p>
+    </div>
+    <div class="pricing">
+      <div class="price feat">
+        <span class="tag">Más vendido</span>
+        <h3>Modelo Base</h3>
+        <div class="from">Desde</div>
+        <div class="amt">$26,999</div>
+        <ul>
+          <li>4 equipos de cocina</li>
+          <li>Color personalizado + logos gratis</li>
+          <li>Mini split de 1 tonelada (A/C)</li>
+          <li>Piso mejorado</li>
+          <li>3 sinks + lavamanos</li>
+        </ul>
+        <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20el%20Modelo%20Base%20(desde%20%2426%2C999)" class="btn btn-primary">Cotizar este modelo</a>
+      </div>
+      <div class="price">
+        <h3>Modelo Plus</h3>
+        <div class="from">Desde</div>
+        <div class="amt">$29,500</div>
+        <ul>
+          <li>4 equipos de cocina</li>
+          <li>Mini split de 1 tonelada (A/C)</li>
+          <li>Boiler para agua caliente</li>
+          <li>Color personalizado + logos</li>
+        </ul>
+        <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20el%20Modelo%20Plus%20(desde%20%2429%2C500)" class="btn btn-dark">Cotizar este modelo</a>
+      </div>
+      <div class="price">
+        <h3>Modelo XL · 26 ft</h3>
+        <div class="from">Desde</div>
+        <div class="amt">$38,000</div>
+        <ul>
+          <li>26 pies · 3 ejes</li>
+          <li>Hasta 5 equipos de cocina</li>
+          <li>Máximo espacio de trabajo</li>
+          <li>Ideal para alto volumen</li>
+        </ul>
+        <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20el%20Modelo%20XL%2026ft%20(desde%20%2438%2C000)" class="btn btn-dark">Cotizar este modelo</a>
+      </div>
+    </div>
+    <p class="price-note">Precios de referencia sujetos a personalización. Pregunta por promociones y disponibilidad.</p>
+  </div>
+</section>
+
+<!-- Financing + delivery -->
+<section class="section charcoal" id="financiamiento">
+  <div class="wrap">
+    <div class="head center">
+      <div class="eyebrow">Financiamiento y entrega</div>
+      <h2>Te lo ponemos fácil</h2>
+    </div>
+    <div class="fd">
+      <div class="box">
+        <h3><svg viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5l-9-4Zm.9 15.5v1.3h-1.6v-1.3c-1.1-.2-2-.8-2.1-2h1.5c.1.6.5 1 1.4 1 .8 0 1.2-.4 1.2-.9 0-.5-.3-.8-1.5-1.1-1.4-.3-2.4-.9-2.4-2.2 0-1 .8-1.7 1.9-1.9V9.3h1.6v1.3c1.1.2 1.8.9 1.9 1.9h-1.5c0-.6-.4-.9-1.1-.9-.7 0-1.1.3-1.1.8 0 .5.4.7 1.5 1 1.5.3 2.4.9 2.4 2.3 0 1-.8 1.6-2 1.8Z"/></svg> Financiamos</h3>
+        <p>Financiamiento con prestamistas y también <b>financiamiento propio</b> (buy here, pay here). Arranca tu negocio sin pagar todo de contado.</p>
+        <ul>
+          <li>Financiamiento con bancos y prestamistas</li>
+          <li>Financiamiento propio para clientes en Dallas, TX</li>
+          <li>Con enganche y documentos de tu negocio (EIN, cuenta bancaria, experiencia)</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3><svg viewBox="0 0 24 24"><path d="M3 4h11v9H3V4Zm12 3h4l3 3v3h-7V7ZM6.5 20a1.8 1.8 0 1 1 0-3.6 1.8 1.8 0 0 1 0 3.6Zm11 0a1.8 1.8 0 1 1 0-3.6 1.8 1.8 0 0 1 0 3.6Z"/></svg> Entrega a los 50 estados</h3>
+        <p>No importa dónde estés: llevamos tu trailer a domicilio en todo Estados Unidos.</p>
+        <ul>
+          <li>Entrega a domicilio en los 50 estados</li>
+          <li>Choferes con fianza (bonded)</li>
+          <li>Transporte desde $2.00–$2.75 por milla según estado y tamaño</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -526,7 +633,7 @@
         <p class="lead">Cuéntanos tu idea y te armamos una propuesta a tu medida. Sin compromiso.</p>
         <div class="info-row">
           <div class="ic"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1l-2.2 2.2Z"/></svg></div>
-          <div><b>Teléfono / WhatsApp</b><span><a class="ph" href="#">Confirmar número</a> — lo colocamos aquí</span></div>
+          <div><b>Teléfono / WhatsApp</b><span><a href="https://wa.me/12149940452" style="color:var(--yellow)">(214) 994-0452</a></span></div>
         </div>
         <div class="info-row">
           <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5.3 7 13 7 13s7-7.7 7-13c0-4-3-7-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z"/></svg></div>
@@ -553,8 +660,8 @@
             </select>
             <label>Cuéntanos tu idea</label>
             <textarea rows="3" placeholder="Concepto, medidas, presupuesto..."></textarea>
-            <button class="btn btn-primary">Enviar y recibir cotización</button>
-            <p class="form-note">Formulario de muestra — se conecta a WhatsApp o correo en la versión final.</p>
+            <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20cotizar%20un%20food%20trailer" class="btn btn-primary">Enviar por WhatsApp</a>
+            <p class="form-note">Al enviar, se abre WhatsApp con tu mensaje listo para (214) 994-0452.</p>
           </div>
         </form>
       </div>
@@ -583,9 +690,9 @@
       </div>
       <div>
         <h4>Contacto</h4>
-        <a href="#contacto">Cotiza tu trailer</a>
-        <a href="#">6451 S Great Trinity Forest Way, Dallas, TX</a>
-        <a href="#" class="ph">Teléfono por confirmar</a>
+        <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20cotizar%20un%20food%20trailer">Cotiza por WhatsApp</a>
+        <a href="tel:+12149940452">(214) 994-0452</a>
+        <a href="https://maps.google.com/?q=6451+S+Great+Trinity+Forest+Way+Dallas+TX+75217" target="_blank" rel="noopener">6451 S Great Trinity Forest Way, Dallas, TX 75217</a>
       </div>
     </div>
     <div class="foot-bottom">
