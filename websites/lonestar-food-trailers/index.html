@@ -323,6 +323,19 @@
 
   .ph{color:var(--yellow);border-bottom:1px dashed rgba(255,198,26,.5)}
 
+  /* ---------- Sticky mobile chat bubble ---------- */
+  .sticky-cta{display:none}
+  @media(max-width:768px){
+    .sticky-cta{display:block;position:fixed;right:18px;bottom:18px;z-index:70}
+  }
+  .sc-main{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--yellow);border:0;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.35);transition:transform .2s ease}
+  .sc-main:active{transform:scale(.94)}
+  .sc-main svg{width:26px;height:26px;fill:#111}
+  .sc-options{position:absolute;bottom:70px;right:0;display:flex;flex-direction:column;align-items:flex-end;gap:8px;transform:translateY(8px);opacity:0;pointer-events:none;transition:transform .22s ease, opacity .22s ease}
+  .sticky-cta.open .sc-options{transform:translateY(0);opacity:1;pointer-events:auto}
+  .sc-options a{display:flex;align-items:center;gap:9px;padding:12px 16px;border-radius:30px;background:var(--card-bg-2);border:1px solid var(--line);color:var(--head-white);font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:.8rem;letter-spacing:.04em;white-space:nowrap;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+  .sc-options a svg{width:16px;height:16px;fill:var(--yellow);flex:none}
+
   /* ---------- Lightbox ---------- */
   .lb{position:fixed;inset:0;background:rgba(5,5,6,.95);z-index:100;display:none;align-items:center;justify-content:center;padding:30px}
   .lb.open{display:flex}
@@ -834,6 +847,23 @@
   </div>
 </footer>
 
+<!-- Sticky mobile chat CTA -->
+<div class="sticky-cta" id="stickyCta">
+  <div class="sc-options" id="scOptions">
+    <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20cotizar%20un%20food%20trailer">
+      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.2-.1-1-.4-2-1.2-.7-.6-1.2-1.4-1.4-1.6-.1-.2 0-.4.1-.5l.4-.4c.1-.1.2-.3.2-.4.1-.1 0-.3 0-.4l-.7-1.6c-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-1 1-1 2.3 0 1.4 1 2.7 1.1 2.9.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.2-.2-.4-.3Z"/></svg>
+      <span data-i18n="hero.ctaWA">WhatsApp</span>
+    </a>
+    <a href="sms:+12149940452?&body=Hola%20Lone%20Star%2C%20me%20interesa%20cotizar%20un%20food%20trailer">
+      <svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H8l-5 4V5a1 1 0 0 1 1-1Z"/></svg>
+      <span data-i18n="cm.text">Mensaje de texto</span>
+    </a>
+  </div>
+  <button type="button" class="sc-main" id="scMain" aria-label="Iniciar chat">
+    <svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H8l-5 4V5a1 1 0 0 1 1-1Z"/></svg>
+  </button>
+</div>
+
 <!-- Lightbox -->
 <div class="lb" id="lb"><button class="x" id="lbx">×</button><img id="lbimg" src="" alt=""></div>
 
@@ -1090,6 +1120,16 @@
   document.getElementById('lbx').addEventListener('click',()=>lb.classList.remove('open'));
   lb.addEventListener('click',e=>{if(e.target===lb)lb.classList.remove('open')});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('open')});
+
+  // Sticky mobile chat bubble
+  const stickyCta=document.getElementById('stickyCta');
+  document.getElementById('scMain').addEventListener('click',e=>{
+    e.stopPropagation();
+    stickyCta.classList.toggle('open');
+  });
+  document.addEventListener('click',e=>{
+    if(stickyCta.classList.contains('open') && !stickyCta.contains(e.target)) stickyCta.classList.remove('open');
+  });
 
   // Apply saved/default language last, once everything (gallery, swatches) exists
   applyLang(localStorage.getItem('ls_lang') || 'es');
