@@ -180,9 +180,19 @@
   .vs small{display:block;font-family:'Inter';font-weight:400;text-transform:none;font-size:.8rem;color:var(--gray);letter-spacing:0}
 
   /* ---------- Gallery ---------- */
-  .gal-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
-  .gal-filters button{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:.82rem;padding:9px 18px;border-radius:40px;border:1px solid var(--line);background:var(--card-bg-2);color:var(--muted-2);cursor:pointer;transition:.2s}
-  .gal-filters button.active,.gal-filters button:hover{background:var(--yellow);color:#111;border-color:var(--yellow)}
+  /* ---------- Trailer covers (click a trailer to see all its photos) ---------- */
+  .trailer-covers{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:8px}
+  .tcover{position:relative;border-radius:8px;overflow:hidden;cursor:pointer;aspect-ratio:4/3;background:#000;border:1px solid var(--line)}
+  .tcover img{width:100%;height:100%;object-fit:cover;transition:transform .45s ease}
+  .tcover:hover img{transform:scale(1.07)}
+  .tcover .ov{position:absolute;left:0;right:0;bottom:0;padding:14px 16px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.82) 65%);color:#fff}
+  .tcover .ov b{display:block;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.03em;font-size:.98rem}
+  .tcover .ov span{font-size:.78rem;color:#dcdcdc}
+  .gallery-label{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:.85rem;color:var(--head-white);margin:26px 0 16px;display:none;align-items:center;gap:10px}
+  .gallery-label.show{display:flex}
+  .gallery-label .dot{width:12px;height:12px;border-radius:50%;background:var(--sw)}
+  .gallery-label button{margin-left:auto;background:none;border:1px solid var(--line);color:var(--muted-2);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:.75rem;padding:8px 14px;border-radius:20px;cursor:pointer;transition:.2s}
+  .gallery-label button:hover{border-color:var(--yellow);color:var(--yellow)}
   .gallery{columns:4;column-gap:14px}
   .gallery figure{break-inside:avoid;margin:0 0 14px;position:relative;border-radius:6px;overflow:hidden;cursor:pointer;background:#000}
   .gallery img{width:100%;transition:transform .5s ease, opacity .3s;opacity:.94}
@@ -356,12 +366,14 @@
     .reviews{grid-template-columns:1fr}
     .pricing,.fd{grid-template-columns:1fr}
     .gallery{columns:2}
+    .trailer-covers{grid-template-columns:repeat(2,1fr)}
     footer .grid{grid-template-columns:1fr}
     nav.mobile{display:var(--m,none)}
   }
   @media(max-width:560px){
     .cards,.steps{grid-template-columns:1fr}
     .gallery{columns:1}
+    .trailer-covers{grid-template-columns:1fr}
     .hero-img .panel img{height:360px}
     .section{padding:60px 0}
   }
@@ -620,11 +632,8 @@
       <h2 data-i18n="trabajos.h2">Galería de Trailers Reales</h2>
       <p data-i18n="trabajos.p">Cada unidad es distinta porque cada negocio lo es. Exteriores con wrap a tu marca, marco negro con tuercas e interiores de cocina completos.</p>
     </div>
-    <div class="gal-filters reveal">
-      <button class="active" data-f="all" data-i18n="filter.all">Todos</button>
-      <button data-f="ext" data-i18n="filter.ext">Exteriores</button>
-      <button data-f="int" data-i18n="filter.int">Interiores</button>
-    </div>
+    <div class="trailer-covers reveal" id="trailerCovers"></div>
+    <div class="gallery-label" id="galLabel"><span class="dot"></span><span id="galLabelText"></span><button id="galReset" data-i18n="filter.reset">← Ver todos los trailers</button></div>
     <div class="gallery" id="gallery"></div>
   </div>
 </section>
@@ -931,6 +940,8 @@
     "filter.all":{es:"Todos",en:"All"},
     "filter.ext":{es:"Exteriores",en:"Exteriors"},
     "filter.int":{es:"Interiores",en:"Interiors"},
+    "filter.byColor":{es:"O elige un trailer por color:",en:"Or pick a trailer by color:"},
+    "filter.reset":{es:"Ver todos",en:"View all"},
     "video.eyebrow":{es:"Míralo por dentro",en:"See It From the Inside"},
     "video.h2":{es:"Un recorrido por un trailer terminado",en:"A walkthrough of a finished trailer"},
     "proceso.eyebrow":{es:"El proceso",en:"The Process"},
@@ -1003,11 +1014,20 @@
     document.querySelectorAll('.lang-toggle button').forEach(b=>b.classList.toggle('active', b.dataset.lang===lang));
     document.documentElement.lang = lang;
     localStorage.setItem('ls_lang', lang);
+    if(typeof TRAILERS!=='undefined'){
+      document.querySelectorAll('.tcover').forEach(c=>{
+        const t=TRAILERS[c.dataset.t];
+        if(t){ c.querySelector('.ov b').textContent=t.name[lang]; c.querySelector('.ov span').textContent=`${t.sub[lang]} · ${t.photos.length} fotos`; }
+      });
+      if(galLabel.classList.contains('show')){
+        const openKey=Object.keys(TRAILERS).find(k=>galLabelText.textContent.includes(TRAILERS[k].name.es)||galLabelText.textContent.includes(TRAILERS[k].name.en));
+        if(openKey){ const t=TRAILERS[openKey]; galLabelText.textContent=`${t.name[lang]} — ${t.sub[lang]}`; }
+      }
+    }
   }
   document.querySelectorAll('.lang-toggle button').forEach(b=>{
     b.addEventListener('click', ()=>applyLang(b.dataset.lang));
   });
-  applyLang(localStorage.getItem('ls_lang') || 'es');
 
   // ---------- Scroll reveal ----------
   const io = new IntersectionObserver((entries)=>{
@@ -1015,23 +1035,54 @@
   }, { threshold:0.15, rootMargin:'0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-  // Gallery data — ext = exteriores, int = interiores
-  const EXT=['IMG_3371','IMG_3368','IMG_3355','IMG_3356','IMG_3364','IMG_3327','IMG_3329','IMG_3330','IMG_3332','IMG_3334','IMG_3337','IMG_3338','IMG_3369','IMG_3370'];
-  const INT=['IMG_3322','IMG_3324','IMG_3325','IMG_3326','IMG_3348','IMG_3340','IMG_3342','IMG_3343','IMG_3344','IMG_3366','IMG_3367'];
+  // Trailers reales, agrupados — foto de portada + set completo de cada uno
+  const TRAILERS={
+    graphite:{sw:'#3d4147',cover:'IMG_3371',name:{es:'Big Daddie’s Kitchen',en:'Big Daddie’s Kitchen'},sub:{es:'Gris / Negro',en:'Gray / Black'},photos:['IMG_3371','IMG_3368','IMG_3366','IMG_3367','IMG_3369','IMG_3370']},
+    green:{sw:'#5cb32e',cover:'IMG_3355',name:{es:'Verde',en:'Green'},sub:{es:'3 fotos',en:'3 photos'},photos:['IMG_3355','IMG_3356','IMG_3364']},
+    blue:{sw:'#1f3fe0',cover:'IMG_3334',name:{es:'Divine Bites',en:'Divine Bites'},sub:{es:'Azul',en:'Blue'},photos:['IMG_3334','IMG_3337','IMG_3338','IMG_3340','IMG_3343','IMG_3342','IMG_3344']},
+    lightblue:{sw:'#7cc0ea',cover:'IMG_3330',name:{es:'Sweets & Treat’s',en:'Sweets & Treat’s'},sub:{es:'Celeste',en:'Light Blue'},photos:['IMG_3329','IMG_3330','IMG_3332','IMG_3327','IMG_3322','IMG_3324','IMG_3325','IMG_3326']}
+  };
+
   const gal=document.getElementById('gallery');
-  function render(filter){
-    let list = filter==='ext'?EXT : filter==='int'?INT : EXT.concat(INT);
-    gal.innerHTML = list.map((n,i)=>`<figure class="reveal reveal-stagger" style="--i:${i%6}" data-src="assets/${n}.jpeg"><img loading="lazy" src="assets/${n}.jpeg" alt="Food trailer Lone Star"></figure>`).join('');
+  const covers=document.getElementById('trailerCovers');
+  const galLabel=document.getElementById('galLabel');
+  const galLabelText=document.getElementById('galLabelText');
+  const galLabelDot=galLabel.querySelector('.dot');
+  const curLang=()=>document.documentElement.lang||'es';
+
+  function renderCovers(){
+    covers.innerHTML = Object.keys(TRAILERS).map(key=>{
+      const t=TRAILERS[key];
+      return `<div class="tcover" data-t="${key}">
+        <img loading="lazy" decoding="async" src="assets/${t.cover}.jpeg" alt="${t.name.es}">
+        <div class="ov"><b>${t.name[curLang()]}</b><span>${t.sub[curLang()]} · ${t.photos.length} fotos</span></div>
+      </div>`;
+    }).join('');
+    covers.querySelectorAll('.tcover').forEach(c=>c.addEventListener('click',()=>openTrailer(c.dataset.t)));
+  }
+
+  function openTrailer(key){
+    const t=TRAILERS[key];
+    covers.style.display='none';
+    galLabelDot.style.background=t.sw;
+    galLabelText.textContent=`${t.name[curLang()]} — ${t.sub[curLang()]}`;
+    galLabel.classList.add('show');
+    gal.innerHTML = t.photos.map((n,i)=>`<figure class="reveal reveal-stagger" style="--i:${i%6}" data-src="assets/${n}.jpeg"><img loading="lazy" decoding="async" src="assets/${n}.jpeg" alt="${t.name.es}"></figure>`).join('');
     gal.querySelectorAll('figure').forEach(f=>{
       f.addEventListener('click',()=>openLb(f.dataset.src));
-      io.observe(f);
+      f.classList.add('in'); // ya son resultado de un click, no hace falta esperar el scroll
     });
+    gal.scrollIntoView({behavior:'smooth', block:'start'});
   }
-  render('all');
-  document.querySelectorAll('.gal-filters button').forEach(b=>b.addEventListener('click',()=>{
-    document.querySelectorAll('.gal-filters button').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active'); render(b.dataset.f);
-  }));
+
+  function closeTrailer(){
+    gal.innerHTML='';
+    galLabel.classList.remove('show');
+    covers.style.display='';
+  }
+
+  renderCovers();
+  document.getElementById('galReset').addEventListener('click', closeTrailer);
 
   // Lightbox
   const lb=document.getElementById('lb'), lbimg=document.getElementById('lbimg');
@@ -1039,6 +1090,9 @@
   document.getElementById('lbx').addEventListener('click',()=>lb.classList.remove('open'));
   lb.addEventListener('click',e=>{if(e.target===lb)lb.classList.remove('open')});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('open')});
+
+  // Apply saved/default language last, once everything (gallery, swatches) exists
+  applyLang(localStorage.getItem('ls_lang') || 'es');
 </script>
 </body>
 </html>
