@@ -83,21 +83,20 @@
   .frame > .panel{position:relative;border-radius:3px;overflow:hidden;background:var(--charcoal)}
   .frame.tight{padding:12px}
 
-  /* ---------- LED bulbs: the existing bolt dots light up in a chasing rainbow ---------- */
-  @property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+  /* ---------- LED bulbs: real bulbs around the frame, blinking on in sequence ---------- */
   .frame.leds{position:relative}
   .frame.leds > .panel{position:relative;z-index:2}
-  .frame.leds::before,.frame.leds::after{
-    content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-    background:conic-gradient(from var(--ang), #ff3b3b,#ff9a1f,#ffe23d,#4ade80,#33c6f4,#5b6bff,#e763e0,#ff3b3b);
-    -webkit-mask:radial-gradient(circle at 13px 13px, #fff 0 2.6px, transparent 3.1px) 0 0/46px 46px;
-    mask:radial-gradient(circle at 13px 13px, #fff 0 2.6px, transparent 3.1px) 0 0/46px 46px;
-    animation:ledspin 6s linear infinite;
+  .frame.leds .bulb{
+    position:absolute;top:0;left:0;width:8px;height:8px;margin:-4px 0 0 -4px;
+    border-radius:50%;background:var(--bc);opacity:.28;z-index:3;pointer-events:none;
+    animation:bulbTwinkle 2.6s ease-in-out infinite;
+    animation-delay:var(--bd);
   }
-  .frame.leds::before{z-index:1}
-  .frame.leds::after{z-index:0;filter:blur(5px);opacity:.85}
-  @keyframes ledspin{to{--ang:360deg}}
-  @media(prefers-reduced-motion:reduce){.frame.leds::before,.frame.leds::after{animation:none}}
+  @keyframes bulbTwinkle{
+    0%,76%,100%{opacity:.28;box-shadow:none;transform:scale(1)}
+    38%{opacity:1;box-shadow:0 0 10px 3px var(--bc);transform:scale(1.3)}
+  }
+  @media(prefers-reduced-motion:reduce){.frame.leds .bulb{animation:none;opacity:.9}}
 
   /* ---------- Buttons ---------- */
   .btn{
@@ -1156,6 +1155,51 @@
   document.addEventListener('click',e=>{
     if(stickyCta.classList.contains('open') && !stickyCta.contains(e.target)) stickyCta.classList.remove('open');
   });
+
+  // LED bulbs around the signature frame (hero + "Nosotros") — real DOM dots,
+  // spaced evenly around the perimeter, each blinking on in sequence (chase effect)
+  const LED_COLORS=['#ff3b3b','#ff9a1f','#ffe23d','#4ade80','#33c6f4','#5b6bff','#e763e0'];
+  function buildLedBulbs(){
+    document.querySelectorAll('.frame.leds').forEach(frame=>{
+      frame.querySelectorAll('.bulb').forEach(b=>b.remove());
+      const w=frame.clientWidth, h=frame.clientHeight;
+      if(!w||!h) return;
+      const inset=13, step=46;
+      const nx=Math.max(2, Math.round((w-inset*2)/step)+1);
+      const ny=Math.max(2, Math.round((h-inset*2)/step)+1);
+      const pts=[];
+      for(let i=0;i<nx;i++){
+        const x=inset+(w-inset*2)*(i/(nx-1));
+        pts.push([x,inset]); // top edge
+      }
+      for(let j=1;j<ny-1;j++){
+        const y=inset+(h-inset*2)*(j/(ny-1));
+        pts.push([w-inset,y]); // right edge
+      }
+      for(let i=nx-1;i>=0;i--){
+        const x=inset+(w-inset*2)*(i/(nx-1));
+        pts.push([x,h-inset]); // bottom edge
+      }
+      for(let j=ny-2;j>=1;j--){
+        const y=inset+(h-inset*2)*(j/(ny-1));
+        pts.push([inset,y]); // left edge
+      }
+      const total=pts.length, dur=2.6;
+      const frag=document.createDocumentFragment();
+      pts.forEach((pt,i)=>{
+        const b=document.createElement('span');
+        b.className='bulb';
+        b.style.left=pt[0]+'px'; b.style.top=pt[1]+'px';
+        b.style.setProperty('--bc', LED_COLORS[i%LED_COLORS.length]);
+        b.style.setProperty('--bd', (-(i/total*dur)).toFixed(2)+'s');
+        frag.appendChild(b);
+      });
+      frame.appendChild(frag);
+    });
+  }
+  buildLedBulbs();
+  let ledResizeT;
+  window.addEventListener('resize', ()=>{ clearTimeout(ledResizeT); ledResizeT=setTimeout(buildLedBulbs, 250); });
 
   // Apply saved/default language last, once everything (gallery, swatches) exists
   applyLang(localStorage.getItem('ls_lang') || 'es');
