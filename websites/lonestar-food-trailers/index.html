@@ -272,6 +272,19 @@
   .contact .grid{display:grid;grid-template-columns:1fr 1fr;gap:46px}
   .contact h2{font-size:clamp(2rem,4vw,3rem);color:var(--head-white);margin:12px 0 14px}
   .contact p.lead{color:var(--muted-2);margin-bottom:26px;font-size:1.05rem}
+  /* ---------- Contact methods (call / WhatsApp / text / email) ---------- */
+  .contact-methods{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
+  .cmethod{display:flex;flex-direction:column;gap:6px;background:var(--card-bg-2);border:1px solid var(--line);border-radius:10px;padding:16px;transition:transform .2s ease, border-color .2s}
+  .cmethod:hover{transform:translateY(-3px);border-color:var(--yellow)}
+  .cmethod .cm-ic{width:34px;height:34px;border-radius:8px;background:rgba(255,198,26,.14);display:grid;place-items:center}
+  .cmethod .cm-ic svg{width:17px;height:17px;fill:var(--yellow)}
+  .cmethod .cm-label{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:.85rem;color:var(--head-white);font-weight:600}
+  .cmethod .cm-value{font-size:.8rem;color:var(--muted)}
+  .cmethod-primary{background:var(--yellow);border-color:var(--yellow)}
+  .cmethod-primary .cm-ic{background:rgba(0,0,0,.15)}
+  .cmethod-primary .cm-ic svg{fill:#111}
+  .cmethod-primary .cm-label,.cmethod-primary .cm-value{color:#111}
+  @media(max-width:560px){.contact-methods{grid-template-columns:1fr 1fr}}
   .info-row{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
   .info-row .ic{width:44px;height:44px;flex:none;border-radius:8px;background:var(--card-bg-2);border:1px solid var(--line);display:grid;place-items:center}
   .info-row .ic svg{width:20px;height:20px;fill:var(--yellow)}
@@ -318,6 +331,8 @@
   .price li{display:flex;gap:10px;font-size:.93rem;color:var(--muted-2)}
   .price li::before{content:"✓";color:var(--yellow);font-weight:800;flex:none}
   .price .btn{margin-top:auto;justify-content:center}
+  .price .btn-row{display:flex;gap:8px;margin-top:auto}
+  .price .btn-row .btn{flex:1;justify-content:center;margin-top:0;padding:12px 10px;font-size:.82rem}
   .price-note{text-align:center;color:var(--gray);font-size:.86rem;margin-top:24px}
   /* ---------- Finance + delivery ---------- */
   .fd{display:grid;grid-template-columns:1fr 1fr;gap:20px}
@@ -365,7 +380,7 @@
   <span class="dot"></span>
   <span data-i18n="topbar.finance">Financiamos · Entrega a los 50 estados</span>
   <span class="dot"></span>
-  <span>📱 <b>(214) 994-0452</b></span>
+  <span>📱 <b><a href="tel:+12149940452" style="color:inherit">(214) 994-0452</a></b></span>
 </div></div>
 
 <!-- Header -->
@@ -405,7 +420,8 @@
     <a href="#proceso" data-i18n="nav.proceso">Proceso</a>
     <a href="#resenas" data-i18n="nav.resenas">Reseñas</a>
     <a href="#contacto" data-i18n="nav.contacto">Contacto</a>
-    <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20cotizar%20un%20food%20trailer" class="btn btn-primary" data-i18n="hero.cta1">Cotiza por WhatsApp</a>
+    <a href="tel:+12149940452" class="btn btn-primary" data-i18n="hero.cta1">Llamar ahora</a>
+    <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20cotizar%20un%20food%20trailer" class="btn btn-ghost" style="margin-top:8px" data-i18n="hero.ctaWA">WhatsApp</a>
   </nav>
 </header>
 
@@ -417,7 +433,8 @@
       <h1 data-i18n="hero.h1">Food trailers <em>hechos a tu medida</em>, listos para vender.</h1>
       <p class="lead" data-i18n="hero.lead">Construimos, equipamos y te acompañamos en cada paso — del primer boceto a tu día de apertura. Con la atención al detalle y el servicio 5 estrellas que nos hicieron famosos en Texas.</p>
       <div class="hero-cta">
-        <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20cotizar%20un%20food%20trailer" class="btn btn-primary" data-i18n="hero.cta1">Cotiza por WhatsApp</a>
+        <a href="tel:+12149940452" class="btn btn-primary" data-i18n="hero.cta1">Llamar ahora</a>
+        <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20cotizar%20un%20food%20trailer" class="btn btn-ghost" data-i18n="hero.ctaWA">WhatsApp</a>
         <a href="#modelos" class="btn btn-ghost" data-i18n="hero.cta2">Ver modelos y precios</a>
       </div>
       <div class="hero-trust">
@@ -525,7 +542,10 @@
           <li data-i18n="price1.liFloor">Piso mejorado</li>
           <li data-i18n="price1.liSinks">3 sinks + lavamanos</li>
         </ul>
-        <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20el%20Modelo%20Base%20(desde%20%2426%2C999)" class="btn btn-primary" data-i18n="price.btn">Cotizar este modelo</a>
+        <div class="btn-row">
+          <a href="tel:+12149940452" class="btn btn-primary" data-i18n="price.btnCall">Llamar</a>
+          <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20el%20Modelo%20Base%20(desde%20%2426%2C999)" class="btn btn-ghost" data-i18n="hero.ctaWA">WhatsApp</a>
+        </div>
       </div>
       <div class="price reveal reveal-stagger" style="--i:1">
         <h3 data-i18n="price2.h3">Modelo Plus</h3>
@@ -537,7 +557,10 @@
           <li data-i18n="price2.liBoiler">Boiler para agua caliente</li>
           <li data-i18n="price2.liColor">Color personalizado + logos</li>
         </ul>
-        <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20el%20Modelo%20Plus%20(desde%20%2429%2C500)" class="btn btn-dark" data-i18n="price.btn">Cotizar este modelo</a>
+        <div class="btn-row">
+          <a href="tel:+12149940452" class="btn btn-dark" data-i18n="price.btnCall">Llamar</a>
+          <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20el%20Modelo%20Plus%20(desde%20%2429%2C500)" class="btn btn-ghost" data-i18n="hero.ctaWA">WhatsApp</a>
+        </div>
       </div>
       <div class="price reveal reveal-stagger" style="--i:2">
         <h3 data-i18n="price3.h3">Modelo XL · 26 ft</h3>
@@ -549,7 +572,10 @@
           <li data-i18n="price3.li3">Máximo espacio de trabajo</li>
           <li data-i18n="price3.li4">Ideal para alto volumen</li>
         </ul>
-        <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20el%20Modelo%20XL%2026ft%20(desde%20%2438%2C000)" class="btn btn-dark" data-i18n="price.btn">Cotizar este modelo</a>
+        <div class="btn-row">
+          <a href="tel:+12149940452" class="btn btn-dark" data-i18n="price.btnCall">Llamar</a>
+          <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20el%20Modelo%20XL%2026ft%20(desde%20%2438%2C000)" class="btn btn-ghost" data-i18n="hero.ctaWA">WhatsApp</a>
+        </div>
       </div>
     </div>
     <p class="price-note" data-i18n="modelos.note">Precios de referencia sujetos a personalización. Pregunta por promociones y disponibilidad.</p>
@@ -591,7 +617,7 @@
   <div class="wrap">
     <div class="head center reveal">
       <div class="eyebrow" data-i18n="trabajos.eyebrow">Nuestros trabajos</div>
-      <h2 data-i18n="trabajos.h2">Trailers reales, entregados en Texas</h2>
+      <h2 data-i18n="trabajos.h2">Galería de Trailers Reales</h2>
       <p data-i18n="trabajos.p">Cada unidad es distinta porque cada negocio lo es. Exteriores con wrap a tu marca, marco negro con tuercas e interiores de cocina completos.</p>
     </div>
     <div class="gal-filters reveal">
@@ -703,9 +729,24 @@
         <div class="eyebrow" data-i18n="contacto.eyebrow">Hablemos</div>
         <h2 data-i18n="contacto.h2">Cotiza tu food trailer</h2>
         <p class="lead" data-i18n="contacto.lead">Cuéntanos tu idea y te armamos una propuesta a tu medida. Sin compromiso.</p>
-        <div class="info-row">
-          <div class="ic"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1l-2.2 2.2Z"/></svg></div>
-          <div><b data-i18n="info1.label">Teléfono / WhatsApp</b><span><a href="https://wa.me/12149940452" style="color:var(--yellow)">(214) 994-0452</a></span></div>
+        <div class="contact-methods">
+          <a href="tel:+12149940452" class="cmethod cmethod-primary">
+            <span class="cm-ic"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1l-2.2 2.2Z"/></svg></span>
+            <span class="cm-label" data-i18n="cm.call">Llamar ahora</span>
+            <span class="cm-value">(214) 994-0452</span>
+          </a>
+          <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20cotizar%20un%20food%20trailer" class="cmethod">
+            <span class="cm-ic"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.2-.1-1-.4-2-1.2-.7-.6-1.2-1.4-1.4-1.6-.1-.2 0-.4.1-.5l.4-.4c.1-.1.2-.3.2-.4.1-.1 0-.3 0-.4l-.7-1.6c-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-1 1-1 2.3 0 1.4 1 2.7 1.1 2.9.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.2-.2-.4-.3Z"/></svg></span>
+            <span class="cm-label">WhatsApp</span>
+          </a>
+          <a href="sms:+12149940452?&body=Hola%20Lone%20Star%2C%20me%20interesa%20cotizar%20un%20food%20trailer" class="cmethod">
+            <span class="cm-ic"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H8l-5 4V5a1 1 0 0 1 1-1Z"/></svg></span>
+            <span class="cm-label" data-i18n="cm.text">Mensaje de texto</span>
+          </a>
+          <a href="mailto:info@lonestarfoodtrailers.com" class="cmethod">
+            <span class="cm-ic"><svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1.4 2 7.1 6 .5.3.5-.3 7.1-6H4.4ZM4 8.2V17h16V8.2l-7.4 6.3a1 1 0 0 1-1.2 0L4 8.2Z"/></svg></span>
+            <span class="cm-label ph" data-i18n="cm.email">Correo</span>
+          </a>
         </div>
         <div class="info-row">
           <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5.3 7 13 7 13s7-7.7 7-13c0-4-3-7-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z"/></svg></div>
@@ -721,7 +762,7 @@
           <div class="panel" style="background:var(--card-bg-2);padding:26px">
             <label data-i18n="form.name">Nombre</label>
             <input type="text" data-i18n-placeholder="form.namePh" placeholder="Tu nombre">
-            <label data-i18n="form.phone">Teléfono / WhatsApp</label>
+            <label data-i18n="form.phone">Teléfono</label>
             <input type="tel" placeholder="(214) 000-0000">
             <label data-i18n="form.type">¿Qué tipo de trailer buscas?</label>
             <select>
@@ -733,7 +774,8 @@
             <label data-i18n="form.message">Cuéntanos tu idea</label>
             <textarea rows="3" data-i18n-placeholder="form.messagePh" placeholder="Concepto, medidas, presupuesto..."></textarea>
             <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20cotizar%20un%20food%20trailer" class="btn btn-primary" data-i18n="form.submit">Enviar por WhatsApp</a>
-            <p class="form-note" data-i18n="form.note">Al enviar, se abre WhatsApp con tu mensaje listo para (214) 994-0452.</p>
+            <a href="tel:+12149940452" class="btn btn-dark" style="margin-top:10px" data-i18n="hero.cta1">Llamar ahora</a>
+            <p class="form-note" data-i18n="form.note">Al enviar, se abre WhatsApp con tu mensaje listo para (214) 994-0452. También puedes llamarnos directo.</p>
           </div>
         </form>
       </div>
@@ -762,8 +804,10 @@
       </div>
       <div>
         <h4 data-i18n="footer.contactH4">Contacto</h4>
-        <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20cotizar%20un%20food%20trailer" data-i18n="hero.cta1">Cotiza por WhatsApp</a>
-        <a href="tel:+12149940452">(214) 994-0452</a>
+        <a href="tel:+12149940452">📞 (214) 994-0452</a>
+        <a href="https://wa.me/12149940452?text=Hola%20Lone%20Star%2C%20me%20interesa%20cotizar%20un%20food%20trailer">WhatsApp</a>
+        <a href="sms:+12149940452?&body=Hola%20Lone%20Star%2C%20me%20interesa%20cotizar%20un%20food%20trailer" data-i18n="cm.text">Mensaje de texto</a>
+        <a href="mailto:info@lonestarfoodtrailers.com" class="ph" data-i18n="cm.email">Correo</a>
         <a href="https://maps.google.com/?q=6451+S+Great+Trinity+Forest+Way+Dallas+TX+75217" target="_blank" rel="noopener">6451 S Great Trinity Forest Way, Dallas, TX 75217</a>
       </div>
     </div>
@@ -811,8 +855,13 @@
     "hero.eyebrow":{es:"Fabricante + Vendedor · Dallas, Texas",en:"Manufacturer + Dealer · Dallas, Texas"},
     "hero.h1":{es:'Food trailers <em>hechos a tu medida</em>, listos para vender.',en:'Food trailers <em>built to your spec</em>, ready to sell.'},
     "hero.lead":{es:"Construimos, equipamos y te acompañamos en cada paso — del primer boceto a tu día de apertura. Con la atención al detalle y el servicio 5 estrellas que nos hicieron famosos en Texas.",en:"We build, equip and walk with you every step — from the first sketch to your opening day. With the attention to detail and 5-star service that made us famous in Texas."},
-    "hero.cta1":{es:"Cotiza por WhatsApp",en:"Get a Quote on WhatsApp"},
+    "hero.cta1":{es:"Llamar ahora",en:"Call Now"},
     "hero.cta2":{es:"Ver modelos y precios",en:"See Models & Pricing"},
+    "hero.ctaWA":{es:"WhatsApp",en:"WhatsApp"},
+    "price.btnCall":{es:"Llamar",en:"Call"},
+    "cm.call":{es:"Llamar ahora",en:"Call Now"},
+    "cm.text":{es:"Mensaje de texto",en:"Text Message"},
+    "cm.email":{es:"Correo",en:"Email"},
     "hero.trust2":{es:"Construido para pasar inspección",en:"Built to pass inspection"},
     "hero.trust3":{es:"Garantía respaldada",en:"Backed guarantee"},
     "hero.tag":{es:"Fabricación propia · Dallas, TX",en:"In-house manufacturing · Dallas, TX"},
@@ -873,7 +922,7 @@
     "fd2.li2":{es:"Choferes con fianza (bonded)",en:"Bonded drivers"},
     "fd2.li3":{es:"Transporte desde $2.00–$2.75 por milla según estado y tamaño",en:"Transport from $2.00–$2.75 per mile depending on state and size"},
     "trabajos.eyebrow":{es:"Nuestros trabajos",en:"Our Work"},
-    "trabajos.h2":{es:"Trailers reales, entregados en Texas",en:"Real trailers, delivered across Texas"},
+    "trabajos.h2":{es:"Galería de Trailers Reales",en:"Real Trailers Gallery"},
     "trabajos.p":{es:"Cada unidad es distinta porque cada negocio lo es. Exteriores con wrap a tu marca, marco negro con tuercas e interiores de cocina completos.",en:"Every unit is different because every business is. Exteriors wrapped in your brand, our signature bolted black frame, and fully equipped kitchen interiors."},
     "filter.all":{es:"Todos",en:"All"},
     "filter.ext":{es:"Exteriores",en:"Exteriors"},
@@ -921,7 +970,7 @@
     "info3.label":{es:"Dueños",en:"Owners"},
     "form.name":{es:"Nombre",en:"Name"},
     "form.namePh":{es:"Tu nombre",en:"Your name"},
-    "form.phone":{es:"Teléfono / WhatsApp",en:"Phone / WhatsApp"},
+    "form.phone":{es:"Teléfono",en:"Phone"},
     "form.type":{es:"¿Qué tipo de trailer buscas?",en:"What type of trailer are you looking for?"},
     "form.opt1":{es:"Food trailer de cocina completa",en:"Full kitchen food trailer"},
     "form.opt2":{es:"BBQ / smoker",en:"BBQ / smoker"},
@@ -930,7 +979,7 @@
     "form.message":{es:"Cuéntanos tu idea",en:"Tell us your idea"},
     "form.messagePh":{es:"Concepto, medidas, presupuesto...",en:"Concept, size, budget..."},
     "form.submit":{es:"Enviar por WhatsApp",en:"Send via WhatsApp"},
-    "form.note":{es:"Al enviar, se abre WhatsApp con tu mensaje listo para (214) 994-0452.",en:"When you submit, WhatsApp opens with your message ready to send to (214) 994-0452."},
+    "form.note":{es:"Al enviar, se abre WhatsApp con tu mensaje listo para (214) 994-0452. También puedes llamarnos directo.",en:"When you submit, WhatsApp opens with your message ready to send to (214) 994-0452. You can also call us directly."},
     "footer.desc":{es:"Fabricante y vendedor de food trailers a la medida en Dallas, Texas. Del diseño al día de apertura, con servicio 5 estrellas.",en:"Manufacturer and dealer of custom food trailers in Dallas, Texas. From design to opening day, with 5-star service."},
     "footer.navH4":{es:"Navega",en:"Navigate"},
     "footer.contactH4":{es:"Contacto",en:"Contact"}

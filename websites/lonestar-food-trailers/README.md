@@ -36,14 +36,20 @@ Mientras tanto se muestra con un link de preview gratis.
 - Reseñas: basadas en los temas reales de Google (5.0). **Pendiente:** reemplazar por el
   texto y nombres exactos de las reseñas de Google.
 - 25 fotos + 1 video (MP4) en `assets/`.
-- Contacto vía **WhatsApp** (wa.me/12149940452) en todos los CTA — sin formulario backend.
+- Contacto: **4 canales** — Llamar (tel:, destacado como opción principal), WhatsApp,
+  Mensaje de texto (sms:) y Correo — en la sección de Contacto, hero, tarjetas de precio,
+  menú móvil y footer. Sin formulario backend real (todo son enlaces tel:/sms:/wa.me/mailto:).
 
 ## Pendientes / placeholders
 - [ ] Logo y nombre (hay espacio reservado — "Tu logo aquí").
 - [ ] Texto y nombres exactos de reseñas de Google.
+- [ ] **Correo de contacto** — usé `info@lonestarfoodtrailers.com` como placeholder (marcado
+  con subrayado punteado en el sitio); confirmar el real con el cliente.
 - [ ] Optimizar/redimensionar imágenes (hoy 2–5 MB c/u) antes de lanzar.
 - [ ] Convertir/recomprimir el video para web (el .MOV no se reproduce en todos los navegadores).
 - [ ] Hosting: repo propio + Cloudflare Pages (preview .pages.dev; dominio del cliente al vender).
+- [ ] Reintentar búsqueda de más detalles del listado de Google Maps (horarios, más reseñas)
+  cuando se libere el límite de búsquedas de la sesión.
 
 ## Dominio
 Este es un proyecto/negocio **aparte** de Nova Food Trailers. Va en su **propio dominio**
