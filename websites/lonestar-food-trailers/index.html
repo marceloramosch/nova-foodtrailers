@@ -178,10 +178,20 @@
   .hero-tag{position:absolute;left:26px;bottom:26px;background:var(--yellow);color:#111;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.82rem;padding:9px 15px;border-radius:4px;z-index:2;box-shadow:0 8px 20px rgba(0,0,0,.4)}
 
   /* ---------- Strip / marquee of value ---------- */
-  .strip{background:var(--yellow);color:#111}
-  .strip .wrap{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 40px;padding:16px 24px;font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.9rem}
-  .strip .wrap span{display:inline-flex;align-items:center;gap:10px}
-  .strip .wrap b{font-family:'Anton',sans-serif;font-weight:400}
+  .strip{background:var(--yellow);color:#111;overflow:hidden}
+  .strip .wrap{padding:0;overflow:hidden}
+  .strip-track{display:flex;flex-wrap:wrap;justify-content:center;width:100%}
+  .strip-item{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 40px;padding:16px 24px;font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.9rem;flex:none}
+  .strip-item span{display:inline-flex;align-items:center;gap:10px;white-space:nowrap}
+  .strip-item b{font-family:'Anton',sans-serif;font-weight:400}
+  .strip-item.dupe{display:none}
+  @media(max-width:768px){
+    .strip-track{flex-wrap:nowrap;justify-content:flex-start;width:max-content;animation:stripMarquee 14s linear infinite}
+    .strip-item{flex-wrap:nowrap;gap:28px;padding:14px 20px}
+    .strip-item.dupe{display:flex}
+  }
+  @keyframes stripMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){.strip-track{animation:none!important}}
 
   /* ---------- Section heads ---------- */
   .section{padding:84px 0}
@@ -537,12 +547,20 @@
 </section>
 
 <!-- Value strip -->
-<div class="strip"><div class="wrap">
-  <span data-i18n="strip.1"><b>Desde $26,999</b> equipado y listo</span>
-  <span data-i18n="strip.2"><b>5★</b> servicio y postventa</span>
-  <span data-i18n="strip.3"><b>Financiamos</b> propio y con bancos</span>
-  <span data-i18n="strip.4"><b>50 estados</b> entrega a domicilio</span>
-</div></div>
+<div class="strip"><div class="wrap"><div class="strip-track">
+  <div class="strip-item">
+    <span data-i18n="strip.1"><b>Desde $26,999</b> equipado y listo</span>
+    <span data-i18n="strip.2"><b>5★</b> servicio y postventa</span>
+    <span data-i18n="strip.3"><b>Financiamos</b> propio y con bancos</span>
+    <span data-i18n="strip.4"><b>50 estados</b> entrega a domicilio</span>
+  </div>
+  <div class="strip-item dupe" aria-hidden="true">
+    <span data-i18n="strip.1"><b>Desde $26,999</b> equipado y listo</span>
+    <span data-i18n="strip.2"><b>5★</b> servicio y postventa</span>
+    <span data-i18n="strip.3"><b>Financiamos</b> propio y con bancos</span>
+    <span data-i18n="strip.4"><b>50 estados</b> entrega a domicilio</span>
+  </div>
+</div></div></div>
 
 <!-- Value cards -->
 <section class="section" id="ventajas">
