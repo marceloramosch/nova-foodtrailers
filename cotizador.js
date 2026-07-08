@@ -654,7 +654,8 @@
     let i = 0;
     while (i < filtered.length) {
       const l = filtered[i];
-      if (l.desc.toLowerCase().includes("unidad base")) {
+      const descLower = l.desc.toLowerCase();
+      if (descLower.includes("unidad base") || descLower.includes("base unit")) {
         const included = [];
         let j = i + 1;
         while (j < filtered.length && (parseFloat(filtered[j].price) || 0) === 0) {
