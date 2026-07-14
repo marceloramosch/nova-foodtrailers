@@ -363,7 +363,7 @@
     };
   }
 
-  function renderFinanceTable(plan) {
+  function renderFinancePlanTable(plan) {
     if (!plan || plan.principal <= 0 || plan.schedule.length === 0) {
       finSummary.style.display = "none";
       finTableWrap.style.display = "none";
@@ -396,11 +396,11 @@
     const months = parseInt(finPlazo.value, 10) || 1;
     if (principal <= 0 || ratePct <= 0) {
       currentFinancePlan = null;
-      renderFinanceTable(null);
+      renderFinancePlanTable(null);
       return;
     }
     currentFinancePlan = computeAddOnAmortization(principal, ratePct, months);
-    renderFinanceTable(currentFinancePlan);
+    renderFinancePlanTable(currentFinancePlan);
   }
 
   finPrincipal.addEventListener("input", () => {
