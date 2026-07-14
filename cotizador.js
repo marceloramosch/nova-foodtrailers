@@ -36,6 +36,19 @@
   const quickAddPrice = document.getElementById("quickAddPrice");
   const catalogList = document.getElementById("catalogList");
 
+  const finPrincipal = document.getElementById("finPrincipal");
+  const finTasa = document.getElementById("finTasa");
+  const finPlazo = document.getElementById("finPlazo");
+  const finIncluirPdf = document.getElementById("finIncluirPdf");
+  const finUseSaldoBtn = document.getElementById("finUseSaldoBtn");
+  const finSummary = document.getElementById("finSummary");
+  const finPagoMensual = document.getElementById("finPagoMensual");
+  const finTotalIntereses = document.getElementById("finTotalIntereses");
+  const finTotalPagar = document.getElementById("finTotalPagar");
+  const finTableWrap = document.getElementById("finTableWrap");
+  const finTableBody = document.getElementById("finTableBody");
+  const finExhibitBtn = document.getElementById("finExhibitBtn");
+
   const PRICES_KEY = "novaCatalogPrices";
   const CLIENTS_KEY = "novaClients";
   const QUOTES_KEY = "novaQuotes";
@@ -46,6 +59,8 @@
 
   let lineItems = [];
   let currentQuoteId = null;
+  let finPrincipalManual = false;
+  let currentFinancePlan = null; // { principal, tasa, plazo, totalInterest, totalPayment, basePayment, schedule }
 
   // ===== Traduccion del contenido de equipos (ES -> EN) =====
   const EQ_I18N = typeof EQUIPMENT_I18N !== "undefined" ? EQUIPMENT_I18N : {};
@@ -274,6 +289,10 @@
     tSubtotal.textContent = formatMoney(subtotal);
     tDeposito.textContent = `- ${formatMoney(deposito)}`;
     tSaldo.textContent = formatMoney(saldo);
+    if (!finPrincipalManual) {
+      finPrincipal.value = saldo > 0 ? saldo.toFixed(2) : "0";
+      recalcFinance();
+    }
     return { subtotal, deposito, saldo };
   }
 
@@ -286,6 +305,115 @@
   function formatMoney(n) {
     return `$${(n || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
+
+  // ===== Financiamiento interno (metodo add-on) =====
+  // Interes total = capital * tasa% * (plazo/12), repartido en partes iguales entre los meses.
+  // El ultimo mes absorbe el residuo de redondeo para que el saldo cierre exactamente en $0.00.
+  // (Mismo metodo usado a mano en la tabla de amortizacion de Alex Robles.)
+  function round2(n) {
+    return Math.round((n + Number.EPSILON) * 100) / 100;
+  }
+
+  function computeAddOnAmortization(principal, ratePct, months) {
+    const P = Math.max(0, parseFloat(principal) || 0);
+    const n = Math.max(1, Math.round(parseFloat(months) || 1));
+    const rate = Math.max(0, parseFloat(ratePct) || 0);
+    const totalInterest = round2(P * (rate / 100) * (n / 12));
+    const totalToPay = round2(P + totalInterest);
+    const baseCapital = round2(P / n);
+    const baseInterest = round2(totalInterest / n);
+    const basePayment = round2(baseCapital + baseInterest);
+
+    const schedule = [];
+    let balance = P;
+    let paidCapital = 0;
+    let paidInterest = 0;
+    let paidTotal = 0;
+
+    for (let i = 1; i <= n; i++) {
+      let capital, interes, pago;
+      if (i < n) {
+        capital = baseCapital;
+        interes = baseInterest;
+        pago = basePayment;
+      } else {
+        // Ultimo mes: ajusta por el redondeo acumulado de los meses anteriores
+        capital = round2(P - paidCapital);
+        interes = round2(totalInterest - paidInterest);
+        pago = round2(capital + interes);
+      }
+      balance = i < n ? round2(balance - capital) : 0;
+      paidCapital = round2(paidCapital + capital);
+      paidInterest = round2(paidInterest + interes);
+      paidTotal = round2(paidTotal + pago);
+      schedule.push({ n: i, pago, capital, interes, balance, adjusted: i === n });
+    }
+
+    const lastAdjust = round2(schedule[schedule.length - 1].pago - basePayment);
+
+    return {
+      principal: P,
+      ratePct: rate,
+      months: n,
+      basePayment,
+      totalInterest: paidInterest,
+      totalToPay: paidTotal,
+      lastAdjust,
+      schedule,
+    };
+  }
+
+  function renderFinancePlanTable(plan) {
+    if (!plan || plan.principal <= 0 || plan.schedule.length === 0) {
+      finSummary.style.display = "none";
+      finTableWrap.style.display = "none";
+      finTableBody.innerHTML = "";
+      return;
+    }
+    finPagoMensual.textContent = formatMoney(plan.basePayment);
+    finTotalIntereses.textContent = formatMoney(plan.totalInterest);
+    finTotalPagar.textContent = formatMoney(plan.totalToPay);
+    finSummary.style.display = "block";
+
+    finTableBody.innerHTML = plan.schedule
+      .map(
+        (row) => `
+        <tr>
+          <td>${row.n}${row.adjusted ? " <span style=\"color:#7c8aa6; font-size:11px;\">(ajuste redondeo)</span>" : ""}</td>
+          <td class="num">${formatMoney(row.pago)}</td>
+          <td class="num">${formatMoney(row.capital)}</td>
+          <td class="num">${formatMoney(row.interes)}</td>
+          <td class="num">${formatMoney(row.balance)}</td>
+        </tr>`
+      )
+      .join("");
+    finTableWrap.style.display = "block";
+  }
+
+  function recalcFinance() {
+    const principal = parseFloat(finPrincipal.value) || 0;
+    const ratePct = parseFloat(finTasa.value) || 0;
+    const months = parseInt(finPlazo.value, 10) || 1;
+    if (principal <= 0 || ratePct <= 0) {
+      currentFinancePlan = null;
+      renderFinancePlanTable(null);
+      return;
+    }
+    currentFinancePlan = computeAddOnAmortization(principal, ratePct, months);
+    renderFinancePlanTable(currentFinancePlan);
+  }
+
+  finPrincipal.addEventListener("input", () => {
+    finPrincipalManual = true;
+    recalcFinance();
+  });
+  finTasa.addEventListener("input", recalcFinance);
+  finPlazo.addEventListener("input", recalcFinance);
+
+  finUseSaldoBtn.addEventListener("click", () => {
+    finPrincipalManual = false;
+    updateTotals();
+  });
 
   // ===== CRM: clientes =====
   function persistClients() {
@@ -346,6 +474,13 @@
       statusTd.appendChild(statusSelect);
 
       const actionsTd = tr.children[7];
+      const editBtn = document.createElement("button");
+      editBtn.type = "button";
+      editBtn.className = "btn-small";
+      editBtn.textContent = "Editar";
+      editBtn.addEventListener("click", () => startEditClient(c.id));
+      actionsTd.appendChild(editBtn);
+
       const delBtn = document.createElement("button");
       delBtn.type = "button";
       delBtn.className = "btn-small";
@@ -354,6 +489,7 @@
         if (!confirm(`Eliminar al cliente "${c.name}"?`)) return;
         clients = clients.filter((x) => x.id !== c.id);
         persistClients();
+        if (editingClientId === c.id) cancelEditClient();
         renderClientsTable();
         renderClientSelect();
       });
@@ -363,27 +499,68 @@
     });
   }
 
-  document.getElementById("btnAddClient").addEventListener("click", () => {
+  let editingClientId = null;
+  const btnAddClient = document.getElementById("btnAddClient");
+  const btnCancelEditClient = document.getElementById("btnCancelEditClient");
+
+  function startEditClient(id) {
+    const c = clients.find((x) => x.id === id);
+    if (!c) return;
+    editingClientId = id;
+    document.getElementById("cNombre").value = c.name || "";
+    document.getElementById("cContacto").value = c.contacto || "";
+    document.getElementById("cNegocio").value = c.negocio || "";
+    document.getElementById("cCiudad").value = c.ciudad || "";
+    document.getElementById("cEstatus").value = c.status || "Lead";
+    document.getElementById("cNotas").value = c.notas || "";
+    btnAddClient.textContent = "Guardar cambios";
+    btnCancelEditClient.style.display = "inline-block";
+    document.getElementById("cNombre").scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  function cancelEditClient() {
+    editingClientId = null;
+    document.getElementById("cNombre").value = "";
+    document.getElementById("cContacto").value = "";
+    document.getElementById("cNegocio").value = "";
+    document.getElementById("cCiudad").value = "";
+    document.getElementById("cEstatus").value = "Lead";
+    document.getElementById("cNotas").value = "";
+    btnAddClient.textContent = "+ Agregar cliente";
+    btnCancelEditClient.style.display = "none";
+  }
+
+  btnCancelEditClient.addEventListener("click", cancelEditClient);
+
+  btnAddClient.addEventListener("click", () => {
     const name = document.getElementById("cNombre").value.trim();
     if (!name) {
       alert("Escribe el nombre del cliente");
       return;
     }
-    clients.push({
-      id: "c" + Date.now(),
-      name,
-      contacto: document.getElementById("cContacto").value.trim(),
-      negocio: document.getElementById("cNegocio").value.trim(),
-      ciudad: document.getElementById("cCiudad").value.trim(),
-      status: document.getElementById("cEstatus").value,
-      notas: document.getElementById("cNotas").value.trim(),
-    });
+    if (editingClientId) {
+      const c = clients.find((x) => x.id === editingClientId);
+      if (c) {
+        c.name = name;
+        c.contacto = document.getElementById("cContacto").value.trim();
+        c.negocio = document.getElementById("cNegocio").value.trim();
+        c.ciudad = document.getElementById("cCiudad").value.trim();
+        c.status = document.getElementById("cEstatus").value;
+        c.notas = document.getElementById("cNotas").value.trim();
+      }
+    } else {
+      clients.push({
+        id: "c" + Date.now(),
+        name,
+        contacto: document.getElementById("cContacto").value.trim(),
+        negocio: document.getElementById("cNegocio").value.trim(),
+        ciudad: document.getElementById("cCiudad").value.trim(),
+        status: document.getElementById("cEstatus").value,
+        notas: document.getElementById("cNotas").value.trim(),
+      });
+    }
     persistClients();
-    document.getElementById("cNombre").value = "";
-    document.getElementById("cContacto").value = "";
-    document.getElementById("cNegocio").value = "";
-    document.getElementById("cCiudad").value = "";
-    document.getElementById("cNotas").value = "";
+    cancelEditClient();
     renderClientsTable();
     renderClientSelect();
   });
@@ -478,6 +655,7 @@
           quotes = quotes.filter((x) => x.id !== q.id);
           persistQuotes();
           renderQuotesTable();
+          renderFinanceTable();
           renderClientsTable();
         });
 
@@ -485,6 +663,57 @@
         actionsTd.appendChild(dupBtn);
         actionsTd.appendChild(delBtn);
 
+        tbody.appendChild(tr);
+      });
+  }
+
+  // ===== Financiamiento: lista de planes activos (uno por cotizacion) =====
+  function renderFinanceTable() {
+    const tbody = document.getElementById("financeTable");
+    tbody.innerHTML = "";
+    const financed = quotes.filter(
+      (q) => q.finance && (parseFloat(q.finance.principal) || 0) > 0 && (parseFloat(q.finance.ratePct) || 0) > 0
+    );
+    if (financed.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#7c8aa6;">Sin planes de financiamiento todavia. Captura capital, tasa add-on y plazo en una cotizacion y guardala.</td></tr>';
+      return;
+    }
+    financed
+      .slice()
+      .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
+      .forEach((q) => {
+        const plan = computeAddOnAmortization(q.finance.principal, q.finance.ratePct, q.finance.months);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(q.cliente || "")}</td>
+          <td>${escapeHtml(q.number || "")}</td>
+          <td>${formatMoney(plan.principal)}</td>
+          <td>${plan.ratePct}% / ${plan.months} m</td>
+          <td>${formatMoney(plan.basePayment)}</td>
+          <td>${formatMoney(plan.totalToPay)}</td>
+          <td class="actions-cell"></td>
+        `;
+        const actionsTd = tr.children[6];
+
+        const loadBtn = document.createElement("button");
+        loadBtn.type = "button";
+        loadBtn.className = "btn-small";
+        loadBtn.textContent = "Cargar cotizacion";
+        loadBtn.addEventListener("click", () => loadQuote(q.id));
+
+        const exhibitBtn = document.createElement("button");
+        exhibitBtn.type = "button";
+        exhibitBtn.className = "btn-small";
+        exhibitBtn.textContent = "Ver Exhibit C";
+        exhibitBtn.addEventListener("click", () => {
+          loadQuote(q.id);
+          if (buildFinanceExhibit() !== false) {
+            previewWrap.scrollIntoView({ behavior: "smooth" });
+          }
+        });
+
+        actionsTd.appendChild(loadBtn);
+        actionsTd.appendChild(exhibitBtn);
         tbody.appendChild(tr);
       });
   }
@@ -507,6 +736,22 @@
     renderCatalog();
     renderDatalist();
     renderLineItems();
+
+    if (q.finance) {
+      finPrincipalManual = true;
+      finPrincipal.value = q.finance.principal || 0;
+      finTasa.value = q.finance.ratePct || 0;
+      finPlazo.value = q.finance.months || 12;
+      finIncluirPdf.checked = !!q.finance.incluirPdf;
+      recalcFinance();
+    } else {
+      finPrincipalManual = false;
+      finTasa.value = 0;
+      finPlazo.value = 12;
+      finIncluirPdf.checked = false;
+      updateTotals();
+    }
+
     switchTab("quote");
     previewWrap.classList.remove("show");
   }
@@ -537,6 +782,12 @@
       deposito,
       lineItems: lineItems.map((l) => ({ ...l })),
       notas: specsEl.value.split("\n").map((s) => s.trim()).filter((s) => s !== ""),
+      finance: {
+        principal: parseFloat(finPrincipal.value) || 0,
+        ratePct: parseFloat(finTasa.value) || 0,
+        months: parseInt(finPlazo.value, 10) || 12,
+        incluirPdf: finIncluirPdf.checked,
+      },
       status: "Borrador",
       updatedAt: Date.now(),
     };
@@ -551,6 +802,7 @@
     currentQuoteId = quoteData.id;
     persistQuotes();
     renderQuotesTable();
+    renderFinanceTable();
     renderClientSelect();
     renderClientsTable();
     alert("Cotizacion guardada.");
@@ -597,6 +849,25 @@
       sellerSig: "Marcelo Ramos Schiaffino — Nova Food Trailer",
       clientSig: "Cliente",
       clientSigFallback: "Cliente",
+      financingTitle: "Financiamiento interno — Tabla de amortizacion",
+      financingDocTitle: "TABLA DE AMORTIZACION",
+      finExhibitLabel: "Exhibit C — Financiamiento a",
+      finDebtor: "DEUDOR",
+      finPrincipalLabel: "CAPITAL FINANCIADO",
+      finRateTerm: "TASA ADD-ON / PLAZO",
+      finInterestLabel: "INTERES TOTAL",
+      finTotalLabel: "TOTAL A PAGAR",
+      finTableMonth: "MES",
+      finTablePayment: "PAGO",
+      finTableCapital: "CAPITAL",
+      finTableInterest: "INTERES",
+      finTableBalance: "SALDO RESTANTE",
+      finMonthsShort: "meses",
+      finAdjustLabel: "ajuste redondeo",
+      finAdjustTitle: "Ajuste por redondeo",
+      finAdjustText: (month, amt) => `El pago del mes ${month} se ajusta en ${amt} para saldar el capital exactamente en cero, por el redondeo acumulado de los pagos mensuales.`,
+      finConfidential: "Documento privado y confidencial",
+      finPageLabel: (name) => `Pagina 1 de 1 — Tabla de Amortizacion (${name || "Cliente"})`,
     },
     en: {
       locale: "en-US",
@@ -637,8 +908,109 @@
       sellerSig: "Marcelo Ramos Schiaffino — Nova Food Trailer",
       clientSig: "Customer",
       clientSigFallback: "Customer",
+      financingTitle: "In-house financing — Amortization schedule",
+      financingDocTitle: "AMORTIZATION SCHEDULE",
+      finExhibitLabel: "Exhibit C — Financing for",
+      finDebtor: "BORROWER",
+      finPrincipalLabel: "FINANCED PRINCIPAL",
+      finRateTerm: "ADD-ON RATE / TERM",
+      finInterestLabel: "TOTAL INTEREST",
+      finTotalLabel: "TOTAL TO PAY",
+      finTableMonth: "MONTH",
+      finTablePayment: "PAYMENT",
+      finTableCapital: "PRINCIPAL",
+      finTableInterest: "INTEREST",
+      finTableBalance: "REMAINING BALANCE",
+      finMonthsShort: "months",
+      finAdjustLabel: "rounding adjustment",
+      finAdjustTitle: "Rounding adjustment",
+      finAdjustText: (month, amt) => `The month ${month} payment is adjusted by ${amt} to settle the principal at exactly zero, due to accumulated rounding in the monthly payments.`,
+      finConfidential: "Private and confidential document",
+      finPageLabel: (name) => `Page 1 of 1 — Amortization Schedule (${name || "Customer"})`,
     },
   };
+
+  // ===== Bloque de financiamiento interno (Exhibit C) para el documento =====
+  function financeExhibitBody(t, plan, clienteName, opts) {
+    if (!plan) return "";
+    opts = opts || {};
+    const rateTermText = `${plan.ratePct}% / ${plan.months} ${t.finMonthsShort}`;
+
+    const rows = plan.schedule
+      .map(
+        (row) => `
+        <tr>
+          <td>${row.n}${row.adjusted ? ` <span style="color:#7c8aa6; font-size:10.5px;">(${t.finAdjustLabel})</span>` : ""}</td>
+          <td class="num">${formatMoney(row.pago)}</td>
+          <td class="num">${formatMoney(row.capital)}</td>
+          <td class="num">${formatMoney(row.interes)}</td>
+          <td class="num">${formatMoney(row.balance)}</td>
+        </tr>`
+      )
+      .join("");
+
+    const adjustNote =
+      Math.abs(plan.lastAdjust) >= 0.01
+        ? `<div class="doc-note"><b>${t.finAdjustTitle}</b>${t.finAdjustText(plan.months, formatMoney(Math.abs(plan.lastAdjust)))}</div>`
+        : "";
+
+    return `
+      ${opts.hideTitle ? "" : `<div class="doc-section">${t.financingTitle}</div>`}
+      <table class="doc-client">
+        <tr><td class="label">${t.finDebtor}</td><td>${escapeHtml(clienteName || "-")}</td></tr>
+        <tr><td class="label">${t.finPrincipalLabel}</td><td>${formatMoney(plan.principal)}</td></tr>
+        <tr><td class="label">${t.finRateTerm}</td><td>${rateTermText}</td></tr>
+        <tr><td class="label">${t.finInterestLabel}</td><td>${formatMoney(plan.totalInterest)}</td></tr>
+        <tr><td class="label">${t.finTotalLabel}</td><td>${formatMoney(plan.totalToPay)}</td></tr>
+      </table>
+      <table class="doc-product" style="margin-top:10px;">
+        <tr><th>${t.finTableMonth}</th><th class="num">${t.finTablePayment}</th><th class="num">${t.finTableCapital}</th><th class="num">${t.finTableInterest}</th><th class="num">${t.finTableBalance}</th></tr>
+        ${rows}
+        <tr style="font-weight:800; background:var(--light);">
+          <td>${t.total}</td>
+          <td class="num">${formatMoney(plan.totalToPay)}</td>
+          <td class="num">${formatMoney(plan.principal)}</td>
+          <td class="num">${formatMoney(plan.totalInterest)}</td>
+          <td class="num"></td>
+        </tr>
+      </table>
+      ${adjustNote}
+    `;
+  }
+
+  function buildFinanceExhibit() {
+    if (!currentFinancePlan) {
+      alert("Captura capital, tasa add-on y plazo (mayores a cero) para calcular el plan de financiamiento antes de generar el Exhibit C.");
+      return false;
+    }
+    const t = I18N[fIdioma.value] || I18N.es;
+    previewDoc.innerHTML = `
+      <div class="doc-header">
+        <img src="assets/nova_logo.png" alt="Nova Food Trailer">
+        <h1>NOVA</h1>
+      </div>
+      <div class="doc-tagline">F O O D &nbsp;&nbsp;&nbsp; T R A I L E R</div>
+      <div style="text-align:center; font-size:11px; letter-spacing:1.5px; color:#5b6b8c; margin:-4px 0 10px;">
+        MARCELO RAMOS SCHIAFFINO — DBA NOVA FOOD TRAILER<br>Dallas County, Texas
+      </div>
+      <div class="doc-title">${t.financingDocTitle}</div>
+      <div style="text-align:center; font-size:12px; color:var(--blue); font-weight:700; margin-bottom:18px;">
+        ${t.finExhibitLabel} ${escapeHtml(fCliente.value || "-")}
+      </div>
+      ${financeExhibitBody(t, currentFinancePlan, fCliente.value, { hideTitle: true })}
+      <div class="doc-footer">
+        <b>Nova Food Trailer</b> &middot; ${t.finConfidential} &middot; ${t.finPageLabel(fCliente.value)}
+      </div>
+    `;
+    previewWrap.classList.add("show");
+    return true;
+  }
+
+  finExhibitBtn.addEventListener("click", () => {
+    if (buildFinanceExhibit() !== false) {
+      previewWrap.scrollIntoView({ behavior: "smooth" });
+    }
+  });
 
   // ===== Generar documento de cotizacion =====
   function buildPreview() {
@@ -743,6 +1115,8 @@
         <tr class="total"><td class="label">${t.remainingBalance}</td><td>${formatMoney(saldo)}</td></tr>
       </table>
 
+      ${finIncluirPdf.checked && currentFinancePlan ? financeExhibitBody(t, currentFinancePlan, fCliente.value) : ""}
+
       <div class="doc-section">${t.termsTitle}</div>
       <div class="doc-note">
         <b>${t.warrantyNoteTitle}</b>
@@ -807,6 +1181,10 @@
     renderCatalog();
     renderDatalist();
     previewWrap.classList.remove("show");
+    finPrincipalManual = false;
+    finTasa.value = 0;
+    finPlazo.value = 12;
+    finIncluirPdf.checked = false;
     updateTotals();
   });
 
@@ -833,4 +1211,5 @@
   renderClientSelect();
   renderClientsTable();
   renderQuotesTable();
+  renderFinanceTable();
 })();
