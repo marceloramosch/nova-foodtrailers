@@ -335,6 +335,48 @@
             <div class="row total"><span>Saldo restante</span><span id="tSaldo">$0.00</span></div>
           </div>
 
+          <h2 style="margin-top:14px;">Financiamiento interno (opcional)</h2>
+          <div class="hint">Financiamiento propio de Nova (no un tercero). Metodo add-on: el interes total se calcula sobre el capital y se reparte en partes iguales entre los meses del plazo — igual que la tabla de amortizacion que ya se ha usado con clientes.</div>
+          <div class="field-row" style="align-items:flex-end;">
+            <div class="field" style="max-width:160px;">
+              <label>Capital a financiar (USD)</label>
+              <input id="finPrincipal" type="number" min="0" step="50" value="0">
+            </div>
+            <div class="field" style="max-width:120px;">
+              <label>Tasa add-on (%)</label>
+              <input id="finTasa" type="number" min="0" step="0.5" value="0">
+            </div>
+            <div class="field" style="max-width:120px;">
+              <label>Plazo (meses)</label>
+              <input id="finPlazo" type="number" min="1" step="1" value="12">
+            </div>
+            <div class="field" style="max-width:150px;">
+              <label>&nbsp;</label>
+              <button id="finUseSaldoBtn" type="button" class="btn-small" style="width:100%;">&#8635; Usar saldo restante</button>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; margin:2px 0 10px;">
+            <input id="finIncluirPdf" type="checkbox" style="width:auto;">
+            <label style="text-transform:none; font-size:12.5px; margin:0; letter-spacing:0; color:var(--dark); font-weight:normal;" for="finIncluirPdf">Incluir esta tabla de amortizacion (Exhibit C) en el PDF de la cotizacion</label>
+          </div>
+
+          <div id="finSummary" class="totals" style="display:none;">
+            <div class="row"><span>Pago mensual</span><span id="finPagoMensual">$0.00</span></div>
+            <div class="row"><span>Interes total</span><span id="finTotalIntereses">$0.00</span></div>
+            <div class="row total"><span>Total a pagar (financiado)</span><span id="finTotalPagar">$0.00</span></div>
+          </div>
+
+          <div id="finTableWrap" style="display:none; max-height:280px; overflow:auto; margin-top:6px; border:1px solid var(--silver); border-radius:8px;">
+            <table class="builder" id="finTable" style="margin:0;">
+              <thead><tr><th>Mes</th><th class="num">Pago</th><th class="num">Capital</th><th class="num">Interes</th><th class="num">Saldo restante</th></tr></thead>
+              <tbody id="finTableBody"></tbody>
+            </table>
+          </div>
+
+          <div class="actions" style="margin-top:10px;">
+            <button id="finExhibitBtn" type="button" class="btn-small">Vista previa Exhibit C (tabla de amortizacion)</button>
+          </div>
+
           <h2 style="margin-top:14px;">Notas / especificaciones adicionales (sin precio)</h2>
           <div class="field-row">
             <div class="field" style="flex:1;">
@@ -386,7 +428,10 @@
         </div>
       </div>
       <div class="field"><label>Notas</label><textarea id="cNotas" rows="2" placeholder="Notas sobre el cliente, tamano de interes, etc."></textarea></div>
-      <div class="actions"><button class="primary" id="btnAddClient" type="button">+ Agregar cliente</button></div>
+      <div class="actions">
+        <button class="primary" id="btnAddClient" type="button">+ Agregar cliente</button>
+        <button id="btnCancelEditClient" type="button" style="display:none;">Cancelar edicion</button>
+      </div>
     </div>
 
     <div class="panel">
@@ -424,6 +469,6 @@
 <script src="data/trailers.js?v=20260629"></script>
 <script src="data/components.js?v=20260629"></script>
 <script src="data/equipment-i18n.js?v=20260629"></script>
-<script src="cotizador.js?v=20260708"></script>
+<script src="cotizador.js?v=20260714"></script>
 </body>
 </html>
