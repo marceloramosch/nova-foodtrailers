@@ -655,6 +655,7 @@
           quotes = quotes.filter((x) => x.id !== q.id);
           persistQuotes();
           renderQuotesTable();
+          renderFinanceTable();
           renderClientsTable();
         });
 
@@ -662,6 +663,57 @@
         actionsTd.appendChild(dupBtn);
         actionsTd.appendChild(delBtn);
 
+        tbody.appendChild(tr);
+      });
+  }
+
+  // ===== Financiamiento: lista de planes activos (uno por cotizacion) =====
+  function renderFinanceTable() {
+    const tbody = document.getElementById("financeTable");
+    tbody.innerHTML = "";
+    const financed = quotes.filter(
+      (q) => q.finance && (parseFloat(q.finance.principal) || 0) > 0 && (parseFloat(q.finance.ratePct) || 0) > 0
+    );
+    if (financed.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#7c8aa6;">Sin planes de financiamiento todavia. Captura capital, tasa add-on y plazo en una cotizacion y guardala.</td></tr>';
+      return;
+    }
+    financed
+      .slice()
+      .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
+      .forEach((q) => {
+        const plan = computeAddOnAmortization(q.finance.principal, q.finance.ratePct, q.finance.months);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(q.cliente || "")}</td>
+          <td>${escapeHtml(q.number || "")}</td>
+          <td>${formatMoney(plan.principal)}</td>
+          <td>${plan.ratePct}% / ${plan.months} m</td>
+          <td>${formatMoney(plan.basePayment)}</td>
+          <td>${formatMoney(plan.totalToPay)}</td>
+          <td class="actions-cell"></td>
+        `;
+        const actionsTd = tr.children[6];
+
+        const loadBtn = document.createElement("button");
+        loadBtn.type = "button";
+        loadBtn.className = "btn-small";
+        loadBtn.textContent = "Cargar cotizacion";
+        loadBtn.addEventListener("click", () => loadQuote(q.id));
+
+        const exhibitBtn = document.createElement("button");
+        exhibitBtn.type = "button";
+        exhibitBtn.className = "btn-small";
+        exhibitBtn.textContent = "Ver Exhibit C";
+        exhibitBtn.addEventListener("click", () => {
+          loadQuote(q.id);
+          if (buildFinanceExhibit() !== false) {
+            previewWrap.scrollIntoView({ behavior: "smooth" });
+          }
+        });
+
+        actionsTd.appendChild(loadBtn);
+        actionsTd.appendChild(exhibitBtn);
         tbody.appendChild(tr);
       });
   }
@@ -750,6 +802,7 @@
     currentQuoteId = quoteData.id;
     persistQuotes();
     renderQuotesTable();
+    renderFinanceTable();
     renderClientSelect();
     renderClientsTable();
     alert("Cotizacion guardada.");
@@ -1158,4 +1211,5 @@
   renderClientSelect();
   renderClientsTable();
   renderQuotesTable();
+  renderFinanceTable();
 })();
