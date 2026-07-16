@@ -53,7 +53,9 @@
   const finSaveBtn = document.getElementById("finSaveBtn");
 
   const invQuoteSelect = document.getElementById("invQuoteSelect");
-  const invControls = document.getElementById("invControls");
+  const invConvertBtn = document.getElementById("invConvertBtn");
+  const invActivePanel = document.getElementById("invActivePanel");
+  const invActiveLabel = document.getElementById("invActiveLabel");
   const payFecha = document.getElementById("payFecha");
   const payMonto = document.getElementById("payMonto");
   const payConcepto = document.getElementById("payConcepto");
@@ -328,6 +330,13 @@
   }
 
   // ===== Pagos del cliente (abonos) e invoice — pestaña Invoices =====
+  // Una cotizacion NO es un invoice hasta que se convierte explicitamente
+  // (boton "Convertir a Invoice" en Cotizaciones guardadas / esta pestaña),
+  // o hasta que se le registra su primer pago (conversion automatica).
+  function isInvoice(q) {
+    return !!(q && q.invoiceCreated);
+  }
+
   function paymentsTotal() {
     return payments.reduce((sum, p) => sum + (parseFloat(p.monto) || 0), 0);
   }
@@ -344,6 +353,7 @@
     q.updatedAt = Date.now();
     persistQuotes();
     renderInvoicesTable();
+    renderInvoiceQuoteSelect();
     renderQuotesTable();
   }
 
@@ -389,11 +399,12 @@
     paySaldo.textContent = formatMoney(saldo);
   }
 
-  // Poblar el selector de cotizaciones de la pestaña Invoices
+  // Selector "Convertir cotizacion a invoice": solo cotizaciones SIN invoice todavia
   function renderInvoiceQuoteSelect() {
     const prev = invQuoteSelect.value;
-    invQuoteSelect.innerHTML = '<option value="">-- selecciona una cotizacion guardada --</option>';
+    invQuoteSelect.innerHTML = '<option value="">-- selecciona una cotizacion --</option>';
     quotes
+      .filter((q) => !isInvoice(q))
       .slice()
       .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
       .forEach((q) => {
@@ -402,18 +413,20 @@
         opt.textContent = `${q.number || "(sin no.)"} — ${q.cliente || "sin cliente"}`;
         invQuoteSelect.appendChild(opt);
       });
-    invQuoteSelect.value = prev && quotes.some((q) => q.id === prev) ? prev : "";
+    invQuoteSelect.value = prev && quotes.some((q) => q.id === prev && !isInvoice(q)) ? prev : "";
   }
 
-  function loadInvoiceQuote(id) {
+  // Carga una cotizacion (ya convertida o no) en el panel de pagos activo
+  function loadActiveInvoice(id) {
     invSelectedQuoteId = id || null;
     const q = invSelectedQuote();
     if (!q) {
-      invControls.style.display = "none";
+      invActivePanel.style.display = "none";
       payments = [];
       return;
     }
-    invControls.style.display = "block";
+    invActivePanel.style.display = "block";
+    invActiveLabel.textContent = `${q.number || "(sin no.)"} — ${q.cliente || "sin cliente"}`;
     payments = (q.payments || []).map((p) => ({ ...p }));
     payFecha.value = new Date().toISOString().slice(0, 10);
     payMonto.value = 0;
@@ -422,13 +435,35 @@
     updatePaymentsSummary();
   }
 
-  invQuoteSelect.addEventListener("change", () => {
-    loadInvoiceQuote(invQuoteSelect.value);
+  // Convierte una cotizacion en invoice (idempotente) y la deja activa para registrar pagos
+  function convertQuoteToInvoice(id) {
+    const q = quotes.find((x) => x.id === id);
+    if (!q) return;
+    if (!isInvoice(q)) {
+      q.invoiceCreated = true;
+      q.invoiceCreatedAt = Date.now();
+      q.updatedAt = Date.now();
+      persistQuotes();
+      renderQuotesTable();
+      renderInvoiceQuoteSelect();
+      renderInvoicesTable();
+    }
+    loadActiveInvoice(q.id);
+  }
+
+  invConvertBtn.addEventListener("click", () => {
+    if (!invQuoteSelect.value) {
+      alert("Selecciona una cotizacion para convertir.");
+      return;
+    }
+    convertQuoteToInvoice(invQuoteSelect.value);
+    invActivePanel.scrollIntoView({ behavior: "smooth", block: "center" });
   });
 
   payAddBtn.addEventListener("click", () => {
-    if (!invSelectedQuote()) {
-      alert("Selecciona una cotizacion primero.");
+    const q = invSelectedQuote();
+    if (!q) {
+      alert("Selecciona o convierte una cotizacion primero.");
       return;
     }
     const monto = parseFloat(payMonto.value) || 0;
@@ -445,20 +480,26 @@
     payFecha.value = new Date().toISOString().slice(0, 10);
     payMonto.value = 0;
     payConcepto.value = "";
+    // Registrar el primer pago convierte la cotizacion en invoice automaticamente
+    if (!isInvoice(q)) {
+      q.invoiceCreated = true;
+      q.invoiceCreatedAt = Date.now();
+    }
     renderPaymentsTable();
     updatePaymentsSummary();
     persistInvoicePayments();
   });
 
-  // Lista de invoices / saldos por cliente
+  // Lista de invoices / saldos por cliente — solo cotizaciones ya convertidas
   function renderInvoicesTable() {
     const tbody = document.getElementById("invoicesTable");
     tbody.innerHTML = "";
-    if (quotes.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#7c8aa6;">Sin cotizaciones guardadas todavia</td></tr>';
+    const invoiced = quotes.filter(isInvoice);
+    if (invoiced.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#7c8aa6;">Sin invoices todavia. Convierte una cotizacion o registra su primer pago arriba.</td></tr>';
       return;
     }
-    quotes
+    invoiced
       .slice()
       .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
       .forEach((q) => {
@@ -481,9 +522,8 @@
         editBtn.className = "btn-small";
         editBtn.textContent = "Registrar pago";
         editBtn.addEventListener("click", () => {
-          invQuoteSelect.value = q.id;
-          loadInvoiceQuote(q.id);
-          invControls.scrollIntoView({ behavior: "smooth", block: "center" });
+          loadActiveInvoice(q.id);
+          invActivePanel.scrollIntoView({ behavior: "smooth", block: "center" });
         });
 
         const invBtn = document.createElement("button");
@@ -491,8 +531,7 @@
         invBtn.className = "btn-small";
         invBtn.textContent = "Ver invoice";
         invBtn.addEventListener("click", () => {
-          invQuoteSelect.value = q.id;
-          loadInvoiceQuote(q.id);
+          loadActiveInvoice(q.id);
           buildInvoice(q);
           previewWrap.scrollIntoView({ behavior: "smooth" });
         });
@@ -906,6 +945,21 @@
         dupBtn.textContent = "Duplicar";
         dupBtn.addEventListener("click", () => duplicateQuote(q.id));
 
+        const invoiceBtn = document.createElement("button");
+        invoiceBtn.type = "button";
+        invoiceBtn.className = "btn-small";
+        invoiceBtn.textContent = isInvoice(q) ? "Ver invoice" : "Convertir a Invoice";
+        invoiceBtn.addEventListener("click", () => {
+          convertQuoteToInvoice(q.id);
+          switchTab("invoices");
+          if (isInvoice(q)) {
+            buildInvoice(quotes.find((x) => x.id === q.id));
+            previewWrap.scrollIntoView({ behavior: "smooth" });
+          } else {
+            invActivePanel.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        });
+
         const delBtn = document.createElement("button");
         delBtn.type = "button";
         delBtn.className = "btn-small";
@@ -914,7 +968,7 @@
           if (!confirm(`Eliminar la cotizacion ${q.number || ""}?`)) return;
           quotes = quotes.filter((x) => x.id !== q.id);
           if (finSelectedQuoteId === q.id) { finSelectedQuoteId = null; finControls.style.display = "none"; }
-          if (invSelectedQuoteId === q.id) { invSelectedQuoteId = null; invControls.style.display = "none"; }
+          if (invSelectedQuoteId === q.id) { invSelectedQuoteId = null; invActivePanel.style.display = "none"; }
           persistQuotes();
           renderQuotesTable();
           renderFinanceTable();
@@ -926,6 +980,7 @@
 
         actionsTd.appendChild(loadBtn);
         actionsTd.appendChild(dupBtn);
+        actionsTd.appendChild(invoiceBtn);
         actionsTd.appendChild(delBtn);
 
         tbody.appendChild(tr);
@@ -1044,6 +1099,8 @@
       notas: specsEl.value.split("\n").map((s) => s.trim()).filter((s) => s !== ""),
       finance: existing && existing.finance ? existing.finance : null,
       payments: existing && existing.payments ? existing.payments : [],
+      invoiceCreated: existing ? !!existing.invoiceCreated : false,
+      invoiceCreatedAt: existing ? existing.invoiceCreatedAt : null,
       status: "Borrador",
       updatedAt: Date.now(),
     };
