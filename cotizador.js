@@ -1161,6 +1161,28 @@
       ? rows.join("")
       : `<tr><td colspan="3" style="text-align:center; color:#7c8aa6;">${t.invNoPayments}</td></tr>`;
 
+    // Lo que incluye la cotizacion (mismos componentes que la cotizacion, con precio)
+    const productRows = buildProductRows(true);
+    const includesSection = productRows
+      ? `
+      <div class="doc-section">${t.components}</div>
+      <table class="doc-product">
+        <tr><th>${t.qty}</th><th>${t.description}</th><th class="num">${t.unitPrice}</th><th class="num">${t.total}</th></tr>
+        ${productRows}
+      </table>`
+      : "";
+
+    // Notas / especificaciones sin precio (si hay)
+    const specLines = specsEl.value
+      .split("\n")
+      .map((s) => s.trim())
+      .filter((s) => s !== "")
+      .map((s) => `<li>${escapeHtml(s)}</li>`)
+      .join("");
+    const notesSection = specLines
+      ? `<div class="doc-section">${t.notesTitle}</div><ul class="doc-list">${specLines}</ul>`
+      : "";
+
     previewDoc.innerHTML = `
       <div class="doc-header">
         <img src="assets/nova_logo.png" alt="Nova Food Trailer">
@@ -1186,6 +1208,9 @@
           <div class="value">${escapeHtml(fNumero.value || "-")}</div>
         </div>
       </div>
+
+      ${includesSection}
+      ${notesSection}
 
       <div class="doc-section">${t.invPaymentsTitle}</div>
       <table class="doc-product">
@@ -1214,20 +1239,18 @@
   });
 
   // ===== Generar documento de cotizacion =====
-  function buildPreview() {
-    const { subtotal, deposito, saldo } = updateTotals();
-    const t = I18N[fIdioma.value] || I18N.es;
-
-    const fechaVal = fFecha.value
-      ? new Date(fFecha.value + "T00:00:00").toLocaleDateString(t.locale, { year: "numeric", month: "long", day: "numeric" })
-      : "";
-
+  // Arma las filas del producto agrupando la unidad base con sus incluidos ($0).
+  // showPrice=false oculta las columnas de precio (para el invoice, que solo lista lo incluido).
+  function buildProductRows(showPrice) {
     const filtered = lineItems.filter((l) => l.desc.trim() !== "");
     const rows = [];
     let i = 0;
     while (i < filtered.length) {
       const l = filtered[i];
       const descLower = l.desc.toLowerCase();
+      const priceCells = showPrice
+        ? `<td class="num">${formatMoney(l.price)}</td><td class="num">${formatMoney(l.price)}</td>`
+        : "";
       if (descLower.includes("unidad base") || descLower.includes("base unit")) {
         const included = [];
         let j = i + 1;
@@ -1242,8 +1265,7 @@
         <tr>
           <td>1</td>
           <td>${escapeHtml(l.desc)}${subList}</td>
-          <td class="num">${formatMoney(l.price)}</td>
-          <td class="num">${formatMoney(l.price)}</td>
+          ${priceCells}
         </tr>`);
         i = j;
       } else {
@@ -1251,13 +1273,23 @@
         <tr>
           <td>1</td>
           <td>${escapeHtml(l.desc)}</td>
-          <td class="num">${formatMoney(l.price)}</td>
-          <td class="num">${formatMoney(l.price)}</td>
+          ${priceCells}
         </tr>`);
         i++;
       }
     }
-    const rowsHtml = rows.join("");
+    return rows.join("");
+  }
+
+  function buildPreview() {
+    const { subtotal, deposito, saldo } = updateTotals();
+    const t = I18N[fIdioma.value] || I18N.es;
+
+    const fechaVal = fFecha.value
+      ? new Date(fFecha.value + "T00:00:00").toLocaleDateString(t.locale, { year: "numeric", month: "long", day: "numeric" })
+      : "";
+
+    const rowsHtml = buildProductRows(true);
 
     const specLines = specsEl.value
       .split("\n")
