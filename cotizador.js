@@ -48,7 +48,12 @@
   const finTableWrap = document.getElementById("finTableWrap");
   const finTableBody = document.getElementById("finTableBody");
   const finExhibitBtn = document.getElementById("finExhibitBtn");
+  const finQuoteSelect = document.getElementById("finQuoteSelect");
+  const finControls = document.getElementById("finControls");
+  const finSaveBtn = document.getElementById("finSaveBtn");
 
+  const invQuoteSelect = document.getElementById("invQuoteSelect");
+  const invControls = document.getElementById("invControls");
   const payFecha = document.getElementById("payFecha");
   const payMonto = document.getElementById("payMonto");
   const payConcepto = document.getElementById("payConcepto");
@@ -69,10 +74,18 @@
   let quotes = JSON.parse(localStorage.getItem(QUOTES_KEY) || "[]");
 
   let lineItems = [];
-  let payments = []; // { id, fecha, monto, concepto }
+  let payments = []; // pagos de la cotizacion seleccionada en Invoices { id, fecha, monto, concepto }
   let currentQuoteId = null;
-  let finPrincipalManual = false;
+  let finSelectedQuoteId = null; // cotizacion seleccionada en la pestaña Financiamiento
+  let invSelectedQuoteId = null; // cotizacion seleccionada en la pestaña Invoices
   let currentFinancePlan = null; // { principal, tasa, plazo, totalInterest, totalPayment, basePayment, schedule }
+
+  // Totales derivados de un objeto cotizacion (no del formulario del Cotizador)
+  function quoteTotals(q) {
+    const subtotal = (q.lineItems || []).reduce((s, l) => s + (parseFloat(l.price) || 0), 0);
+    const deposito = parseFloat(q.deposito) || 0;
+    return { subtotal, deposito, saldo: subtotal - deposito };
+  }
 
   // ===== Traduccion del contenido de equipos (ES -> EN) =====
   const EQ_I18N = typeof EQUIPMENT_I18N !== "undefined" ? EQUIPMENT_I18N : {};
@@ -301,11 +314,6 @@
     tSubtotal.textContent = formatMoney(subtotal);
     tDeposito.textContent = `- ${formatMoney(deposito)}`;
     tSaldo.textContent = formatMoney(saldo);
-    if (!finPrincipalManual) {
-      finPrincipal.value = saldo > 0 ? saldo.toFixed(2) : "0";
-      recalcFinance();
-    }
-    updatePaymentsSummary(subtotal, deposito);
     return { subtotal, deposito, saldo };
   }
 
@@ -319,9 +327,24 @@
     return `$${(n || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
 
-  // ===== Pagos del cliente (abonos) e invoice =====
+  // ===== Pagos del cliente (abonos) e invoice — pestaña Invoices =====
   function paymentsTotal() {
     return payments.reduce((sum, p) => sum + (parseFloat(p.monto) || 0), 0);
+  }
+
+  function invSelectedQuote() {
+    return quotes.find((q) => q.id === invSelectedQuoteId) || null;
+  }
+
+  // Guarda los pagos actuales en la cotizacion seleccionada y persiste
+  function persistInvoicePayments() {
+    const q = invSelectedQuote();
+    if (!q) return;
+    q.payments = payments.map((p) => ({ ...p }));
+    q.updatedAt = Date.now();
+    persistQuotes();
+    renderInvoicesTable();
+    renderQuotesTable();
   }
 
   function renderPaymentsTable() {
@@ -347,7 +370,8 @@
         delBtn.addEventListener("click", () => {
           payments = payments.filter((x) => x.id !== p.id);
           renderPaymentsTable();
-          updateTotals();
+          updatePaymentsSummary();
+          persistInvoicePayments();
         });
         delTd.appendChild(delBtn);
         payTableBody.appendChild(tr);
@@ -355,16 +379,58 @@
     }
   }
 
-  function updatePaymentsSummary(subtotal, deposito) {
-    const totalVenta = subtotal;
-    const totalPagado = (parseFloat(deposito) || 0) + paymentsTotal();
-    const saldo = totalVenta - totalPagado;
-    payTotalVenta.textContent = formatMoney(totalVenta);
+  function updatePaymentsSummary() {
+    const q = invSelectedQuote();
+    const totals = q ? quoteTotals(q) : { subtotal: 0, deposito: 0 };
+    const totalPagado = (parseFloat(totals.deposito) || 0) + paymentsTotal();
+    const saldo = totals.subtotal - totalPagado;
+    payTotalVenta.textContent = formatMoney(totals.subtotal);
     payTotalPagado.textContent = formatMoney(totalPagado);
     paySaldo.textContent = formatMoney(saldo);
   }
 
+  // Poblar el selector de cotizaciones de la pestaña Invoices
+  function renderInvoiceQuoteSelect() {
+    const prev = invQuoteSelect.value;
+    invQuoteSelect.innerHTML = '<option value="">-- selecciona una cotizacion guardada --</option>';
+    quotes
+      .slice()
+      .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
+      .forEach((q) => {
+        const opt = document.createElement("option");
+        opt.value = q.id;
+        opt.textContent = `${q.number || "(sin no.)"} — ${q.cliente || "sin cliente"}`;
+        invQuoteSelect.appendChild(opt);
+      });
+    invQuoteSelect.value = prev && quotes.some((q) => q.id === prev) ? prev : "";
+  }
+
+  function loadInvoiceQuote(id) {
+    invSelectedQuoteId = id || null;
+    const q = invSelectedQuote();
+    if (!q) {
+      invControls.style.display = "none";
+      payments = [];
+      return;
+    }
+    invControls.style.display = "block";
+    payments = (q.payments || []).map((p) => ({ ...p }));
+    payFecha.value = new Date().toISOString().slice(0, 10);
+    payMonto.value = 0;
+    payConcepto.value = "";
+    renderPaymentsTable();
+    updatePaymentsSummary();
+  }
+
+  invQuoteSelect.addEventListener("change", () => {
+    loadInvoiceQuote(invQuoteSelect.value);
+  });
+
   payAddBtn.addEventListener("click", () => {
+    if (!invSelectedQuote()) {
+      alert("Selecciona una cotizacion primero.");
+      return;
+    }
     const monto = parseFloat(payMonto.value) || 0;
     if (monto <= 0) {
       alert("Escribe un monto de pago mayor a cero.");
@@ -380,8 +446,62 @@
     payMonto.value = 0;
     payConcepto.value = "";
     renderPaymentsTable();
-    updateTotals();
+    updatePaymentsSummary();
+    persistInvoicePayments();
   });
+
+  // Lista de invoices / saldos por cliente
+  function renderInvoicesTable() {
+    const tbody = document.getElementById("invoicesTable");
+    tbody.innerHTML = "";
+    if (quotes.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#7c8aa6;">Sin cotizaciones guardadas todavia</td></tr>';
+      return;
+    }
+    quotes
+      .slice()
+      .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
+      .forEach((q) => {
+        const totals = quoteTotals(q);
+        const pagado = totals.deposito + (q.payments || []).reduce((s, p) => s + (parseFloat(p.monto) || 0), 0);
+        const saldo = totals.subtotal - pagado;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(q.cliente || "")}</td>
+          <td>${escapeHtml(q.number || "")}</td>
+          <td>${formatMoney(totals.subtotal)}</td>
+          <td>${formatMoney(pagado)}</td>
+          <td>${formatMoney(saldo)}</td>
+          <td class="actions-cell"></td>
+        `;
+        const actionsTd = tr.children[5];
+
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.className = "btn-small";
+        editBtn.textContent = "Registrar pago";
+        editBtn.addEventListener("click", () => {
+          invQuoteSelect.value = q.id;
+          loadInvoiceQuote(q.id);
+          invControls.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+
+        const invBtn = document.createElement("button");
+        invBtn.type = "button";
+        invBtn.className = "btn-small";
+        invBtn.textContent = "Ver invoice";
+        invBtn.addEventListener("click", () => {
+          invQuoteSelect.value = q.id;
+          loadInvoiceQuote(q.id);
+          buildInvoice(q);
+          previewWrap.scrollIntoView({ behavior: "smooth" });
+        });
+
+        actionsTd.appendChild(editBtn);
+        actionsTd.appendChild(invBtn);
+        tbody.appendChild(tr);
+      });
+  }
 
   // ===== Financiamiento interno (metodo add-on) =====
   // Interes total = capital * tasa% * (plazo/12), repartido en partes iguales entre los meses.
@@ -480,16 +600,79 @@
     renderFinancePlanTable(currentFinancePlan);
   }
 
-  finPrincipal.addEventListener("input", () => {
-    finPrincipalManual = true;
-    recalcFinance();
-  });
+  finPrincipal.addEventListener("input", recalcFinance);
   finTasa.addEventListener("input", recalcFinance);
   finPlazo.addEventListener("input", recalcFinance);
 
+  function finSelectedQuote() {
+    return quotes.find((q) => q.id === finSelectedQuoteId) || null;
+  }
+
   finUseSaldoBtn.addEventListener("click", () => {
-    finPrincipalManual = false;
-    updateTotals();
+    const q = finSelectedQuote();
+    if (!q) return;
+    const saldo = quoteTotals(q).saldo;
+    finPrincipal.value = saldo > 0 ? saldo.toFixed(2) : "0";
+    recalcFinance();
+  });
+
+  // Poblar el selector de cotizaciones de la pestaña Financiamiento
+  function renderFinanceQuoteSelect() {
+    const prev = finQuoteSelect.value;
+    finQuoteSelect.innerHTML = '<option value="">-- selecciona una cotizacion guardada --</option>';
+    quotes
+      .slice()
+      .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
+      .forEach((q) => {
+        const opt = document.createElement("option");
+        opt.value = q.id;
+        opt.textContent = `${q.number || "(sin no.)"} — ${q.cliente || "sin cliente"}`;
+        finQuoteSelect.appendChild(opt);
+      });
+    finQuoteSelect.value = prev && quotes.some((q) => q.id === prev) ? prev : "";
+  }
+
+  function loadFinanceQuote(id) {
+    finSelectedQuoteId = id || null;
+    const q = finSelectedQuote();
+    if (!q) {
+      finControls.style.display = "none";
+      currentFinancePlan = null;
+      return;
+    }
+    finControls.style.display = "block";
+    const saldo = quoteTotals(q).saldo;
+    const fin = q.finance || {};
+    // Capital: usa el guardado si existe (>0), si no el saldo de la cotizacion
+    const principal = (parseFloat(fin.principal) || 0) > 0 ? fin.principal : (saldo > 0 ? saldo : 0);
+    finPrincipal.value = (parseFloat(principal) || 0).toFixed(2);
+    finTasa.value = parseFloat(fin.ratePct) || 0;
+    finPlazo.value = parseInt(fin.months, 10) || 12;
+    finIncluirPdf.checked = !!fin.incluirPdf;
+    recalcFinance();
+  }
+
+  finQuoteSelect.addEventListener("change", () => {
+    loadFinanceQuote(finQuoteSelect.value);
+  });
+
+  finSaveBtn.addEventListener("click", () => {
+    const q = finSelectedQuote();
+    if (!q) {
+      alert("Selecciona una cotizacion primero.");
+      return;
+    }
+    q.finance = {
+      principal: parseFloat(finPrincipal.value) || 0,
+      ratePct: parseFloat(finTasa.value) || 0,
+      months: parseInt(finPlazo.value, 10) || 12,
+      incluirPdf: finIncluirPdf.checked,
+    };
+    q.updatedAt = Date.now();
+    persistQuotes();
+    renderFinanceTable();
+    renderQuotesTable();
+    alert("Plan de financiamiento guardado en la cotizacion.");
   });
 
   // ===== CRM: clientes =====
@@ -730,9 +913,14 @@
         delBtn.addEventListener("click", () => {
           if (!confirm(`Eliminar la cotizacion ${q.number || ""}?`)) return;
           quotes = quotes.filter((x) => x.id !== q.id);
+          if (finSelectedQuoteId === q.id) { finSelectedQuoteId = null; finControls.style.display = "none"; }
+          if (invSelectedQuoteId === q.id) { invSelectedQuoteId = null; invControls.style.display = "none"; }
           persistQuotes();
           renderQuotesTable();
           renderFinanceTable();
+          renderFinanceQuoteSelect();
+          renderInvoiceQuoteSelect();
+          renderInvoicesTable();
           renderClientsTable();
         });
 
@@ -772,24 +960,29 @@
         `;
         const actionsTd = tr.children[6];
 
-        const loadBtn = document.createElement("button");
-        loadBtn.type = "button";
-        loadBtn.className = "btn-small";
-        loadBtn.textContent = "Cargar cotizacion";
-        loadBtn.addEventListener("click", () => loadQuote(q.id));
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.className = "btn-small";
+        editBtn.textContent = "Editar plan";
+        editBtn.addEventListener("click", () => {
+          finQuoteSelect.value = q.id;
+          loadFinanceQuote(q.id);
+          finControls.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
 
         const exhibitBtn = document.createElement("button");
         exhibitBtn.type = "button";
         exhibitBtn.className = "btn-small";
         exhibitBtn.textContent = "Ver Exhibit C";
         exhibitBtn.addEventListener("click", () => {
-          loadQuote(q.id);
-          if (buildFinanceExhibit() !== false) {
+          finQuoteSelect.value = q.id;
+          loadFinanceQuote(q.id);
+          if (buildFinanceExhibit(q) !== false) {
             previewWrap.scrollIntoView({ behavior: "smooth" });
           }
         });
 
-        actionsTd.appendChild(loadBtn);
+        actionsTd.appendChild(editBtn);
         actionsTd.appendChild(exhibitBtn);
         tbody.appendChild(tr);
       });
@@ -810,26 +1003,10 @@
     fClientSelect.value = q.clientId || "";
     specsEl.value = (q.notas || []).join("\n");
     lineItems = (q.lineItems || []).map((l) => ({ ...l }));
-    payments = (q.payments || []).map((p) => ({ ...p }));
     renderCatalog();
     renderDatalist();
     renderLineItems();
-    renderPaymentsTable();
-
-    if (q.finance) {
-      finPrincipalManual = true;
-      finPrincipal.value = q.finance.principal || 0;
-      finTasa.value = q.finance.ratePct || 0;
-      finPlazo.value = q.finance.months || 12;
-      finIncluirPdf.checked = !!q.finance.incluirPdf;
-      recalcFinance();
-    } else {
-      finPrincipalManual = false;
-      finTasa.value = 0;
-      finPlazo.value = 12;
-      finIncluirPdf.checked = false;
-      updateTotals();
-    }
+    updateTotals();
 
     switchTab("quote");
     previewWrap.classList.remove("show");
@@ -842,14 +1019,15 @@
     currentQuoteId = null;
     fNumero.value = "";
     fFecha.value = new Date().toISOString().slice(0, 10);
-    payments = [];
-    renderPaymentsTable();
     updateTotals();
   }
 
   document.getElementById("btnSave").addEventListener("click", () => {
     const { subtotal, deposito, saldo } = updateTotals();
     const client = findOrCreateClient(fCliente.value.trim(), fContacto.value.trim(), fEntrega.value.trim());
+
+    // Preserva financiamiento y pagos existentes (se editan en sus propias pestañas)
+    const existing = quotes.find((x) => x.id === currentQuoteId);
 
     const quoteData = {
       id: currentQuoteId || "q" + Date.now(),
@@ -864,13 +1042,8 @@
       deposito,
       lineItems: lineItems.map((l) => ({ ...l })),
       notas: specsEl.value.split("\n").map((s) => s.trim()).filter((s) => s !== ""),
-      finance: {
-        principal: parseFloat(finPrincipal.value) || 0,
-        ratePct: parseFloat(finTasa.value) || 0,
-        months: parseInt(finPlazo.value, 10) || 12,
-        incluirPdf: finIncluirPdf.checked,
-      },
-      payments: payments.map((p) => ({ ...p })),
+      finance: existing && existing.finance ? existing.finance : null,
+      payments: existing && existing.payments ? existing.payments : [],
       status: "Borrador",
       updatedAt: Date.now(),
     };
@@ -886,6 +1059,9 @@
     persistQuotes();
     renderQuotesTable();
     renderFinanceTable();
+    renderFinanceQuoteSelect();
+    renderInvoiceQuoteSelect();
+    renderInvoicesTable();
     renderClientSelect();
     renderClientsTable();
     alert("Cotizacion guardada.");
@@ -1095,12 +1271,13 @@
     `;
   }
 
-  function buildFinanceExhibit() {
+  function buildFinanceExhibit(q) {
     if (!currentFinancePlan) {
       alert("Captura capital, tasa add-on y plazo (mayores a cero) para calcular el plan de financiamiento antes de generar el Exhibit C.");
       return false;
     }
-    const t = I18N[fIdioma.value] || I18N.es;
+    const cliente = q ? q.cliente : (finSelectedQuote() ? finSelectedQuote().cliente : "");
+    const t = I18N[(q && q.idioma) || "es"] || I18N.es;
     previewDoc.innerHTML = `
       <div class="doc-header">
         <img src="assets/nova_logo.png" alt="Nova Food Trailer">
@@ -1112,11 +1289,11 @@
       </div>
       <div class="doc-title">${t.financingDocTitle}</div>
       <div style="text-align:center; font-size:12px; color:var(--blue); font-weight:700; margin-bottom:18px;">
-        ${t.finExhibitLabel} ${escapeHtml(fCliente.value || "-")}
+        ${t.finExhibitLabel} ${escapeHtml(cliente || "-")}
       </div>
-      ${financeExhibitBody(t, currentFinancePlan, fCliente.value, { hideTitle: true })}
+      ${financeExhibitBody(t, currentFinancePlan, cliente, { hideTitle: true })}
       <div class="doc-footer">
-        <b>Nova Food Trailer</b> &middot; ${t.finConfidential} &middot; ${t.finPageLabel(fCliente.value)}
+        <b>Nova Food Trailer</b> &middot; ${t.finConfidential} &middot; ${t.finPageLabel(cliente)}
       </div>
     `;
     previewWrap.classList.add("show");
@@ -1124,32 +1301,42 @@
   }
 
   finExhibitBtn.addEventListener("click", () => {
-    if (buildFinanceExhibit() !== false) {
+    const q = finSelectedQuote();
+    if (!q) {
+      alert("Selecciona una cotizacion primero.");
+      return;
+    }
+    if (buildFinanceExhibit(q) !== false) {
       previewWrap.scrollIntoView({ behavior: "smooth" });
     }
   });
 
   // ===== Generar invoice / estado de cuenta =====
-  function buildInvoice() {
-    const { subtotal, deposito } = updateTotals();
-    const t = I18N[fIdioma.value] || I18N.es;
-
-    const totalPagado = (parseFloat(deposito) || 0) + paymentsTotal();
+  // q = objeto cotizacion. Lee todo del objeto (no del formulario del Cotizador).
+  function buildInvoice(q) {
+    if (!q) return false;
+    const t = I18N[q.idioma] || I18N.es;
+    const totals = quoteTotals(q);
+    const subtotal = totals.subtotal;
+    const deposito = totals.deposito;
+    const qPayments = q.payments || [];
+    const pagadoAbonos = qPayments.reduce((s, p) => s + (parseFloat(p.monto) || 0), 0);
+    const totalPagado = deposito + pagadoAbonos;
     const saldo = subtotal - totalPagado;
 
     const fechaHoy = new Date().toLocaleDateString(t.locale, { year: "numeric", month: "long", day: "numeric" });
 
     // Filas: deposito inicial (si hay) + cada abono
     const rows = [];
-    if ((parseFloat(deposito) || 0) > 0) {
+    if (deposito > 0) {
       rows.push(`
         <tr>
-          <td>${escapeHtml(fFecha.value || "")}</td>
+          <td>${escapeHtml(q.fecha || "")}</td>
           <td>${t.invDepositRow}</td>
-          <td class="num">${formatMoney(parseFloat(deposito) || 0)}</td>
+          <td class="num">${formatMoney(deposito)}</td>
         </tr>`);
     }
-    payments.forEach((p) => {
+    qPayments.forEach((p) => {
       rows.push(`
         <tr>
           <td>${escapeHtml(p.fecha || "")}</td>
@@ -1162,7 +1349,7 @@
       : `<tr><td colspan="3" style="text-align:center; color:#7c8aa6;">${t.invNoPayments}</td></tr>`;
 
     // Lo que incluye la cotizacion (mismos componentes que la cotizacion, con precio)
-    const productRows = buildProductRows(true);
+    const productRows = buildProductRows(true, q.lineItems || []);
     const includesSection = productRows
       ? `
       <div class="doc-section">${t.components}</div>
@@ -1173,9 +1360,8 @@
       : "";
 
     // Notas / especificaciones sin precio (si hay)
-    const specLines = specsEl.value
-      .split("\n")
-      .map((s) => s.trim())
+    const specLines = (q.notas || [])
+      .map((s) => (s || "").trim())
       .filter((s) => s !== "")
       .map((s) => `<li>${escapeHtml(s)}</li>`)
       .join("");
@@ -1191,21 +1377,21 @@
       <div class="doc-tagline">F O O D &nbsp;&nbsp;&nbsp; T R A I L E R</div>
       <div class="doc-title">${t.invoiceDocTitle}</div>
       <div style="text-align:center; font-size:12px; color:var(--blue); font-weight:700; margin-bottom:18px;">
-        ${t.invLabelFor} ${escapeHtml(fCliente.value || "-")}
+        ${t.invLabelFor} ${escapeHtml(q.cliente || "-")}
       </div>
 
       <div class="doc-meta">
         <div>
           <div class="label">${t.invClient}</div>
-          <div class="value">${escapeHtml(fCliente.value || "-")}</div>
+          <div class="value">${escapeHtml(q.cliente || "-")}</div>
           <div class="label" style="margin-top:6px;">${t.invContact}</div>
-          <div class="value">${escapeHtml(fContacto.value || "-")}</div>
+          <div class="value">${escapeHtml(q.contacto || "-")}</div>
         </div>
         <div style="text-align:right;">
           <div class="label">${t.invDate}</div>
           <div class="value">${escapeHtml(fechaHoy)}</div>
           <div class="label" style="margin-top:6px;">${t.invQuoteNo}</div>
-          <div class="value">${escapeHtml(fNumero.value || "-")}</div>
+          <div class="value">${escapeHtml(q.number || "-")}</div>
         </div>
       </div>
 
@@ -1226,7 +1412,7 @@
       </table>
 
       <div class="doc-footer">
-        <b>Nova Food Trailer</b> &middot; ${t.finConfidential} &middot; ${t.invPageLabel(fCliente.value)}
+        <b>Nova Food Trailer</b> &middot; ${t.finConfidential} &middot; ${t.invPageLabel(q.cliente)}
       </div>
     `;
     previewWrap.classList.add("show");
@@ -1234,15 +1420,21 @@
   }
 
   payInvoiceBtn.addEventListener("click", () => {
-    buildInvoice();
+    const q = invSelectedQuote();
+    if (!q) {
+      alert("Selecciona una cotizacion primero.");
+      return;
+    }
+    buildInvoice(q);
     previewWrap.scrollIntoView({ behavior: "smooth" });
   });
 
   // ===== Generar documento de cotizacion =====
   // Arma las filas del producto agrupando la unidad base con sus incluidos ($0).
   // showPrice=false oculta las columnas de precio (para el invoice, que solo lista lo incluido).
-  function buildProductRows(showPrice) {
-    const filtered = lineItems.filter((l) => l.desc.trim() !== "");
+  function buildProductRows(showPrice, items) {
+    const src = items || lineItems;
+    const filtered = src.filter((l) => (l.desc || "").trim() !== "");
     const rows = [];
     let i = 0;
     while (i < filtered.length) {
@@ -1399,10 +1591,8 @@
   document.getElementById("btnReset").addEventListener("click", () => {
     if (!confirm("Esto borrara los datos de la cotizacion actual (no afecta el catalogo, clientes ni cotizaciones guardadas). Continuar?")) return;
     lineItems = [];
-    payments = [];
     currentQuoteId = null;
     renderLineItems();
-    renderPaymentsTable();
     fCliente.value = "";
     fContacto.value = "";
     fNumero.value = "";
@@ -1413,16 +1603,9 @@
     fClientSelect.value = "";
     specsEl.value = "";
     sizePresetEl.value = "";
-    payFecha.value = new Date().toISOString().slice(0, 10);
-    payMonto.value = 0;
-    payConcepto.value = "";
     renderCatalog();
     renderDatalist();
     previewWrap.classList.remove("show");
-    finPrincipalManual = false;
-    finTasa.value = 0;
-    finPlazo.value = 12;
-    finIncluirPdf.checked = false;
     updateTotals();
   });
 
@@ -1447,9 +1630,11 @@
   renderCatalog();
   renderDatalist();
   renderLineItems();
-  renderPaymentsTable();
   renderClientSelect();
   renderClientsTable();
   renderQuotesTable();
   renderFinanceTable();
+  renderFinanceQuoteSelect();
+  renderInvoiceQuoteSelect();
+  renderInvoicesTable();
 })();
