@@ -1680,6 +1680,76 @@
     btn.addEventListener("click", () => switchTab(btn.dataset.tab));
   });
 
+  // ===== Respaldo manual (exportar / importar .json) =====
+  // Mientras no haya sincronizacion en la nube configurada, todo vive en
+  // localStorage de este navegador unicamente. Esto permite sacar una copia
+  // y restaurarla en otro dispositivo o despues de borrar cache.
+  document.getElementById("backupExportBtn").addEventListener("click", () => {
+    const backup = {
+      exportedAt: new Date().toISOString(),
+      novaCatalogPrices: JSON.parse(localStorage.getItem(PRICES_KEY) || "{}"),
+      novaClients: clients,
+      novaQuotes: quotes,
+    };
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `nova-respaldo-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  const backupFileInput = document.getElementById("backupFileInput");
+  document.getElementById("backupImportBtn").addEventListener("click", () => {
+    backupFileInput.click();
+  });
+  backupFileInput.addEventListener("change", () => {
+    const file = backupFileInput.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      let data;
+      try {
+        data = JSON.parse(reader.result);
+      } catch (e) {
+        alert("Ese archivo no es un respaldo valido (JSON invalido).");
+        backupFileInput.value = "";
+        return;
+      }
+      if (!Array.isArray(data.novaClients) || !Array.isArray(data.novaQuotes)) {
+        alert("Ese archivo no tiene el formato esperado de un respaldo de Nova.");
+        backupFileInput.value = "";
+        return;
+      }
+      if (!confirm(`Esto reemplazara TODOS los clientes y cotizaciones actuales con los del respaldo (exportado: ${data.exportedAt || "fecha desconocida"}). Esta accion no se puede deshacer. Continuar?`)) {
+        backupFileInput.value = "";
+        return;
+      }
+      clients = data.novaClients;
+      quotes = data.novaQuotes;
+      syncSet(PRICES_KEY, JSON.stringify(data.novaCatalogPrices || {}));
+      syncSet(CLIENTS_KEY, JSON.stringify(clients));
+      syncSet(QUOTES_KEY, JSON.stringify(quotes));
+      Object.keys(savedPrices).forEach((k) => delete savedPrices[k]);
+      Object.assign(savedPrices, data.novaCatalogPrices || {});
+      renderCatalog();
+      renderDatalist();
+      renderClientSelect();
+      renderClientsTable();
+      renderQuotesTable();
+      renderFinanceTable();
+      renderFinanceQuoteSelect();
+      renderInvoiceQuoteSelect();
+      renderInvoicesTable();
+      backupFileInput.value = "";
+      alert("Respaldo restaurado.");
+    };
+    reader.readAsText(file);
+  });
+
   // Fecha por defecto: hoy
   fFecha.value = new Date().toISOString().slice(0, 10);
   payFecha.value = new Date().toISOString().slice(0, 10);
