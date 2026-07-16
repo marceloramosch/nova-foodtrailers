@@ -378,6 +378,44 @@
             <button id="finExhibitBtn" type="button" class="btn-small">Vista previa Exhibit C (tabla de amortizacion)</button>
           </div>
 
+          <h2 style="margin-top:14px;">Pagos del cliente e invoice</h2>
+          <div class="hint">Registra cada abono que te paga el cliente. El invoice muestra el total, todos los pagos y el saldo restante. Guarda la cotizacion para conservar los pagos.</div>
+          <div class="field-row" style="align-items:flex-end;">
+            <div class="field" style="max-width:150px;">
+              <label>Fecha del pago</label>
+              <input id="payFecha" type="date">
+            </div>
+            <div class="field" style="max-width:130px;">
+              <label>Monto (USD)</label>
+              <input id="payMonto" type="number" min="0" step="50" value="0">
+            </div>
+            <div class="field" style="flex:1;">
+              <label>Concepto / metodo (opcional)</label>
+              <input id="payConcepto" type="text" placeholder="Ej. Abono en efectivo, transferencia...">
+            </div>
+            <div class="field" style="max-width:140px;">
+              <label>&nbsp;</label>
+              <button id="payAddBtn" type="button" class="btn-small" style="width:100%;">+ Registrar pago</button>
+            </div>
+          </div>
+
+          <div id="payTableWrap" style="display:none; margin-top:6px; border:1px solid var(--silver); border-radius:8px; overflow:hidden;">
+            <table class="builder" id="payTable" style="margin:0;">
+              <thead><tr><th>Fecha</th><th>Concepto</th><th class="num">Monto</th><th></th></tr></thead>
+              <tbody id="payTableBody"></tbody>
+            </table>
+          </div>
+
+          <div class="totals" style="margin-top:8px;">
+            <div class="row"><span>Total de la venta</span><span id="payTotalVenta">$0.00</span></div>
+            <div class="row"><span>Total pagado (deposito + abonos)</span><span id="payTotalPagado">$0.00</span></div>
+            <div class="row total"><span>Saldo restante</span><span id="paySaldo">$0.00</span></div>
+          </div>
+
+          <div class="actions" style="margin-top:10px;">
+            <button id="payInvoiceBtn" type="button" class="btn-small">Generar invoice / estado de cuenta</button>
+          </div>
+
           <h2 style="margin-top:14px;">Notas / especificaciones adicionales (sin precio)</h2>
           <div class="field-row">
             <div class="field" style="flex:1;">
@@ -484,6 +522,6 @@
 <script src="data/trailers.js?v=20260703"></script>
 <script src="data/components.js?v=20260703"></script>
 <script src="data/equipment-i18n.js?v=20260703"></script>
-<script src="cotizador.js?v=20260714b"></script>
+<script src="cotizador.js?v=20260716"></script>
 </body>
 </html>

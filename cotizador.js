@@ -49,6 +49,17 @@
   const finTableBody = document.getElementById("finTableBody");
   const finExhibitBtn = document.getElementById("finExhibitBtn");
 
+  const payFecha = document.getElementById("payFecha");
+  const payMonto = document.getElementById("payMonto");
+  const payConcepto = document.getElementById("payConcepto");
+  const payAddBtn = document.getElementById("payAddBtn");
+  const payTableWrap = document.getElementById("payTableWrap");
+  const payTableBody = document.getElementById("payTableBody");
+  const payTotalVenta = document.getElementById("payTotalVenta");
+  const payTotalPagado = document.getElementById("payTotalPagado");
+  const paySaldo = document.getElementById("paySaldo");
+  const payInvoiceBtn = document.getElementById("payInvoiceBtn");
+
   const PRICES_KEY = "novaCatalogPrices";
   const CLIENTS_KEY = "novaClients";
   const QUOTES_KEY = "novaQuotes";
@@ -58,6 +69,7 @@
   let quotes = JSON.parse(localStorage.getItem(QUOTES_KEY) || "[]");
 
   let lineItems = [];
+  let payments = []; // { id, fecha, monto, concepto }
   let currentQuoteId = null;
   let finPrincipalManual = false;
   let currentFinancePlan = null; // { principal, tasa, plazo, totalInterest, totalPayment, basePayment, schedule }
@@ -293,6 +305,7 @@
       finPrincipal.value = saldo > 0 ? saldo.toFixed(2) : "0";
       recalcFinance();
     }
+    updatePaymentsSummary(subtotal, deposito);
     return { subtotal, deposito, saldo };
   }
 
@@ -305,6 +318,70 @@
   function formatMoney(n) {
     return `$${(n || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
+
+  // ===== Pagos del cliente (abonos) e invoice =====
+  function paymentsTotal() {
+    return payments.reduce((sum, p) => sum + (parseFloat(p.monto) || 0), 0);
+  }
+
+  function renderPaymentsTable() {
+    payTableBody.innerHTML = "";
+    if (payments.length === 0) {
+      payTableWrap.style.display = "none";
+    } else {
+      payTableWrap.style.display = "block";
+      payments.forEach((p) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${escapeHtml(p.fecha || "")}</td>
+          <td>${escapeHtml(p.concepto || "")}</td>
+          <td class="num">${formatMoney(parseFloat(p.monto) || 0)}</td>
+          <td></td>
+        `;
+        const delTd = tr.children[3];
+        const delBtn = document.createElement("button");
+        delBtn.type = "button";
+        delBtn.className = "remove";
+        delBtn.textContent = "x";
+        delBtn.title = "Eliminar pago";
+        delBtn.addEventListener("click", () => {
+          payments = payments.filter((x) => x.id !== p.id);
+          renderPaymentsTable();
+          updateTotals();
+        });
+        delTd.appendChild(delBtn);
+        payTableBody.appendChild(tr);
+      });
+    }
+  }
+
+  function updatePaymentsSummary(subtotal, deposito) {
+    const totalVenta = subtotal;
+    const totalPagado = (parseFloat(deposito) || 0) + paymentsTotal();
+    const saldo = totalVenta - totalPagado;
+    payTotalVenta.textContent = formatMoney(totalVenta);
+    payTotalPagado.textContent = formatMoney(totalPagado);
+    paySaldo.textContent = formatMoney(saldo);
+  }
+
+  payAddBtn.addEventListener("click", () => {
+    const monto = parseFloat(payMonto.value) || 0;
+    if (monto <= 0) {
+      alert("Escribe un monto de pago mayor a cero.");
+      return;
+    }
+    payments.push({
+      id: "p" + Date.now(),
+      fecha: payFecha.value || new Date().toISOString().slice(0, 10),
+      monto: monto,
+      concepto: payConcepto.value.trim(),
+    });
+    payFecha.value = new Date().toISOString().slice(0, 10);
+    payMonto.value = 0;
+    payConcepto.value = "";
+    renderPaymentsTable();
+    updateTotals();
+  });
 
   // ===== Financiamiento interno (metodo add-on) =====
   // Interes total = capital * tasa% * (plazo/12), repartido en partes iguales entre los meses.
@@ -733,9 +810,11 @@
     fClientSelect.value = q.clientId || "";
     specsEl.value = (q.notas || []).join("\n");
     lineItems = (q.lineItems || []).map((l) => ({ ...l }));
+    payments = (q.payments || []).map((p) => ({ ...p }));
     renderCatalog();
     renderDatalist();
     renderLineItems();
+    renderPaymentsTable();
 
     if (q.finance) {
       finPrincipalManual = true;
@@ -763,6 +842,9 @@
     currentQuoteId = null;
     fNumero.value = "";
     fFecha.value = new Date().toISOString().slice(0, 10);
+    payments = [];
+    renderPaymentsTable();
+    updateTotals();
   }
 
   document.getElementById("btnSave").addEventListener("click", () => {
@@ -788,6 +870,7 @@
         months: parseInt(finPlazo.value, 10) || 12,
         incluirPdf: finIncluirPdf.checked,
       },
+      payments: payments.map((p) => ({ ...p })),
       status: "Borrador",
       updatedAt: Date.now(),
     };
@@ -868,6 +951,23 @@
       finAdjustText: (month, amt) => `El pago del mes ${month} se ajusta en ${amt} para saldar el capital exactamente en cero, por el redondeo acumulado de los pagos mensuales.`,
       finConfidential: "Documento privado y confidencial",
       finPageLabel: (name) => `Pagina 1 de 1 — Tabla de Amortizacion (${name || "Cliente"})`,
+      invoiceDocTitle: "ESTADO DE CUENTA / INVOICE",
+      invLabelFor: "Cuenta de",
+      invDate: "FECHA",
+      invQuoteNo: "NO. DE COTIZACION",
+      invClient: "CLIENTE",
+      invContact: "CONTACTO",
+      invPaymentsTitle: "Pagos recibidos",
+      invColDate: "FECHA",
+      invColConcept: "CONCEPTO",
+      invColAmount: "MONTO",
+      invDepositRow: "Deposito inicial",
+      invSummaryTitle: "Resumen",
+      invTotalSale: "Total de la venta",
+      invTotalPaid: "Total pagado",
+      invBalance: "SALDO RESTANTE",
+      invNoPayments: "Sin pagos registrados",
+      invPageLabel: (name) => `Estado de cuenta — ${name || "Cliente"}`,
     },
     en: {
       locale: "en-US",
@@ -927,6 +1027,23 @@
       finAdjustText: (month, amt) => `The month ${month} payment is adjusted by ${amt} to settle the principal at exactly zero, due to accumulated rounding in the monthly payments.`,
       finConfidential: "Private and confidential document",
       finPageLabel: (name) => `Page 1 of 1 — Amortization Schedule (${name || "Customer"})`,
+      invoiceDocTitle: "STATEMENT / INVOICE",
+      invLabelFor: "Account for",
+      invDate: "DATE",
+      invQuoteNo: "QUOTE NO.",
+      invClient: "CUSTOMER",
+      invContact: "CONTACT",
+      invPaymentsTitle: "Payments received",
+      invColDate: "DATE",
+      invColConcept: "CONCEPT",
+      invColAmount: "AMOUNT",
+      invDepositRow: "Initial deposit",
+      invSummaryTitle: "Summary",
+      invTotalSale: "Total sale",
+      invTotalPaid: "Total paid",
+      invBalance: "REMAINING BALANCE",
+      invNoPayments: "No payments recorded",
+      invPageLabel: (name) => `Statement — ${name || "Customer"}`,
     },
   };
 
@@ -1010,6 +1127,90 @@
     if (buildFinanceExhibit() !== false) {
       previewWrap.scrollIntoView({ behavior: "smooth" });
     }
+  });
+
+  // ===== Generar invoice / estado de cuenta =====
+  function buildInvoice() {
+    const { subtotal, deposito } = updateTotals();
+    const t = I18N[fIdioma.value] || I18N.es;
+
+    const totalPagado = (parseFloat(deposito) || 0) + paymentsTotal();
+    const saldo = subtotal - totalPagado;
+
+    const fechaHoy = new Date().toLocaleDateString(t.locale, { year: "numeric", month: "long", day: "numeric" });
+
+    // Filas: deposito inicial (si hay) + cada abono
+    const rows = [];
+    if ((parseFloat(deposito) || 0) > 0) {
+      rows.push(`
+        <tr>
+          <td>${escapeHtml(fFecha.value || "")}</td>
+          <td>${t.invDepositRow}</td>
+          <td class="num">${formatMoney(parseFloat(deposito) || 0)}</td>
+        </tr>`);
+    }
+    payments.forEach((p) => {
+      rows.push(`
+        <tr>
+          <td>${escapeHtml(p.fecha || "")}</td>
+          <td>${escapeHtml(p.concepto || "")}</td>
+          <td class="num">${formatMoney(parseFloat(p.monto) || 0)}</td>
+        </tr>`);
+    });
+    const rowsHtml = rows.length
+      ? rows.join("")
+      : `<tr><td colspan="3" style="text-align:center; color:#7c8aa6;">${t.invNoPayments}</td></tr>`;
+
+    previewDoc.innerHTML = `
+      <div class="doc-header">
+        <img src="assets/nova_logo.png" alt="Nova Food Trailer">
+        <h1>NOVA</h1>
+      </div>
+      <div class="doc-tagline">F O O D &nbsp;&nbsp;&nbsp; T R A I L E R</div>
+      <div class="doc-title">${t.invoiceDocTitle}</div>
+      <div style="text-align:center; font-size:12px; color:var(--blue); font-weight:700; margin-bottom:18px;">
+        ${t.invLabelFor} ${escapeHtml(fCliente.value || "-")}
+      </div>
+
+      <div class="doc-meta">
+        <div>
+          <div class="label">${t.invClient}</div>
+          <div class="value">${escapeHtml(fCliente.value || "-")}</div>
+          <div class="label" style="margin-top:6px;">${t.invContact}</div>
+          <div class="value">${escapeHtml(fContacto.value || "-")}</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="label">${t.invDate}</div>
+          <div class="value">${escapeHtml(fechaHoy)}</div>
+          <div class="label" style="margin-top:6px;">${t.invQuoteNo}</div>
+          <div class="value">${escapeHtml(fNumero.value || "-")}</div>
+        </div>
+      </div>
+
+      <div class="doc-section">${t.invPaymentsTitle}</div>
+      <table class="doc-product">
+        <tr><th>${t.invColDate}</th><th>${t.invColConcept}</th><th class="num">${t.invColAmount}</th></tr>
+        ${rowsHtml}
+      </table>
+
+      <div class="doc-section">${t.invSummaryTitle}</div>
+      <table class="doc-pricing">
+        <tr><td class="label">${t.invTotalSale}</td><td style="width:150px;">${formatMoney(subtotal)}</td></tr>
+        <tr><td class="label">${t.invTotalPaid}</td><td>- ${formatMoney(totalPagado)}</td></tr>
+        <tr class="total"><td class="label">${t.invBalance}</td><td>${formatMoney(saldo)}</td></tr>
+      </table>
+
+      <div class="doc-footer">
+        <b>Nova Food Trailer</b> &middot; ${t.finConfidential} &middot; ${t.invPageLabel(fCliente.value)}
+      </div>
+    `;
+    previewWrap.classList.add("show");
+    return true;
+  }
+
+  payInvoiceBtn.addEventListener("click", () => {
+    buildInvoice();
+    previewWrap.scrollIntoView({ behavior: "smooth" });
   });
 
   // ===== Generar documento de cotizacion =====
@@ -1166,8 +1367,10 @@
   document.getElementById("btnReset").addEventListener("click", () => {
     if (!confirm("Esto borrara los datos de la cotizacion actual (no afecta el catalogo, clientes ni cotizaciones guardadas). Continuar?")) return;
     lineItems = [];
+    payments = [];
     currentQuoteId = null;
     renderLineItems();
+    renderPaymentsTable();
     fCliente.value = "";
     fContacto.value = "";
     fNumero.value = "";
@@ -1178,6 +1381,9 @@
     fClientSelect.value = "";
     specsEl.value = "";
     sizePresetEl.value = "";
+    payFecha.value = new Date().toISOString().slice(0, 10);
+    payMonto.value = 0;
+    payConcepto.value = "";
     renderCatalog();
     renderDatalist();
     previewWrap.classList.remove("show");
@@ -1204,10 +1410,12 @@
 
   // Fecha por defecto: hoy
   fFecha.value = new Date().toISOString().slice(0, 10);
+  payFecha.value = new Date().toISOString().slice(0, 10);
 
   renderCatalog();
   renderDatalist();
   renderLineItems();
+  renderPaymentsTable();
   renderClientSelect();
   renderClientsTable();
   renderQuotesTable();
