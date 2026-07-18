@@ -2,12 +2,29 @@
   // Espera a que la nube sincronice los datos (modo local resuelve al instante)
   await (window.__novaReady || Promise.resolve());
 
-  // Guarda en localStorage y, si la nube está activa, también la sube
-  function syncSet(key, value) {
+  // Guarda en localStorage y, si la nube está activa, también la sube.
+  // guardWrites=true revisa primero si otro dispositivo cambio este dato desde
+  // que se cargo la pagina, y avisa antes de sobreescribirlo (clientes/cotizaciones).
+  // Para datos de bajo riesgo (precios, log de actividad) se sube directo.
+  function syncSet(key, value, guardWrites) {
     localStorage.setItem(key, value);
-    if (window.NovaCloud && window.NovaCloud.enabled) {
+    if (!(window.NovaCloud && window.NovaCloud.enabled)) return;
+    if (!guardWrites || typeof window.NovaCloud.checkConflict !== "function") {
       window.NovaCloud.push(key, value);
+      return;
     }
+    window.NovaCloud.checkConflict(key).then((result) => {
+      if (result && result.conflict) {
+        const proceed = confirm(
+          "Estos datos se modificaron en otro dispositivo/navegador desde que cargaste esta pagina.\n\n" +
+          "Si guardas ahora, tu version puede sobreescribir esos cambios.\n\n" +
+          "Recomendado: cancela y recarga la pagina (F5) para traer lo mas reciente antes de continuar.\n\n" +
+          "¿Guardar de todas formas?"
+        );
+        if (!proceed) return;
+      }
+      window.NovaCloud.push(key, value);
+    });
   }
 
   const catalogEl = document.getElementById("catalog");
@@ -837,7 +854,7 @@
 
   // ===== CRM: clientes =====
   function persistClients() {
-    syncSet(CLIENTS_KEY, JSON.stringify(clients));
+    syncSet(CLIENTS_KEY, JSON.stringify(clients), true);
   }
 
   function renderClientSelect() {
@@ -1051,7 +1068,7 @@
 
   // ===== Cotizaciones guardadas =====
   function persistQuotes() {
-    syncSet(QUOTES_KEY, JSON.stringify(quotes));
+    syncSet(QUOTES_KEY, JSON.stringify(quotes), true);
   }
 
   // Sugiere el siguiente numero de cotizacion: NFT-<año>-XXX (consecutivo por año)
