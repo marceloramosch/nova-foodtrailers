@@ -1820,6 +1820,59 @@
     document.querySelectorAll(".tab-panel").forEach((panel) => {
       panel.classList.toggle("active", panel.id === `tab-${name}`);
     });
+    if (name === "dashboard") renderDashboard();
+  }
+
+  // ===== Resumen / dashboard =====
+  function renderDashboard() {
+    const nonInvoiced = quotes.filter((q) => !isInvoice(q));
+    const invoiced = quotes.filter(isInvoice);
+
+    const pipeline = nonInvoiced.reduce((s, q) => s + quoteTotals(q).subtotal, 0);
+    const facturado = invoiced.reduce((s, q) => s + quoteTotals(q).subtotal, 0);
+    const balances = invoiced.map((q) => {
+      const t = quoteTotals(q);
+      const pagosSum = (q.payments || []).reduce((ss, p) => ss + (parseFloat(p.monto) || 0), 0);
+      const pagado = t.deposito + pagosSum;
+      return { q, subtotal: t.subtotal, pagado, saldo: t.subtotal - pagado };
+    });
+    const cobrado = balances.reduce((s, b) => s + b.pagado, 0);
+    const pendiente = facturado - cobrado;
+
+    document.getElementById("dashPipeline").textContent = formatMoney(pipeline);
+    document.getElementById("dashFacturado").textContent = formatMoney(facturado);
+    document.getElementById("dashCobrado").textContent = formatMoney(cobrado);
+    document.getElementById("dashPendiente").textContent = formatMoney(pendiente);
+
+    const statusOrder = ["Lead", "Cotizado", "Aceptado", "Perdido"];
+    const counts = {};
+    statusOrder.forEach((s) => (counts[s] = 0));
+    clients.forEach((c) => {
+      counts[c.status] = (counts[c.status] || 0) + 1;
+    });
+    document.getElementById("dashClientStatus").innerHTML = statusOrder
+      .map((s) => `<div class="dash-card"><div class="n">${counts[s] || 0}</div><div class="l">${escapeHtml(s)}</div></div>`)
+      .join("");
+
+    const topBalances = balances
+      .filter((b) => b.saldo > 0)
+      .sort((a, b) => b.saldo - a.saldo)
+      .slice(0, 5);
+    const tbody = document.getElementById("dashTopBalances");
+    tbody.innerHTML = topBalances.length
+      ? topBalances
+          .map(
+            ({ q, subtotal, pagado, saldo }) => `
+        <tr>
+          <td>${escapeHtml(q.cliente || "")}</td>
+          <td>${escapeHtml(q.number || "")}</td>
+          <td>${formatMoney(subtotal)}</td>
+          <td>${formatMoney(pagado)}</td>
+          <td>${formatMoney(saldo)}</td>
+        </tr>`
+          )
+          .join("")
+      : '<tr><td colspan="5" style="text-align:center; color:#7c8aa6;">Sin saldos pendientes</td></tr>';
   }
 
   document.querySelectorAll(".tab-btn").forEach((btn) => {
