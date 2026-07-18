@@ -393,6 +393,9 @@
 
     <div class="panel">
       <h2>Clientes</h2>
+      <div class="field" style="max-width:320px;">
+        <input id="clientsSearch" type="text" placeholder="Buscar por nombre, negocio, ciudad, contacto...">
+      </div>
       <table class="crm">
         <thead>
           <tr><th>Nombre</th><th>Contacto</th><th>Negocio</th><th>Ciudad</th><th>Estatus</th><th>Notas</th><th>Cotizaciones</th><th></th></tr>
@@ -406,6 +409,9 @@
   <div class="tab-panel" id="tab-quotes">
     <div class="panel">
       <h2>Cotizaciones guardadas</h2>
+      <div class="field" style="max-width:320px;">
+        <input id="quotesSearch" type="text" placeholder="Buscar por cliente o numero...">
+      </div>
       <table class="crm">
         <thead>
           <tr><th>No.</th><th>Cliente</th><th>Fecha</th><th>Subtotal</th><th>Saldo</th><th>Estatus</th><th></th></tr>
@@ -543,6 +549,9 @@
     <div class="panel">
       <h2>Invoices / saldos por cliente</h2>
       <div class="hint">Solo cotizaciones ya convertidas a invoice.</div>
+      <div class="field" style="max-width:320px;">
+        <input id="invoicesSearch" type="text" placeholder="Buscar por cliente o numero...">
+      </div>
       <table class="crm">
         <thead>
           <tr><th>Cliente</th><th>Cotizacion</th><th>Total venta</th><th>Pagado</th><th>Saldo</th><th></th></tr>
@@ -568,6 +577,6 @@
 <script src="data/trailers.js?v=20260703"></script>
 <script src="data/components.js?v=20260703"></script>
 <script src="data/equipment-i18n.js?v=20260703"></script>
-<script src="cotizador.js?v=20260718"></script>
+<script src="cotizador.js?v=20260718b"></script>
 </body>
 </html>

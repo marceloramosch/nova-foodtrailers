@@ -61,6 +61,10 @@
   const payConcepto = document.getElementById("payConcepto");
   const payAddBtn = document.getElementById("payAddBtn");
   const payCancelEditBtn = document.getElementById("payCancelEditBtn");
+
+  const clientsSearch = document.getElementById("clientsSearch");
+  const quotesSearch = document.getElementById("quotesSearch");
+  const invoicesSearch = document.getElementById("invoicesSearch");
   const payTableWrap = document.getElementById("payTableWrap");
   const payTableBody = document.getElementById("payTableBody");
   const payTotalVenta = document.getElementById("payTotalVenta");
@@ -541,7 +545,15 @@
       tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#7c8aa6;">Sin invoices todavia. Convierte una cotizacion o registra su primer pago arriba.</td></tr>';
       return;
     }
-    invoiced
+    const search = (invoicesSearch.value || "").trim().toLowerCase();
+    const filtered = search
+      ? invoiced.filter((q) => [q.cliente, q.number].some((f) => (f || "").toLowerCase().includes(search)))
+      : invoiced;
+    if (filtered.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#7c8aa6;">Sin resultados para tu busqueda</td></tr>';
+      return;
+    }
+    filtered
       .slice()
       .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
       .forEach((q) => {
@@ -813,7 +825,15 @@
       tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#7c8aa6;">Sin clientes todavia</td></tr>';
       return;
     }
-    clients.forEach((c) => {
+    const q = (clientsSearch.value || "").trim().toLowerCase();
+    const filtered = q
+      ? clients.filter((c) => [c.name, c.contacto, c.negocio, c.ciudad, c.notas].some((f) => (f || "").toLowerCase().includes(q)))
+      : clients;
+    if (filtered.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#7c8aa6;">Sin resultados para tu busqueda</td></tr>';
+      return;
+    }
+    filtered.forEach((c) => {
       const tr = document.createElement("tr");
       const quoteCount = quotes.filter((q) => q.clientId === c.id).length;
       tr.innerHTML = `
@@ -900,11 +920,42 @@
 
   btnCancelEditClient.addEventListener("click", cancelEditClient);
 
+  // Normaliza un nombre para comparar (espacios/mayusculas no cuentan como cliente distinto)
+  function normalizeName(s) {
+    return (s || "").trim().replace(/\s+/g, " ").toLowerCase();
+  }
+
+  // Busca un cliente con nombre igual o muy parecido (para avisar antes de duplicar)
+  function findSimilarClient(name, excludeId) {
+    const norm = normalizeName(name);
+    if (!norm) return null;
+    return (
+      clients.find((c) => {
+        if (excludeId && c.id === excludeId) return false;
+        const cn = normalizeName(c.name);
+        if (cn === norm) return true;
+        if (norm.length >= 4 && (cn.includes(norm) || norm.includes(cn))) return true;
+        return false;
+      }) || null
+    );
+  }
+
   btnAddClient.addEventListener("click", () => {
     const name = document.getElementById("cNombre").value.trim();
     if (!name) {
       alert("Escribe el nombre del cliente");
       return;
+    }
+    if (!editingClientId) {
+      const dup = findSimilarClient(name);
+      if (dup) {
+        const seguir = confirm(
+          `Ya existe un cliente parecido: "${dup.name}"${dup.contacto ? ` (${dup.contacto})` : ""}.\n\n` +
+          `Si es el mismo cliente, cancela esto y usa "Editar" en su fila en vez de crear uno nuevo.\n\n` +
+          `¿Crear "${name}" de todas formas como cliente separado?`
+        );
+        if (!seguir) return;
+      }
     }
     if (editingClientId) {
       const c = clients.find((x) => x.id === editingClientId);
@@ -935,7 +986,8 @@
 
   function findOrCreateClient(name, contacto, ciudad) {
     if (!name) return null;
-    let client = clients.find((c) => c.name.toLowerCase() === name.toLowerCase());
+    const norm = normalizeName(name);
+    let client = clients.find((c) => normalizeName(c.name) === norm);
     if (!client) {
       client = {
         id: "c" + Date.now(),
@@ -960,6 +1012,19 @@
     syncSet(QUOTES_KEY, JSON.stringify(quotes));
   }
 
+  // Sugiere el siguiente numero de cotizacion: NFT-<año>-XXX (consecutivo por año)
+  function nextQuoteNumber() {
+    const year = new Date().getFullYear();
+    const prefix = `NFT-${year}-`;
+    const re = new RegExp(`^${prefix}(\\d+)$`);
+    let maxN = 0;
+    quotes.forEach((q) => {
+      const m = re.exec((q.number || "").trim());
+      if (m) maxN = Math.max(maxN, parseInt(m[1], 10));
+    });
+    return prefix + String(maxN + 1).padStart(3, "0");
+  }
+
   function renderQuotesTable() {
     const tbody = document.getElementById("quotesTable");
     tbody.innerHTML = "";
@@ -967,7 +1032,15 @@
       tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#7c8aa6;">Sin cotizaciones guardadas todavia</td></tr>';
       return;
     }
-    quotes
+    const search = (quotesSearch.value || "").trim().toLowerCase();
+    const filtered = search
+      ? quotes.filter((q) => [q.cliente, q.number].some((f) => (f || "").toLowerCase().includes(search)))
+      : quotes;
+    if (filtered.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#7c8aa6;">Sin resultados para tu busqueda</td></tr>';
+      return;
+    }
+    filtered
       .slice()
       .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
       .forEach((q) => {
@@ -1145,7 +1218,7 @@
     if (!q) return;
     loadQuote(id);
     currentQuoteId = null;
-    fNumero.value = "";
+    fNumero.value = nextQuoteNumber();
     fFecha.value = new Date().toISOString().slice(0, 10);
     updateTotals();
   }
@@ -1725,7 +1798,7 @@
     renderLineItems();
     fCliente.value = "";
     fContacto.value = "";
-    fNumero.value = "";
+    fNumero.value = nextQuoteNumber();
     fEntrega.value = "";
     fFecha.value = new Date().toISOString().slice(0, 10);
     fDeposito.value = "0";
@@ -1753,9 +1826,14 @@
     btn.addEventListener("click", () => switchTab(btn.dataset.tab));
   });
 
-  // Fecha por defecto: hoy
+  // Fecha y numero de cotizacion por defecto
   fFecha.value = new Date().toISOString().slice(0, 10);
+  fNumero.value = nextQuoteNumber();
   payFecha.value = new Date().toISOString().slice(0, 10);
+
+  clientsSearch.addEventListener("input", renderClientsTable);
+  quotesSearch.addEventListener("input", renderQuotesTable);
+  invoicesSearch.addEventListener("input", renderInvoicesTable);
 
   renderCatalog();
   renderDatalist();
