@@ -23,7 +23,17 @@
   window.__novaReady = new Promise((r) => (resolveReady = r));
 
   // API que usa cotizador.js para empujar cambios a la nube
-  window.NovaCloud = { enabled: false, email: "local", push: async function () {} };
+  window.NovaCloud = {
+    enabled: false,
+    email: "local",
+    push: async function () {},
+    checkConflict: async function () { return { conflict: false }; },
+  };
+
+  // Ultimo updated_at de la nube que este navegador conoce, por clave.
+  // Se usa para detectar si otro dispositivo escribio despues de nuestra
+  // ultima lectura (hydrate) o escritura (push), y avisar antes de sobreescribir.
+  const remoteVersions = {};
 
   // --- Sin configurar, o sin librería: modo local ---
   if (!configured) {
@@ -46,11 +56,13 @@
     // Encadenamos para evitar condiciones de carrera entre guardados
     pushChain = pushChain.then(async () => {
       try {
+        const updatedAt = new Date().toISOString();
         await sb.from("nova_store").upsert({
           key: key,
           value: JSON.parse(valueStr),
-          updated_at: new Date().toISOString(),
+          updated_at: updatedAt,
         });
+        remoteVersions[key] = updatedAt;
       } catch (e) {
         console.warn("[Nova] No se pudo guardar en la nube:", key, e);
       }
@@ -58,13 +70,34 @@
     return pushChain;
   };
 
+  // ---- Revisa si la nube tiene una version mas nueva de esta clave que la
+  //      que conocemos localmente (alguien mas guardo desde nuestra ultima
+  //      lectura/escritura). Falla "abierto" (sin conflicto) ante errores de
+  //      red para no bloquear el guardado del usuario.
+  window.NovaCloud.checkConflict = async function (key) {
+    try {
+      const { data, error } = await sb.from("nova_store").select("updated_at").eq("key", key).maybeSingle();
+      if (error || !data || !data.updated_at) return { conflict: false };
+      const known = remoteVersions[key];
+      if (known && new Date(data.updated_at) > new Date(known)) {
+        return { conflict: true, remoteUpdatedAt: data.updated_at };
+      }
+      return { conflict: false, remoteUpdatedAt: data.updated_at };
+    } catch (e) {
+      return { conflict: false };
+    }
+  };
+
   // ---- Traer la nube -> localStorage (y sembrar la nube si está vacía) ----
   async function hydrate() {
     try {
-      const { data, error } = await sb.from("nova_store").select("key,value");
+      const { data, error } = await sb.from("nova_store").select("key,value,updated_at");
       if (error) throw error;
       const cloud = {};
-      (data || []).forEach((r) => (cloud[r.key] = r.value));
+      (data || []).forEach((r) => {
+        cloud[r.key] = r.value;
+        if (r.updated_at) remoteVersions[r.key] = r.updated_at;
+      });
       for (const k of KEYS) {
         if (cloud[k] !== undefined && cloud[k] !== null) {
           // La nube manda: sobreescribe lo local
