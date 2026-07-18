@@ -6,6 +6,6 @@
 //  reales, se activa el guardado en la NUBE con inicio de sesión.
 // ============================================================
 window.NOVA_SUPABASE = {
-  url: "TU_SUPABASE_URL",        // ej: https://abcdxyz.supabase.co
-  anonKey: "TU_SUPABASE_ANON_KEY" // la "anon public" key del proyecto
+  url: "https://bypasfybazvrbjgnbopj.supabase.co",
+  anonKey: "sb_publishable_DFs52P0kNpugOo06N8rKPg_jCbJLoFM"
 };
