@@ -59,6 +59,7 @@
   .tab-panel.active{ display:block; }
 
   .layout{ display:grid; grid-template-columns: 1fr 1.3fr; gap:20px; }
+  .layout > *{ min-width:0; } /* evita que un hijo ancho (ej. tabla) fuerce el grid a desbordarse */
   @media (max-width: 1000px){ .layout{ grid-template-columns: 1fr; } }
 
   .panel{
@@ -139,6 +140,10 @@
     padding: 6px 12px; border-radius:6px; cursor:pointer; font-size:12.5px;
   }
   .btn-small:hover{ background:var(--blue); color:#fff; }
+
+  /* Envuelve tablas anchas para que hagan scroll horizontal en vez de romper el layout en movil */
+  .table-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  @media(max-width:780px){ .table-scroll table{ min-width:620px; } }
 
   /* ===== CRM / quotes tables ===== */
   table.crm{ width:100%; border-collapse:collapse; }
@@ -223,6 +228,17 @@
     border-top:1px solid var(--silver); margin-top: 24px;
   }
   footer b{ color:var(--dark); }
+
+  @media (max-width: 600px){
+    main{ padding:14px; }
+    header{ padding:12px 14px; flex-wrap:wrap; }
+    header .brand-text h1{ font-size:22px; letter-spacing:2px; }
+    header .brand-text p{ font-size:9px; letter-spacing:2.5px; white-space:nowrap; }
+    .field-row{ flex-wrap:wrap; }
+    .field-row .field{ min-width:130px; flex:1 1 130px; }
+    /* Evita que Safari en iPhone haga zoom automatico al enfocar un input */
+    .field input, .field textarea, .field select{ font-size:16px; }
+  }
 </style>
 </head>
 <body>
@@ -323,12 +339,14 @@
 
           <h2 style="margin-top:14px;">Componentes de la cotizacion</h2>
           <div class="hint">Arrastra el icono &#x2807; para reordenar los componentes.</div>
-          <table class="builder">
-            <thead>
-              <tr><th class="drag"></th><th>Descripcion</th><th class="num">Precio</th><th></th></tr>
-            </thead>
-            <tbody id="lineItems"></tbody>
-          </table>
+          <div class="table-scroll">
+            <table class="builder">
+              <thead>
+                <tr><th class="drag"></th><th>Descripcion</th><th class="num">Precio</th><th></th></tr>
+              </thead>
+              <tbody id="lineItems"></tbody>
+            </table>
+          </div>
           <button id="addCustomLine" type="button" class="btn-small">+ Agregar linea personalizada</button>
 
           <div class="totals">
@@ -396,12 +414,14 @@
       <div class="field" style="max-width:320px;">
         <input id="clientsSearch" type="text" placeholder="Buscar por nombre, negocio, ciudad, contacto...">
       </div>
-      <table class="crm">
-        <thead>
-          <tr><th>Nombre</th><th>Contacto</th><th>Negocio</th><th>Ciudad</th><th>Estatus</th><th>Notas</th><th>Cotizaciones</th><th></th></tr>
-        </thead>
-        <tbody id="clientsTable"></tbody>
-      </table>
+      <div class="table-scroll">
+        <table class="crm">
+          <thead>
+            <tr><th>Nombre</th><th>Contacto</th><th>Negocio</th><th>Ciudad</th><th>Estatus</th><th>Notas</th><th>Cotizaciones</th><th></th></tr>
+          </thead>
+          <tbody id="clientsTable"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -412,12 +432,14 @@
       <div class="field" style="max-width:320px;">
         <input id="quotesSearch" type="text" placeholder="Buscar por cliente o numero...">
       </div>
-      <table class="crm">
-        <thead>
-          <tr><th>No.</th><th>Cliente</th><th>Fecha</th><th>Subtotal</th><th>Saldo</th><th>Estatus</th><th></th></tr>
-        </thead>
-        <tbody id="quotesTable"></tbody>
-      </table>
+      <div class="table-scroll">
+        <table class="crm">
+          <thead>
+            <tr><th>No.</th><th>Cliente</th><th>Fecha</th><th>Subtotal</th><th>Saldo</th><th>Estatus</th><th></th></tr>
+          </thead>
+          <tbody id="quotesTable"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -476,12 +498,14 @@
 
     <div class="panel">
       <h2>Planes de financiamiento activos</h2>
-      <table class="crm">
-        <thead>
-          <tr><th>Cliente</th><th>Cotizacion</th><th>Capital</th><th>Tasa / Plazo</th><th>Pago mensual</th><th>Total a pagar</th><th></th></tr>
-        </thead>
-        <tbody id="financeTable"></tbody>
-      </table>
+      <div class="table-scroll">
+        <table class="crm">
+          <thead>
+            <tr><th>Cliente</th><th>Cotizacion</th><th>Capital</th><th>Tasa / Plazo</th><th>Pago mensual</th><th>Total a pagar</th><th></th></tr>
+          </thead>
+          <tbody id="financeTable"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -528,7 +552,7 @@
         </div>
       </div>
 
-      <div id="payTableWrap" style="display:none; margin-top:6px; border:1px solid var(--silver); border-radius:8px; overflow:hidden;">
+      <div id="payTableWrap" class="table-scroll" style="display:none; margin-top:6px; border:1px solid var(--silver); border-radius:8px;">
         <table class="builder" id="payTable" style="margin:0;">
           <thead><tr><th>Fecha</th><th>Concepto</th><th class="num">Monto</th><th></th></tr></thead>
           <tbody id="payTableBody"></tbody>
@@ -552,12 +576,14 @@
       <div class="field" style="max-width:320px;">
         <input id="invoicesSearch" type="text" placeholder="Buscar por cliente o numero...">
       </div>
-      <table class="crm">
-        <thead>
-          <tr><th>Cliente</th><th>Cotizacion</th><th>Total venta</th><th>Pagado</th><th>Saldo</th><th></th></tr>
-        </thead>
-        <tbody id="invoicesTable"></tbody>
-      </table>
+      <div class="table-scroll">
+        <table class="crm">
+          <thead>
+            <tr><th>Cliente</th><th>Cotizacion</th><th>Total venta</th><th>Pagado</th><th>Saldo</th><th></th></tr>
+          </thead>
+          <tbody id="invoicesTable"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -577,6 +603,6 @@
 <script src="data/trailers.js?v=20260703"></script>
 <script src="data/components.js?v=20260703"></script>
 <script src="data/equipment-i18n.js?v=20260703"></script>
-<script src="cotizador.js?v=20260718b"></script>
+<script src="cotizador.js?v=20260718c"></script>
 </body>
 </html>
