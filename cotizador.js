@@ -60,6 +60,7 @@
   const payMonto = document.getElementById("payMonto");
   const payConcepto = document.getElementById("payConcepto");
   const payAddBtn = document.getElementById("payAddBtn");
+  const payCancelEditBtn = document.getElementById("payCancelEditBtn");
   const payTableWrap = document.getElementById("payTableWrap");
   const payTableBody = document.getElementById("payTableBody");
   const payTotalVenta = document.getElementById("payTotalVenta");
@@ -80,6 +81,7 @@
   let currentQuoteId = null;
   let finSelectedQuoteId = null; // cotizacion seleccionada en la pestaña Financiamiento
   let invSelectedQuoteId = null; // cotizacion seleccionada en la pestaña Invoices
+  let editingPaymentId = null; // pago que se esta editando (vs. registrando uno nuevo)
   let currentFinancePlan = null; // { principal, tasa, plazo, totalInterest, totalPayment, basePayment, schedule }
 
   // Totales derivados de un objeto cotizacion (no del formulario del Cotizador)
@@ -369,24 +371,57 @@
           <td>${escapeHtml(p.fecha || "")}</td>
           <td>${escapeHtml(p.concepto || "")}</td>
           <td class="num">${formatMoney(parseFloat(p.monto) || 0)}</td>
-          <td></td>
+          <td class="actions-cell"></td>
         `;
-        const delTd = tr.children[3];
+        const actionsTd = tr.children[3];
+
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.className = "btn-small";
+        editBtn.textContent = "Editar";
+        editBtn.title = "Editar este pago";
+        editBtn.addEventListener("click", () => startEditPayment(p.id));
+
         const delBtn = document.createElement("button");
         delBtn.type = "button";
         delBtn.className = "remove";
         delBtn.textContent = "x";
         delBtn.title = "Eliminar pago";
         delBtn.addEventListener("click", () => {
+          if (!confirm(`Eliminar el pago de ${formatMoney(parseFloat(p.monto) || 0)} (${p.fecha || ""})?`)) return;
           payments = payments.filter((x) => x.id !== p.id);
+          if (editingPaymentId === p.id) cancelEditPayment();
           renderPaymentsTable();
           updatePaymentsSummary();
           persistInvoicePayments();
         });
-        delTd.appendChild(delBtn);
+
+        actionsTd.appendChild(editBtn);
+        actionsTd.appendChild(delBtn);
         payTableBody.appendChild(tr);
       });
     }
+  }
+
+  function startEditPayment(id) {
+    const p = payments.find((x) => x.id === id);
+    if (!p) return;
+    editingPaymentId = id;
+    payFecha.value = p.fecha || new Date().toISOString().slice(0, 10);
+    payMonto.value = p.monto || 0;
+    payConcepto.value = p.concepto || "";
+    payAddBtn.textContent = "Guardar cambios";
+    payCancelEditBtn.style.display = "block";
+    payAddBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  function cancelEditPayment() {
+    editingPaymentId = null;
+    payFecha.value = new Date().toISOString().slice(0, 10);
+    payMonto.value = 0;
+    payConcepto.value = "";
+    payAddBtn.textContent = "+ Registrar pago";
+    payCancelEditBtn.style.display = "none";
   }
 
   function updatePaymentsSummary() {
@@ -428,9 +463,7 @@
     invActivePanel.style.display = "block";
     invActiveLabel.textContent = `${q.number || "(sin no.)"} — ${q.cliente || "sin cliente"}`;
     payments = (q.payments || []).map((p) => ({ ...p }));
-    payFecha.value = new Date().toISOString().slice(0, 10);
-    payMonto.value = 0;
-    payConcepto.value = "";
+    cancelEditPayment();
     renderPaymentsTable();
     updatePaymentsSummary();
   }
@@ -471,24 +504,33 @@
       alert("Escribe un monto de pago mayor a cero.");
       return;
     }
-    payments.push({
-      id: "p" + Date.now(),
-      fecha: payFecha.value || new Date().toISOString().slice(0, 10),
-      monto: monto,
-      concepto: payConcepto.value.trim(),
-    });
-    payFecha.value = new Date().toISOString().slice(0, 10);
-    payMonto.value = 0;
-    payConcepto.value = "";
+    if (editingPaymentId) {
+      const p = payments.find((x) => x.id === editingPaymentId);
+      if (p) {
+        p.fecha = payFecha.value || new Date().toISOString().slice(0, 10);
+        p.monto = monto;
+        p.concepto = payConcepto.value.trim();
+      }
+    } else {
+      payments.push({
+        id: "p" + Date.now(),
+        fecha: payFecha.value || new Date().toISOString().slice(0, 10),
+        monto: monto,
+        concepto: payConcepto.value.trim(),
+      });
+    }
     // Registrar el primer pago convierte la cotizacion en invoice automaticamente
     if (!isInvoice(q)) {
       q.invoiceCreated = true;
       q.invoiceCreatedAt = Date.now();
     }
+    cancelEditPayment();
     renderPaymentsTable();
     updatePaymentsSummary();
     persistInvoicePayments();
   });
+
+  payCancelEditBtn.addEventListener("click", cancelEditPayment);
 
   // Lista de invoices / saldos por cliente — solo cotizaciones ya convertidas
   function renderInvoicesTable() {
@@ -536,8 +578,35 @@
           previewWrap.scrollIntoView({ behavior: "smooth" });
         });
 
+        const delBtn = document.createElement("button");
+        delBtn.type = "button";
+        delBtn.className = "btn-small";
+        delBtn.textContent = "Eliminar invoice";
+        delBtn.title = "Quita el invoice y borra su historial de pagos (la cotizacion en si no se elimina)";
+        delBtn.addEventListener("click", () => {
+          const warn = pagado > 0
+            ? ` Esta invoice tiene ${formatMoney(pagado)} en pagos registrados que tambien se borraran.`
+            : "";
+          if (!confirm(`Eliminar el invoice de "${q.cliente || q.number || ""}"?${warn} La cotizacion no se borra, solo deja de ser invoice.`)) return;
+          q.invoiceCreated = false;
+          q.invoiceCreatedAt = null;
+          q.payments = [];
+          q.updatedAt = Date.now();
+          persistQuotes();
+          if (invSelectedQuoteId === q.id) {
+            invActivePanel.style.display = "none";
+            invSelectedQuoteId = null;
+            payments = [];
+            cancelEditPayment();
+          }
+          renderInvoicesTable();
+          renderInvoiceQuoteSelect();
+          renderQuotesTable();
+        });
+
         actionsTd.appendChild(editBtn);
         actionsTd.appendChild(invBtn);
+        actionsTd.appendChild(delBtn);
         tbody.appendChild(tr);
       });
   }
@@ -965,10 +1034,14 @@
         delBtn.className = "btn-small";
         delBtn.textContent = "Eliminar";
         delBtn.addEventListener("click", () => {
-          if (!confirm(`Eliminar la cotizacion ${q.number || ""}?`)) return;
+          const pagadoTotal = (parseFloat(q.deposito) || 0) + (q.payments || []).reduce((s, p) => s + (parseFloat(p.monto) || 0), 0);
+          const warn = isInvoice(q)
+            ? ` Esta cotizacion tiene un invoice con ${formatMoney(pagadoTotal)} en pagos registrados — tambien se borraran.`
+            : "";
+          if (!confirm(`Eliminar la cotizacion ${q.number || ""}?${warn}`)) return;
           quotes = quotes.filter((x) => x.id !== q.id);
           if (finSelectedQuoteId === q.id) { finSelectedQuoteId = null; finControls.style.display = "none"; }
-          if (invSelectedQuoteId === q.id) { invSelectedQuoteId = null; invActivePanel.style.display = "none"; }
+          if (invSelectedQuoteId === q.id) { invSelectedQuoteId = null; invActivePanel.style.display = "none"; cancelEditPayment(); }
           persistQuotes();
           renderQuotesTable();
           renderFinanceTable();
@@ -1678,76 +1751,6 @@
 
   document.querySelectorAll(".tab-btn").forEach((btn) => {
     btn.addEventListener("click", () => switchTab(btn.dataset.tab));
-  });
-
-  // ===== Respaldo manual (exportar / importar .json) =====
-  // Mientras no haya sincronizacion en la nube configurada, todo vive en
-  // localStorage de este navegador unicamente. Esto permite sacar una copia
-  // y restaurarla en otro dispositivo o despues de borrar cache.
-  document.getElementById("backupExportBtn").addEventListener("click", () => {
-    const backup = {
-      exportedAt: new Date().toISOString(),
-      novaCatalogPrices: JSON.parse(localStorage.getItem(PRICES_KEY) || "{}"),
-      novaClients: clients,
-      novaQuotes: quotes,
-    };
-    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `nova-respaldo-${new Date().toISOString().slice(0, 10)}.json`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  });
-
-  const backupFileInput = document.getElementById("backupFileInput");
-  document.getElementById("backupImportBtn").addEventListener("click", () => {
-    backupFileInput.click();
-  });
-  backupFileInput.addEventListener("change", () => {
-    const file = backupFileInput.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      let data;
-      try {
-        data = JSON.parse(reader.result);
-      } catch (e) {
-        alert("Ese archivo no es un respaldo valido (JSON invalido).");
-        backupFileInput.value = "";
-        return;
-      }
-      if (!Array.isArray(data.novaClients) || !Array.isArray(data.novaQuotes)) {
-        alert("Ese archivo no tiene el formato esperado de un respaldo de Nova.");
-        backupFileInput.value = "";
-        return;
-      }
-      if (!confirm(`Esto reemplazara TODOS los clientes y cotizaciones actuales con los del respaldo (exportado: ${data.exportedAt || "fecha desconocida"}). Esta accion no se puede deshacer. Continuar?`)) {
-        backupFileInput.value = "";
-        return;
-      }
-      clients = data.novaClients;
-      quotes = data.novaQuotes;
-      syncSet(PRICES_KEY, JSON.stringify(data.novaCatalogPrices || {}));
-      syncSet(CLIENTS_KEY, JSON.stringify(clients));
-      syncSet(QUOTES_KEY, JSON.stringify(quotes));
-      Object.keys(savedPrices).forEach((k) => delete savedPrices[k]);
-      Object.assign(savedPrices, data.novaCatalogPrices || {});
-      renderCatalog();
-      renderDatalist();
-      renderClientSelect();
-      renderClientsTable();
-      renderQuotesTable();
-      renderFinanceTable();
-      renderFinanceQuoteSelect();
-      renderInvoiceQuoteSelect();
-      renderInvoicesTable();
-      backupFileInput.value = "";
-      alert("Respaldo restaurado.");
-    };
-    reader.readAsText(file);
   });
 
   // Fecha por defecto: hoy
