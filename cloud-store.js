@@ -11,7 +11,7 @@
 // ============================================================
 (function () {
   const cfg = window.NOVA_SUPABASE || {};
-  const KEYS = ["novaCatalogPrices", "novaClients", "novaQuotes"];
+  const KEYS = ["novaCatalogPrices", "novaClients", "novaQuotes", "novaActivityLog"];
 
   const configured =
     cfg.url && cfg.anonKey &&
@@ -23,7 +23,7 @@
   window.__novaReady = new Promise((r) => (resolveReady = r));
 
   // API que usa cotizador.js para empujar cambios a la nube
-  window.NovaCloud = { enabled: false, push: async function () {} };
+  window.NovaCloud = { enabled: false, email: "local", push: async function () {} };
 
   // --- Sin configurar, o sin librería: modo local ---
   if (!configured) {
@@ -166,6 +166,7 @@
 
     if (!email) email = await showLogin();
 
+    window.NovaCloud.email = email || "local";
     buildStatusChip(email);
     await hydrate();
     resolveReady("cloud");

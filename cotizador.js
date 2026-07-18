@@ -75,10 +75,43 @@
   const PRICES_KEY = "novaCatalogPrices";
   const CLIENTS_KEY = "novaClients";
   const QUOTES_KEY = "novaQuotes";
+  const ACTIVITY_KEY = "novaActivityLog";
+  const ACTIVITY_MAX = 200;
 
   const savedPrices = JSON.parse(localStorage.getItem(PRICES_KEY) || "{}");
   let clients = JSON.parse(localStorage.getItem(CLIENTS_KEY) || "[]");
   let quotes = JSON.parse(localStorage.getItem(QUOTES_KEY) || "[]");
+  let activityLog = JSON.parse(localStorage.getItem(ACTIVITY_KEY) || "[]");
+
+  // Registra una accion en el historial (quien/cuando/que) y la persiste
+  function logActivity(text) {
+    const email = (window.NovaCloud && window.NovaCloud.email) || "local";
+    activityLog.unshift({ ts: Date.now(), email, text });
+    if (activityLog.length > ACTIVITY_MAX) activityLog.length = ACTIVITY_MAX;
+    syncSet(ACTIVITY_KEY, JSON.stringify(activityLog));
+  }
+
+  function renderActivityTable() {
+    const tbody = document.getElementById("activityTable");
+    if (!tbody) return;
+    if (activityLog.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#7c8aa6;">Sin actividad registrada todavia</td></tr>';
+      return;
+    }
+    tbody.innerHTML = activityLog
+      .slice(0, 25)
+      .map((a) => {
+        const d = new Date(a.ts);
+        const when = isNaN(d) ? "" : d.toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" });
+        return `
+        <tr>
+          <td>${escapeHtml(when)}</td>
+          <td>${escapeHtml(a.email || "")}</td>
+          <td>${escapeHtml(a.text || "")}</td>
+        </tr>`;
+      })
+      .join("");
+  }
 
   let lineItems = [];
   let payments = []; // pagos de la cotizacion seleccionada en Invoices { id, fecha, monto, concepto }
@@ -393,8 +426,10 @@
         delBtn.title = "Eliminar pago";
         delBtn.addEventListener("click", () => {
           if (!confirm(`Eliminar el pago de ${formatMoney(parseFloat(p.monto) || 0)} (${p.fecha || ""})?`)) return;
+          const q = invSelectedQuote();
           payments = payments.filter((x) => x.id !== p.id);
           if (editingPaymentId === p.id) cancelEditPayment();
+          logActivity(`Elimino un pago de ${formatMoney(parseFloat(p.monto) || 0)} de "${q ? q.cliente || q.number : ""}"`);
           renderPaymentsTable();
           updatePaymentsSummary();
           persistInvoicePayments();
@@ -480,6 +515,7 @@
       q.invoiceCreated = true;
       q.invoiceCreatedAt = Date.now();
       q.updatedAt = Date.now();
+      logActivity(`Convirtio a invoice la cotizacion ${q.number || ""} (${q.cliente || ""})`);
       persistQuotes();
       renderQuotesTable();
       renderInvoiceQuoteSelect();
@@ -515,6 +551,7 @@
         p.monto = monto;
         p.concepto = payConcepto.value.trim();
       }
+      logActivity(`Edito un pago de ${formatMoney(monto)} de "${q.cliente || q.number || ""}"`);
     } else {
       payments.push({
         id: "p" + Date.now(),
@@ -522,6 +559,7 @@
         monto: monto,
         concepto: payConcepto.value.trim(),
       });
+      logActivity(`Registro un pago de ${formatMoney(monto)} de "${q.cliente || q.number || ""}"`);
     }
     // Registrar el primer pago convierte la cotizacion en invoice automaticamente
     if (!isInvoice(q)) {
@@ -604,6 +642,7 @@
           q.invoiceCreatedAt = null;
           q.payments = [];
           q.updatedAt = Date.now();
+          logActivity(`Elimino el invoice de "${q.cliente || q.number || ""}"`);
           persistQuotes();
           if (invSelectedQuoteId === q.id) {
             invActivePanel.style.display = "none";
@@ -789,6 +828,7 @@
       incluirPdf: finIncluirPdf.checked,
     };
     q.updatedAt = Date.now();
+    logActivity(`Guardo el plan de financiamiento de "${q.cliente || q.number || ""}" (${formatMoney(q.finance.principal)} a ${q.finance.ratePct}%)`);
     persistQuotes();
     renderFinanceTable();
     renderQuotesTable();
@@ -967,6 +1007,7 @@
         c.status = document.getElementById("cEstatus").value;
         c.notas = document.getElementById("cNotas").value.trim();
       }
+      logActivity(`Edito el cliente "${name}"`);
     } else {
       clients.push({
         id: "c" + Date.now(),
@@ -977,6 +1018,7 @@
         status: document.getElementById("cEstatus").value,
         notas: document.getElementById("cNotas").value.trim(),
       });
+      logActivity(`Creo el cliente "${name}"`);
     }
     persistClients();
     cancelEditClient();
@@ -1255,8 +1297,10 @@
     if (existingIdx >= 0) {
       quoteData.status = quotes[existingIdx].status;
       quotes[existingIdx] = quoteData;
+      logActivity(`Actualizo la cotizacion ${quoteData.number || ""} (${quoteData.cliente || ""})`);
     } else {
       quotes.push(quoteData);
+      logActivity(`Creo la cotizacion ${quoteData.number || ""} (${quoteData.cliente || ""})`);
     }
     currentQuoteId = quoteData.id;
     persistQuotes();
@@ -1873,6 +1917,8 @@
           )
           .join("")
       : '<tr><td colspan="5" style="text-align:center; color:#7c8aa6;">Sin saldos pendientes</td></tr>';
+
+    renderActivityTable();
   }
 
   document.querySelectorAll(".tab-btn").forEach((btn) => {
