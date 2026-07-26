@@ -240,13 +240,35 @@
 
   @media (max-width: 600px){
     main{ padding:14px; }
-    header{ padding:12px 14px; flex-wrap:wrap; }
+    header{ padding:10px 14px; flex-wrap:wrap; }
     header .brand-text h1{ font-size:22px; letter-spacing:2px; }
     header .brand-text p{ font-size:9px; letter-spacing:2.5px; white-space:nowrap; }
+    /* En movil, "Cotizador" en el nav es redundante con la pestana del mismo nombre justo debajo */
+    header nav a[href="cotizador.html"]{ display:none; }
+    header nav a{ font-size:12px; padding:5px 10px; }
     .field-row{ flex-wrap:wrap; }
     .field-row .field{ min-width:130px; flex:1 1 130px; }
     /* Evita que Safari en iPhone haga zoom automatico al enfocar un input */
-    .field input, .field textarea, .field select{ font-size:16px; }
+    .field input, .field textarea, .field select,
+    .catalog-item input.price, table.builder input.line-price, table.builder input.line-desc,
+    table.crm select{ font-size:16px; }
+
+    /* Barra de pestanas: una sola fila con scroll horizontal, como un tab bar nativo */
+    .tabs{ flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
+      margin-left:-14px; margin-right:-14px; padding:0 14px 6px; }
+    .tabs::-webkit-scrollbar{ display:none; }
+    .tab-btn{ flex-shrink:0; padding:9px 14px; font-size:12.5px; }
+
+    /* Objetivos tactiles mas grandes (min. ~40px) para dedos en iOS/Android */
+    .catalog-item{ padding:7px 4px; gap:10px; }
+    .catalog-item .name{ font-size:13px; }
+    .catalog-item button{ width:36px; height:36px; font-size:19px; flex-shrink:0; }
+    .catalog-item input.price{ width:78px; padding:8px 6px; }
+    table.builder button.remove{ width:34px; height:34px; font-size:15px; }
+    table.builder td, table.builder th{ padding:8px 6px; }
+    .btn-small{ padding:9px 14px; }
+    .actions button{ padding:12px 16px; }
+    table.crm .actions-cell button, table.crm .actions-cell .btn-small{ padding:8px 12px; }
   }
 </style>
 </head>
