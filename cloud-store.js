@@ -119,6 +119,7 @@
   // ---- Insignia de estado + botón de salir ----
   function buildStatusChip(email) {
     const chip = document.createElement("div");
+    chip.id = "novaCloudChip";
     chip.style.cssText =
       "position:fixed;bottom:14px;right:14px;z-index:9000;background:#0D2244;color:#fff;" +
       "font:600 12px Arial;padding:8px 12px;border-radius:20px;display:flex;gap:10px;" +

@@ -1339,6 +1339,7 @@
       preparedBy: "PREPARADO POR",
       company: "EMPRESA",
       companyName: "Nova Food Trailer",
+      companyAddress: "1111 Ellenwood St, Dallas, TX 75217",
       date: "FECHA",
       quoteNo: "NO. DE COTIZACION",
       clientInfo: "Informacion del cliente",
@@ -1415,6 +1416,7 @@
       preparedBy: "PREPARED BY",
       company: "COMPANY",
       companyName: "Nova Food Trailer",
+      companyAddress: "1111 Ellenwood St, Dallas, TX 75217",
       date: "DATE",
       quoteNo: "QUOTE NO.",
       clientInfo: "Customer information",
@@ -1557,7 +1559,7 @@
       </div>
       ${financeExhibitBody(t, currentFinancePlan, cliente, { hideTitle: true })}
       <div class="doc-footer">
-        <b>Nova Food Trailer</b> &middot; ${t.finConfidential} &middot; ${t.finPageLabel(cliente)}
+        <b>Nova Food Trailer</b> &middot; ${t.companyAddress} &middot; ${t.finConfidential} &middot; ${t.finPageLabel(cliente)}
       </div>
     `;
     previewWrap.classList.add("show");
@@ -1676,7 +1678,7 @@
       </table>
 
       <div class="doc-footer">
-        <b>Nova Food Trailer</b> &middot; ${t.finConfidential} &middot; ${t.invPageLabel(q.cliente)}
+        <b>Nova Food Trailer</b> &middot; ${t.companyAddress} &middot; ${t.finConfidential} &middot; ${t.invPageLabel(q.cliente)}
       </div>
     `;
     previewWrap.classList.add("show");
@@ -1768,6 +1770,7 @@
           <div class="value">Marcelo Ramos Schiaffino</div>
           <div class="label" style="margin-top:6px;">${t.company}</div>
           <div class="value">${t.companyName}</div>
+          <div style="font-size:11px; color:#5b6b8c; margin-top:2px;">${t.companyAddress}</div>
         </div>
         <div style="text-align:right;">
           <div class="label">${t.date}</div>
@@ -1828,7 +1831,7 @@
       </div>
 
       <div class="doc-footer">
-        <b>Nova Food Trailer</b> &middot; Marcelo Ramos Schiaffino &middot; +1 (645) 235-3186 &middot; marceloramosch@gmail.com
+        <b>Nova Food Trailer</b> &middot; 1111 Ellenwood St, Dallas, TX 75217 &middot; Marcelo Ramos Schiaffino &middot; +1 (645) 235-3186 &middot; marceloramosch@gmail.com
       </div>
     `;
 
