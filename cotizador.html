@@ -178,6 +178,7 @@
   /* ===== Documento de cotizacion (preview / impresion) ===== */
   #previewWrap{ display:none; margin-top:20px; }
   #previewWrap.show{ display:block; }
+  .preview-actions{ max-width:850px; margin:0 auto 10px; text-align:right; }
   #previewDoc{
     background:#fff; border:1px solid var(--silver); border-radius:10px;
     padding: 40px 50px; font-size:13px; color:var(--dark); max-width: 850px; margin: 0 auto;
@@ -225,7 +226,7 @@
   .doc-footer b{ color:var(--dark); }
 
   @media print{
-    header, .tabs, .layout, .actions, .panel, footer, #novaCloudChip{ display:none !important; }
+    header, .tabs, .layout, .actions, .panel, footer, #novaCloudChip, .preview-actions{ display:none !important; }
     #previewWrap{ display:block !important; margin:0; }
     #previewDoc{ border:none; padding:0; max-width:none; }
     body{ background:#fff; }
@@ -692,6 +693,9 @@
 
   <!-- Documento compartido (cotizacion / Exhibit C / invoice) -->
   <div id="previewWrap">
+    <div class="preview-actions">
+      <button id="btnPrintDoc" type="button" class="btn-small">Imprimir / Guardar PDF</button>
+    </div>
     <div id="previewDoc"></div>
   </div>
 </main>
