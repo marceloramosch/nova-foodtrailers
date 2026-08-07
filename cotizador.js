@@ -1855,6 +1855,13 @@
     window.print();
   });
 
+  // Boton generico en el panel de documento compartido: imprime/descarga lo
+  // que este actualmente mostrado (cotizacion, invoice/estado de cuenta o
+  // Exhibit C), sin importar desde que pestana se genero.
+  document.getElementById("btnPrintDoc").addEventListener("click", () => {
+    window.print();
+  });
+
   document.getElementById("btnReset").addEventListener("click", () => {
     if (!confirm("Esto borrara los datos de la cotizacion actual (no afecta el catalogo, clientes ni cotizaciones guardadas). Continuar?")) return;
     lineItems = [];
